@@ -1,10 +1,23 @@
 %!TEX root = ../main.tex
 
 \chapter{Introduction\label{chap:introduction}}
+The field of autonomous robotics 
+
 
 First, introduce the reader to the research topic.
 Start with the most general view and slowly converge to the particular field, sub-field, and the challenges you face.
 You can cite others' work here \cite{baca2021mrs}.
+
+\begin{itemize}
+\item multirobotics exploration
+\item radiation mapping
+\item compton camera
+\item problem definition
+\end{itemize}
+
+\subsection{Problem definition}
+
+
 
 \section{Related works}
 
@@ -12,8 +25,12 @@ This section should contain related state-of-the-art works and their relation to
 We usually cite the original works like this \cite{benallegue2008high}.
 You can also cite multiple papers at once like this \cite{baca2016embedded, baca2021mrs}.
 
-
-
+\subsection{Related work}
+The field of autonomous mapping of radioactive sources is relatively less explored compared to other fields of mobile robotics. 
+The need for such application emerged in 2011, when the biggest radioactive accident in past decades happened in Japan.
+The strong earthquake and following tsunami wave caused several leakage of radioactive substances from \ac{FDNPP}.
+  
+The area of the \ac{FDNPP} was explored using group of \ac{UGV}s. 
 
 \subsection{ MRS paper}
 This thesis builds on the work of the MRS group (Faculty of Electrical engineering, CTU in Prague) in the field of radiation mapping. 
@@ -32,7 +49,9 @@ The source can be static or dynamic.
 However, this iterative method cannot localise multiple sources of radiation.
 Once the drones detect one source of radioactive particles, they start encircling the current estimate and cannot find other sources in the area.
 
-The main purpose of this thesis is to improve the presented solution: introduce a new method that could localise multiple sources of ionising radiation and control group of \ac{UAV}s to explore the whole area and maximise information gain given the specific sensor.
+The main purpose of this thesis is to improve the solution presented in \cite{baca2021gamma} in the following ways: firstly, introduce a new method that could localise multiple sources of ionising radiation based on the measured Compton cones and, 
+secondly, 
+design high-level planning approach that would control group of \ac{UAV}s in order to explore the whole area and maximise information gain given the properties of the used sensor.
 
 
 
@@ -41,6 +60,7 @@ The main purpose of this thesis is to improve the presented solution: introduce 
 \item clanek MRS ze ktereho vychazim
 \item diplomka Petra Štibingera
 \item ostatni robotické články týkající se robotickeho pruzkumu, leteckeho nebo pozemniho
+\item recent paper \cite{Mascarich2022}
 \end{itemize}
 \section{Contributions}
 

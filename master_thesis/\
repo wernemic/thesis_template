@@ -34,19 +34,3 @@
 	pdf = "data/papers/ICUAS_2021_Baca.pdf",
 	url = "https://ieeexplore.ieee.org/abstract/document/9476766"
 }
-
-@article{Mascarich2022,
-author={Mascarich, Frank
-and Kulkarni, Mihir
-and De Petris, Paolo
-and Wilson, Taylor
-and Alexis, Kostas},
-title={Autonomous mapping and spectroscopic analysis of distributed radiation fields using aerial robots},
-journal={Autonomous Robots},
-year={2022},
-month={Nov},
-day={15},
-issn={1573-7527},
-doi={10.1007/s10514-022-10064-7},
-url={https://doi.org/10.1007/s10514-022-10064-7}
-}
