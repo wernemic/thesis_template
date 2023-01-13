@@ -12,6 +12,34 @@ This section should contain related state-of-the-art works and their relation to
 We usually cite the original works like this \cite{benallegue2008high}.
 You can also cite multiple papers at once like this \cite{baca2016embedded, baca2021mrs}.
 
+
+
+
+\subsection{ MRS paper}
+This thesis builds on the work of the MRS group (Faculty of Electrical engineering, CTU in Prague) in the field of radiation mapping. 
+This paper \cite{baca2021gamma} presents a multi-robotic approach to a autonomous localisation of a compact source of gamma radiation. 
+All unmanned aerial vehicles are equipped with compact MiniPIX TPX3 CdTe event camera, which is capable of measuring gamma particles and reconstructing Compton events. 
+Output of the sensor are Compton cones are used for localisation in the following way:
+in the first phase of autonomous exploration, the \ac{UAV}s are exploring the area in order to measure first compton cones. 
+After first 8 cones are reconstructed, their intersection is computed using optimization methods (quadratic programming). 
+This initial estimate is then incrementally updated using new measurements. 
+The current estimate is always orthogonally projected to the newly measured cone. 
+These measurements are fused using \ac{LKF}. 
+The \ac{UAV}s are controlled in a way that they encircle the current estimate in order to measure more cones and update the \ac{LKF} estimate.
+
+Using this approach, the group of drones is capable to localize single compact source of ionizing radiation. 
+The source can be static of dynamic. 
+However, this iterative method is not capable to localize multiple sources of radiation.
+Once the drones detect one source of radioactive particles, they start encircling the current estimate and cannot find other sources the area.
+
+The main purpose of this thesis is to improve the presented solution: introduce new method that would be capable to localize multiple sources of ionizing radiation and control group of \ac{UAV}s in order to  explore the whole area and maximize information gain given the specific sensor.
+
+\section{TODO}
+\begin{itemize}
+\item clanek MRS ze ktereho vychazim
+\item diplomka Petra Štibingera
+\item ostatni robotické články týkající se robotickeho pruzkumu, leteckeho nebo pozemniho
+\end{itemize}
 \section{Contributions}
 
 This section should describe the author's contributions to the field of research.
