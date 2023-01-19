@@ -1,29 +1,34 @@
 %!TEX root = ../main.tex
 
 \chapter{Introduction\label{chap:introduction}}
-The field of autonomous robotics 
+The field of mobile robotics undergone significant progress in the past decades.
+Robots are nowadays capable of performing wide variety of tasks. 
+Such  systems can be more efficient than human workers and can replace them in environments that are dangerous for human beings.
+One possible application for autonomous robots might be mapping and monitoring of ionising radiation. 
+Radioactive materials are part of our world and there are several situations when such need might occur, for example disaster in a nuclear powerplant or misuse of materials for radiotherapy in medicine. 
+To ensure public safety we need a method for fast and efficient localisation of radioactive sources without presence of human workers.
+Unmanned aerial vehicles (\ac{UAV}s - frequently reffered as drones) equipped with appropriate sensors might provide a solution for this problem.
+A group of highly mobile \ac{UAV}s can quickly explore large areas and perform measurements needed for a precise localisation of radiactive sources.
+
+There are multiple ways how to measure ionizing radiation.
+Widely known dosimeters can measure the intensity of radioactivity by counting number detected of particles.
+Another type of sensor (reffered as Compton camera) is based on Compton effect, discovered in 1923 by \cite{compton}.
+This sensor can not only detect the particle, but also reconstruct a set of possible directions from where it came from.
+Thanks to cutting-edge innovations in this field, Compton camera Minipix3 became small and lightweight enough to be carried by a small \ac{UAV} onboard.
+
+The aim of this work is to present a method that performs the fusion of sensory data from multiple \ac{UAV}s (equipped with Compton camera sensor) in order to localise multiple sources of ionizing radiation.
+
+Related work is reffered in this section.
+More detailed overview of Compton effect, Compton camera and other related physical principles is given in \ref{}.
+
+%First, introduce the reader to the research topic.
+%Start with the most general view and slowly converge to the particular field, sub-field, and the challenges you face.
+%You can cite others' work here \cite{baca2021mrs}.
 
 
-First, introduce the reader to the research topic.
-Start with the most general view and slowly converge to the particular field, sub-field, and the challenges you face.
-You can cite others' work here \cite{baca2021mrs}.
-
-\begin{itemize}
-\item multirobotics exploration
-\item radiation mapping
-\item compton camera
-\item problem definition
-\end{itemize}
-
-\subsection{Problem definition}
-
-
-
-\section{Related works}
-
-This section should contain related state-of-the-art works and their relation to the author's work.
-We usually cite the original works like this \cite{benallegue2008high}.
-You can also cite multiple papers at once like this \cite{baca2016embedded, baca2021mrs}.
+%This section should contain related state-of-the-art works and their relation to the author's work.
+%We usually cite the original works like this \cite{benallegue2008high}.
+%You can also cite multiple papers at once like this \cite{baca2016embedded, baca2021mrs}.
 
 \subsection{Related work}
 The field of autonomous mapping of radioactive sources is relatively less explored compared to other fields of mobile robotics. 
@@ -55,16 +60,28 @@ design high-level planning approach that would control group of \ac{UAV}s in ord
 
 
 
+
 \section{TODO}
 \begin{itemize}
-\item clanek MRS ze ktereho vychazim
-\item diplomka Petra Štibingera
-\item ostatni robotické články týkající se robotickeho pruzkumu, leteckeho nebo pozemniho
+  \item clanek MRS ze ktereho vychazim (metoda mereni kuzelu, sensor)
+  \item diplomka Petra Štibingera (metoda zalozena na Kalman filteru, intenzita)
+  \item ostatni robotické články týkající se robotickeho pruzkumu, leteckeho nebo pozemniho
+  \item nedavny paper - spectrum estimation, active search
 \item recent paper \cite{Mascarich2022}
 \end{itemize}
 \section{Contributions}
 
 This section should describe the author's contributions to the field of research.
+
+
+
+
+\section{Background}
+
+
+
+
+
 
 \section{Mathematical notation}
 
