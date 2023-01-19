@@ -114,15 +114,15 @@ Likelihood can be defined as
 \end{equation}
 We want to maximise this expression with respect to the hidden parameters.
 In other words, we want to find such parameters so that they fit our observations in the best possible way.
-Maximum likelihood is often written with arguments in reversed order as $L(\Phi | \boldsymbol{O} )$, since we want to estimate hidden parameters $\Phi$ using known observations $\boldsymbol{O}$.
+%Maximum likelihood is often written with arguments in reversed order as $L(\Phi | \boldsymbol{O} )$, since we want to estimate hidden parameters $\Phi$ using known observations $\boldsymbol{O}$.
 
 
 
 \subsubsection{Maximum likelihood Expectation Maximization}
 
-Now lets define the task more formally.
+Now lets define the task more formally and derive the algorithm in the general form as presented here \cite{}.
 Lets divide the area of possible sources of radiation into $J$ discrete bins (indexed with $j$, where $j = 1 \dotsc J$).
-Our observations (detected radioactive particles) are divided into $I$ discrete bins (indexed with $i$, where $i = 1 \dotsc I$).
+Our observations are divided into $I$ discrete bins and stored in vector $\mathbf{Y}$ (where $y_{i}$ is the number of photons detected in the bin $i$, $i = 1 \dotsc I$).
 Then we define a matrix $\mathbf{T}$ ($\mathbf{T} \in \mathbb{R}^{I \times J}$), where each position in the matrix is defined as
 
 \begin{equation}
@@ -131,15 +131,54 @@ Then we define a matrix $\mathbf{T}$ ($\mathbf{T} \in \mathbb{R}^{I \times J}$),
 
 In other words, $t_{ij}$ represents a probability that we observe observation $i$ given the fact that the radioactive particle was emitted from position $j$.
 
-Lets assume that we know unobservable complete data $\mathbf{X}$, where $x_{ij}$ represents the fact that the photon emitted from $j$ is detected in $i$.
 Lets assume that number of photons emitted from one position $j$ in some time interval is a discrete random variable that follows Poisson distribution with expected value $\lambda_{j}$.
+We can fix the time interval to some unit value or to the time duration of the experiment.
+Our goal is to estimate $\mathbf{\Lambda}$, which has elements $\lambda_{j}$, each corresponding with expected number of photons emitted from the position $j$.
+
+The likelihood of measuring $y_{i}$ particles in the measurement bin $i$ w.r.t. $\mathbf{\Lambda}$ can be expressed as (Poisson distribution):
+\begin{equation}
+  p(y_{i} |\mu_{i} ) = e^{-\mu_{i}} \frac{\mu_{i}^{y_i}}{y_{i}!},
+\end{equation}
+where $\mu_{i} = \sum_{j} t_{ij}\lambda_{j}$ for simplicity denotes the average number of events measured in bin $i$.
+
+The likelihood of all the measurements is
+\begin{equation}  
+  p(\mathbf{Y} | \mathbf{T\Lambda} ) = \prod_{i} e^{-\mu_{i}} \frac{\mu_{i}^{y_i}}{y_{i}!}.
+\end{equation}
+
+After taking its logarithm we have:
+
+\begin{equation}  
+  \mathrm{log}\ p(\mathbf{Y} | \mathbf{T\Lambda} ) = \sum_{i}\left ( -\sum_{j} t_{ij}\lambda_{j} + y_{i} \mathrm{log}(\sum_{j} t_{ij}\lambda_{j})  - \mathrm{log}(y_{i}!) \right ).
+  \label{eq:likelihood1}
+\end{equation}
+However, equation \ref{eq:likelihood1} doesn't give an answer to our question - how to determine $\mathbf{\Lambda}$. The solution is to use iterative EM algorithm.
+
+\subsection{Expectation maximization}
+The EM algorithm for estimation of log likelihood from incomplete data was proposed in 1977 by \cite{EM}.
+It iteratively improves the estimate of parameter we want to optimise ($\Lambda$ in our case).
+The values of $\Lambda$ are initialised with some nonzero value.
+The EM algorithm typically consists of two stages - \textbf{E step} and \textbf{M step}.
+
+To use the EM algorithm, we need to define the likelihood in a slightly different way.
+For that purpose, lets assume that we have (in practice unobservable) complete data $\mathbf{X}$, where $x_{ij}$ represents the fact that the photon emitted from $j$ is detected in $i$ (and all the photons can be detected).
+Than we have $E(x_{if}) = t_{ij}\lambda_{j}$ and $y_{i} = \sum_{j}x_{ij}$. 
+We can rewrite the log likelihood for complete data as:
+\begin{equation}  
+  \mathrm{log}\ p(\mathbf{X} | \mathbf{T\Lambda} ) = \sum_{i}\left ( -\sum_{j} t_{ij}\lambda_{j} + x_{i} \mathrm{log}(\sum_{j} t_{ij}\lambda_{j})  - \mathrm{log}(x_{i}!) \right ).
+  \label{eq:likelihood2}
+\end{equation}
+
+In the \textbf{E step}, we fix the current estimate of $\Lambda$. 
+We want to compute the conditional expectation of the log-likelihood with respect to the measured data (with fixed $\Lambda$).
 
 
 
-
-
-
-
+First, we perform the \textbf{E step}.
+We fix the current values 
+In the \textbf{E step}, we fix the current values of parameters we are trying to estimate.
+Than we compute the conditional expectation of the log-likelihood with respect to the measured data.
+Then in the \textbf{M step}, we want to find maximum of 
 
 
 \subsubsection{Poisson distribution}
