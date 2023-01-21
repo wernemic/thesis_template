@@ -1,6 +1,16 @@
 %!TEX root = ../main.tex
 
 \chapter{Conclusion\label{chap:conclusion}}
+The solution for the localization of multiple sources of ionizing radiation was presented.
+The sensory fusion algorithm is based on the maximum likelihood expectation maximization approach.
+To summarize, a small group of \ac{UAV}s equipped with Compton camera sensors are capable of detecting strong sources of ionizing radiation.
 
-Summarize the achieved results.
-Can be similar as an abstract or an introduction, however, it should be written in past tense.
+\section{Future work}
+There are multiple possible improvements.
+First of all, a more accurate model for the sensitivity of the Minipix3 sensor (with respect to the direction of incoming gamma particles) should be introduced.
+One possible way might be a Monte Carlo simulation.
+It should improve the precision of localization.
+Secondly, the localization method might be extended into 3D.
+An octomap obtained by an onboard lidar sensor might serve as a model of the terrain surface and possible source locations.
+Thirdly, some kind of dosimetric data from the sensor might be used to estimate the "strength" of the source and shorten the time needed for localization since the number of particles causing the Compton effect in the Compton camera is relatively small.
+Lastly, an active search method should be introduced to shorten the time of localization and control the group of \ac{UAV}s in an optimal way.

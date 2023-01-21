@@ -1,88 +1,107 @@
 %!TEX root = ../main.tex
-
 \chapter{Introduction\label{chap:introduction}}
-The field of mobile robotics undergone significant progress in the past decades.
-Robots are nowadays capable of performing wide variety of tasks. 
-Such  systems can be more efficient than human workers and can replace them in environments that are dangerous for human beings.
-One possible application for autonomous robots might be mapping and monitoring of ionising radiation. 
-Radioactive materials are part of our world and there are several situations when such need might occur, for example disaster in a nuclear powerplant or misuse of materials for radiotherapy in medicine. 
-To ensure public safety we need a method for fast and efficient localisation of radioactive sources without presence of human workers.
-Unmanned aerial vehicles (\ac{UAV}s - frequently reffered as drones) equipped with appropriate sensors might provide a solution for this problem.
-A group of highly mobile \ac{UAV}s can quickly explore large areas and perform measurements needed for a precise localisation of radiactive sources.
+The field of mobile robotics has undergone significant progress in the past decades.
+Robots are nowadays capable of performing a wide variety of tasks. 
+Such systems can be more efficient than human workers and can replace them in environments that are dangerous for human beings.
+One possible application for autonomous robots might be mapping and monitoring of ionizing radiation. 
+Radioactive materials are part of our world, and there are several situations when such need might occur, for example, a disaster in a nuclear power plant or misuse of materials for radiotherapy in medicine. 
+To ensure public safety, we need a method for fast and efficient localization of radioactive sources without the presence of human workers.
+An \ac{UAV} (frequently referred as drone) equipped with appropriate sensors might provide a solution to this problem.
+A group of highly mobile \ac{UAV}s can quickly explore large areas and perform measurements needed for precise localization of radioactive sources.
+
 
 There are multiple ways how to measure ionizing radiation.
-Widely known dosimeters can measure the intensity of radioactivity by counting number detected of particles.
-Another type of sensor (reffered as Compton camera) is based on Compton effect, discovered in 1923 by \cite{compton}.
-This sensor can not only detect the particle, but also reconstruct a set of possible directions from where it came from.
-Thanks to cutting-edge innovations in this field, Compton camera Minipix3 became small and lightweight enough to be carried by a small \ac{UAV} onboard.
-
-The aim of this work is to present a method that performs the fusion of sensory data from multiple \ac{UAV}s (equipped with Compton camera sensor) in order to localise multiple sources of ionizing radiation.
-
-Related work is reffered in this section.
-More detailed overview of Compton effect, Compton camera and other related physical principles is given in \ref{}.
+Widely known dosimeters can measure the intensity of radioactivity by counting the number of detected particles.
+Another type of sensor (referred as the Compton camera) is based on the Compton effect, discovered in 1923 by \cite{compton}.
+This sensor can not only detect the particle, but also reconstruct a set of possible directions from where it came.
+Thanks to innovations in the field of sensory equipment, Compton camera Minipix3 became small and lightweight enough to be carried by a small \ac{UAV} onboard.
+The aim of this work is to present a method that performs the fusion of sensory data from multiple \ac{UAV}s (equipped with Compton camera sensor) in order to localize multiple sources of ionizing radiation.
 
 %First, introduce the reader to the research topic.
 %Start with the most general view and slowly converge to the particular field, sub-field, and the challenges you face.
 %You can cite others' work here \cite{baca2021mrs}.
-
 
 %This section should contain related state-of-the-art works and their relation to the author's work.
 %We usually cite the original works like this \cite{benallegue2008high}.
 %You can also cite multiple papers at once like this \cite{baca2016embedded, baca2021mrs}.
 
 \subsection{Related work}
-The field of autonomous mapping of radioactive sources is relatively less explored compared to other fields of mobile robotics. 
-The need for such application emerged in 2011, when the biggest radioactive accident in past decades happened in Japan.
-The strong earthquake and following tsunami wave caused several leakage of radioactive substances from \ac{FDNPP}.
-  
-The area of the \ac{FDNPP} was explored using group of \ac{UGV}s. 
 
-\subsection{ MRS paper}
+Several works related to radiation mapping appeared in 2011 when the biggest radioactive accident in past decades happened in Japan.
+The strong earthquake and following tsunami wave caused several leakages of radioactive substances from \ac{FDNPP}.
+The contaminated area of the powerplant was explored by the group o f\ac{UGV}, as presented in \cite{fuku2012}.
+Work presented in \cite{fuku_compton} showed a radioactive hotspot localization by one \ac{UGV} equipped with Compton camera.
+However, the work focused only on 2D image reconstruction, and the robot was moving only in one direction during the experiment.
+
+TODO
+
+The advantage of \ac{UGV} is that they can carry heavy sensory equipment (compared to \ac{UAV}s).
+On the other hand, the operability of ground robots is limited compared to aerial robots.
+Multiple experiments with aerial platforms were conducted in the neighbourhood of the \ac{FDNPP}.
+Radiation mapping of a large-scale area around the powerplant using an unmanned helicopter was presented in \cite{sanada2015} and \cite{towler2012}.
+\cite{Jiang2015} presented an unmanned aerial platform equipped with a Compton camera. 
+In all these works, relatively large \ac{UAV} was following a predefined trajectory, and the computations were conducted offline.
+
+More recent works, such as TODO...
+
+
+A recent paper \cite{mascarich2022} presented a method for radiation mapping in the indoor environment.
+The method is based on estimating the gradient of radiation from multiple dosimetric data.
+The onboard sensors can not only localize the sources of radioactivity but also estimate the energetic spectrum of measured particles and decide which radioactive material is detected.
+Moreover, they present an active search path planning method that plans the movement of the drone in order to improve the quality of measurements.
+
+
 This thesis builds on the work of the MRS group (Faculty of Electrical engineering, CTU in Prague) in the field of radiation mapping. 
-This paper \cite{baca2021gamma} presents a multi-robotic approach to an autonomous localisation of a compact gamma radiation source. 
-All unmanned aerial vehicles are equipped with compact MiniPIX TPX3 CdTe event camera, which is capable of measuring gamma particles and reconstructing Compton events. 
-The output of the sensor are Compton cones are used for localisation in the following way:
-in the first phase of autonomous exploration, the \ac{UAV}s are exploring the area to measure the first Compton cones. 
-After the first eight cones are reconstructed, their intersection is computed using optimisation methods (quadratic programming). 
+Paper \cite{stibinger2020} proposed a method for radioactivity mapping using dosimetric measurements.
+Each drone measured intensities in multiple directions and estimated a vector towards the source. 
+These measurements were fused using \ac{LKF}.
+
+Paper \cite{baca2021gamma} presents a multi-robotic approach to an autonomous localization of a compact gamma radiation source. 
+All unmanned aerial vehicles are equipped with a compact MiniPIX CdTe event camera (same as in our work), which is capable of measuring gamma particles and reconstructing Compton events. 
+The reconstructed compton cones are used for localization in the following way.
+In the first phase of autonomous exploration, the \ac{UAV}s are exploring the area to measure the first Compton cones. 
+After the first eight cones are reconstructed, their intersection is computed using optimization methods (quadratic programming). 
 This initial estimate is then incrementally updated using new measurements. 
 The current estimate is always orthogonally projected to the newly measured cone. 
 These measurements are fused using \ac{LKF}. 
 The \ac{UAV}s are controlled in a way that they encircle the current estimate in order to measure more cones and update the \ac{LKF} estimate.
 
-Using this approach, the group of drones is capable to localise a single compact source of ionising radiation. 
+Using this approach, the group of drones is capable of localizing a single compact source of ionizing radiation. 
 The source can be static or dynamic. 
-However, this iterative method cannot localise multiple sources of radiation.
+However, this iterative method cannot localize multiple sources of radiation.
 Once the drones detect one source of radioactive particles, they start encircling the current estimate and cannot find other sources in the area.
 
-The main purpose of this thesis is to improve the solution presented in \cite{baca2021gamma} in the following ways: firstly, introduce a new method that could localise multiple sources of ionising radiation based on the measured Compton cones and, 
-secondly, 
-design high-level planning approach that would control group of \ac{UAV}s in order to explore the whole area and maximise information gain given the properties of the used sensor.
 
-
-
-
-\section{TODO}
-\begin{itemize}
-  \item clanek MRS ze ktereho vychazim (metoda mereni kuzelu, sensor)
-  \item diplomka Petra Štibingera (metoda zalozena na Kalman filteru, intenzita)
-  \item ostatni robotické články týkající se robotickeho pruzkumu, leteckeho nebo pozemniho
-  \item nedavny paper - spectrum estimation, active search
-\item recent paper \cite{Mascarich2022}
-\end{itemize}
 \section{Contributions}
-
-This section should describe the author's contributions to the field of research.
-
-
-
-
-\section{Background}
+The main contribution of this thesis is a novel approach to the localization of multiple compact radioactive sources based on Compton imagining.
+The main purpose of this thesis is to improve the solution presented in \cite{baca2021gamma} in the following ways: firstly, introduce a new method that could localize multiple sources of ionizing radiation based on the measured Compton cones and, 
+secondly, 
+design high-level planning approach that would control a group of \ac{UAV}s in order to explore the whole area and maximize information gain given the properties of the used sensor.
 
 
 
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\mycomment{
 \section{Mathematical notation}
 
 It is a good practice to define basic mathematical notation in the introduction.
@@ -114,3 +133,4 @@ See \reftab{tab:mathematical_notation} for an example.
   \caption{Mathematical notation, nomenclature and notable symbols.}
   \label{tab:mathematical_notation}
 \end{table*}
+}
