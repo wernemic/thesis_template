@@ -1,9 +1,77 @@
 %!TEX root = ../main.tex
 
 \chapter{Methods}
-\section{Localisation of sources of ionizing radiation}
 
-Localization of sources of ionizing radiation is a well-explored and described task in the field of radiotherapy.
+
+\section{Preliminaries}
+The analysis of pre-recorded data from real experiments (with multiple sources of ionizing radiation and a small group of drones using Kalman-filter estimation method described in \cite{Baca}) led to these conclusions:
+
+\section{Theory}
+Following , the probability that a particle emmited from position $m_{j}$ is measured by the compton camera at position $c_{j}$ can be described as a product of probabilities:
+\begin{itemize}
+  \item $\mathbf{P_{1}}$ - probability that the particle is emmited from position $m_{j}$
+  \item $\mathbf{P_{2}}$ - probability that the particle is not absorbed by the air
+  \item $\mathbf{P_{3}}$ - probability that the particle reaches the detector located at position $c_{v}$
+	\item $\mathbf{P_{4}}$ - probability that the first interaction occurs inside the detector at position $V_{1}$ and is a Compton scattering
+  \item $\mathbf{P_{5}}$ - probability that the second interaction occurs inside the detector at position $V_{2}$ and is a photoelectric effect
+\end{itemize}.
+This description is based on multiple assumptions.
+First of all, we assume that the detected particle interacts first as the Compton scattering and then as Photoelectric effect. 
+(in another words: it holds $E_{0} = E_{1} + E_{2}$ for the energies).
+However, the probability of Compton scattering, photoelectric effect or pair production depends on the energy of the particle and it is not guaranteed that, for instance, the Copto scattering wont happen twice in a row, which would cause outlier in the measurements.
+
+The probability of measuring the particle using a compton camera can be summarized as:
+
+\begin{equation}
+P(V_{1}, V_{2}, E_{1}, E_{2}|M) = P_{1}P_{2}P_{3}P_{4}P_{5} 
+\end{equation}
+
+
+\section{MLEM}
+
+\section{System matrix}
+
+
+\section{Localisation of sources of ionizing radiation}
+\section{Inspiration}
+Localization of sources of ionizing radiation is a well-explored and described task in the field of nuclear medicine.
+One possible application of such methods is a cancer diagnostics.
+A small amount of radioactive substance (called tracer) is injected into the patient's vein.
+The tracer is absorbed by different parts of the body in varying amounts, which can show areas with abnormal metabolic activity, which is usually the case for cancer cells.
+The detection of emitted particles and 3D reconstruction of their sources will allow the doctors to find the location of the tumor in the patient's body.
+
+Such medical application typically requires high resolution of the reconstructed image.
+The distances between the source and detector are small (tens of centimeters), number of measured events is high (tens of thousands and more).
+The reconstruction process is typically performed offline (all measurements are collected first and then the algorithms process the data), since there is no need for online estimation and the processing of measured data might take non-negligible time.
+
+The domain of multirobotic detection has multiple differences compared to the medical field.
+The distance between source and detector is much higher (tens of meters).
+The \ac{UAV}s have limited payload (hence the detector carried on board must be light and compact).
+It results in the fact that the number of measurements is much lower.
+Moreover, we would like to reconstruct the sources of ionizing radiation in real time.
+
+\section{Problem formulation}
+The task can be formulated as follows:
+We have a small group of \ac{UAV}s.
+
+Each of the drones is equipped with an onboard MiniPix3 sensor, capable of detecting ioniying radiation.
+The measurements are in the form of compton cones
+
+The drones can communicate within each oher. 
+
+We have no prior knowledge about 
+
+
+
+
+
+
+
+
+
+
+\section{Required features}
+
 One of the frequently used methods is called \ac{MLEM}.
 This method is based on a widely known EM algorithm for incomplete data \cite{EM}, which was adapted for Compton imagining in \cite{wilderman}.
 It is an iterative algorithm that tries to estimate the expected value of emitted photons from each cell in the discretized space of all possible source positions.
@@ -164,6 +232,8 @@ where $k$ is the number of events in some time interval, and $\lambda$ is an exp
 
 
 \section{Monte Carlo simulation}
+
+
 ideas:
 \begin{itemize}
   \item the simplified model by maxim does not work for single scatterer camera
@@ -173,11 +243,71 @@ ideas:
 \end{itemize}
 
 \subsection{Simulation process}
+
 simulator adopted from Baca et all.
 probabilities that comes into play
 prob of hitting the sensor
 prob of compton effect
 prob of photo electric effect
+
+\section{Source localisation}
+
+\section{MLEM}
+
+\section{Search strategy}
+The maximum likelihood approach requires collecting as many measurements as possible to make the estimate more accurate.
+At the same time, the drones should explore the unexplored area to increase chance that the estimation method won't miss any source of ionizing radiation.
+The task for the mutirobotic system can be summarized as follows:
+\begin{itemize}
+  \item \textbf{exploration} - explore the least explored maps in the area of interest
+  \item \textbf{exploitation} - acquire more measurements from areas, where the source of ionizing radiation is likely present
+\end{itemize}
+ 
+This general strategy is divided into subtasks: waypoint generation, task assignment and path planning.
+\subsection{Waypoint generation}
+s a first step, the $\lambda$ matrix (containing the current estimate of sources position) is processed by a local maximum filter. 
+The maximum filter works by sliding a window of a specified size over the $\lambda$.
+The central position of the sliding window is highlighted as local maxima if it is greater than all other values in the sliding window.
+
+Each waypoint (local maxima) is assigned with a weight $w$.
+The weight is defined as follows:
+\begin{equation}
+  w_{j} = \frac{\lambda_{j}}{s_{j_{normalised}}}
+\end{equation},
+where $s_{j_{normalised}} = \frac{s_{j}}{\max_{J}( s_{j})}$ is a sensitivity value for given position $s_{j}$ divided by.
+Such formulation of $w_{j}$ prioritise the points with the highest current estimate of ionizing radiation, that are less explored (have lower sensitivity).
+
+\subsection{Task assignment}
+
+To fasten the search time, the waypoints are divided among all the \ac{UAV}s involved in the experiment.
+This is done by KMeans clustering method with minimum number of samples within each cluster.
+
+The KMeans algorithm is an iterative clustering algorithm, that can divide data points into $k$ clusters.
+Each cluster is represented with a virtual point called centroid, $c_{k}, k = 1, ... , K$, where $K$ is the number of clusters.
+The algorithm proceeds as follows:
+/begin{itemize}
+/end{itemize}
+
+
+
+
+\subsection{Path planning}
+
+
+
+
+
+collect more measurements
+explore the least explored area
+
+\subsection{Multirobotic approach}
+there are two approaches - centralised and decentralised.
+I use centralised.
+
+\subsection{Task assignment}
+
+\subsection{Clustering}
+\subsection{Path planning}
 
 
 

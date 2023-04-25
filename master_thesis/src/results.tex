@@ -2,6 +2,42 @@
 
 \chapter{Results\label{chap:results}}
 
+This section describes experiments and evaluation of performance of the proposed method for mapping of ionizing radiation.
+An experiment with real sources of ionizing radiation requires (due to specific safety measures, permission from the state authorities...) coordination with other institutions, such as Czech metrology institute.
+Unfortunately, it was not possible to perform experiment with real sources before the deadline of the thesis due to these organizational reasons.
+However, the method was evaluated on pre-recorded data from real-world experiments as well as using the realistic simulator for compton camera \cite{TODO}.
+
+\section{Pre-recorded data with real radioactive sources}
+
+
+\section{Gazebo simulations with the simulated Compton camera}
+
+\section{Real-world experiment with the simulated Compton camera}
+\subsection{Experimental setup}
+The radiation mapping pipeline was tested on a real hardware during the field experiments.
+Three \ac{UAV} were used during this experiment.
+The real radioactive sources were replaced with simulated ones, the Compton camera simulator \cite{TODO} was running onboard each \ac{UAV}.
+All the drones were localized using \ac{gps} in the same coordinate frame and the positions of simulated sources were shared among them.
+The size of mapped area was set to $100 \times 100$ m, four simulated sources with activities 500 MBq, 1 GBq, 2 GBq and 2 GBq were placed in the area.
+Resolution of the map was $0.5$ m.
+
+\subsection{Results}
+
+to say:
+2 drones were exploring the hospostsss
+1 drone was exploring the unexplored are
+
+
+
+
+
+
+
+
+
+
+
+
 The approach presented in the previous section was applied on a prerecorded rosbag from a real-world experiment.
 Four \ac{UAV}s were used in this experiment.
 The mapped area was $50 \times 35$ meters with $0.4$ m resolution.
@@ -13,11 +49,11 @@ The sensitivity vector $\mathbf{s}$ and the matrix $\mathbf{T}$ summed over all 
 \begin{figure}[!h]
   \centering
   \subfloat[True positions of sources (MBq)] {
-    \includegraphics[width=0.5\textwidth]{./fig/photos/sources.eps}
+    \includegraphics[width=0.5\textwidth]{./fig/photos/temenight_ground_truth.eps}
     \label{fig:C}
   }
   \subfloat[MLEM estimate after 10 iterations] {
-    \includegraphics[width=0.5\textwidth]{./fig/photos/lambdas.eps}
+    \includegraphics[width=0.5\textwidth]{./fig/photos/temenight_lambdas.eps}
     \label{fig:D}
   }
   \label{fig:A}
@@ -27,11 +63,11 @@ The sensitivity vector $\mathbf{s}$ and the matrix $\mathbf{T}$ summed over all 
 \begin{figure}[!htb]
   \centering
   \subfloat[System matrix $\mathbf{T}$ summed over $\forall i$] {
-    \includegraphics[width=0.5\textwidth]{./fig/photos/t.eps}
+    \includegraphics[width=0.5\textwidth]{./fig/photos/temenight_back_projection.eps}
     \label{fig:E}
   }
   \subfloat[Sensitivity vector $\mathbf{s}$] {
-    \includegraphics[width=0.5\textwidth]{./fig/photos/sensitivity.eps}
+    \includegraphics[width=0.5\textwidth]{./fig/photos/temenight_sensitivity.eps}
     \label{fig:F}
   }
   \label{fig:B}
