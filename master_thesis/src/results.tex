@@ -22,16 +22,29 @@ The size of mapped area was set to $100 \times 100$ m, four simulated sources wi
 Resolution of the map was $0.5$ m.
 
 \subsection{Results}
+\begin{table}[htb]
+\begin{center}
+  \begin{tabular}{ |c|c|c|c| } 
+ \hline
+    \multicolumn{2}{|c}{Sources} &  \multicolumn{2}{|c|}{ relative activity } \\
+ \hline
+    position & activity & ground truth & MLEM estimate\\ 
+ \hline
+    (10, 20) & 2000 MBq & 1.0  & \textbf{1.0} \\ 
+    (20, 20) & 1000 MBq &  0.5 & \textbf{0.49} \\ 
+    (80, 80) & 1000 MBq &  0.5 & \textbf{0.52} \\ 
+    (75, 75) & 500 MBq &  0.25 & \textbf{0.0} \\ 
+ \hline
+\end{tabular}
+  \caption{Results of the real world experiment with simulated data. Last column presents estimated relative activity at the map positions that correspond to the ground truth position of the given source.}
+  \label{tab:temenight_results}
+\end{center}
+\end{table}
+
 
 to say:
 2 drones were exploring the hospostsss
 1 drone was exploring the unexplored are
-
-
-
-
-
-
 
 
 
