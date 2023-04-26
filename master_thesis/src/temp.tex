@@ -1,0 +1,268 @@
+%!TEX root = ../main.tex
+
+\subsection{Maximum likelihood}
+Now let's define the task more formally and derive the algorithm in the general form as presented here \cite{}.
+Let's divide the area of possible sources of radiation into $J$ discrete bins (indexed with $j$, where $j = 1 \dotsc J$).
+Our observations are divided into $I$ discrete bins and stored in vector $\mathbf{Y}$ (where $y_{i}$ is the number of photons detected in the bin $i$, $i = 1 \dotsc I$).
+Then we define a matrix $\mathbf{T}$ ($\mathbf{T} \in \mathbb{R}^{I \times J}$), where each position in the matrix is defined as
+
+\begin{equation}
+  t_{ij} =  P(\textrm{detected in } i | \textrm{emitted from } j).
+\end{equation}
+
+In other words, $t_{ij}$ represents a probability that we observe observation $i$ given the fact that the radioactive particle was emitted from position $j$.
+
+Let's assume that the number of photons emitted from one position $j$ in some time interval is a discrete random variable that follows a Poisson distribution with expected value $\lambda_{j}$.
+We can fix the time interval to some unit value or to the time duration of the experiment.
+Our goal is to estimate $\mathbf{\Lambda}$, which has elements $\lambda_{j}$, each corresponding with the expected number of photons emitted from the position $j$.
+
+The likelihood of measuring $y_{i}$ particles in the measurement bin $i$ w.r.t. $\mathbf{\Lambda}$ can be expressed as (Poisson distribution):
+\begin{equation}
+  p(y_{i} |\mu_{i} ) = e^{-\mu_{i}} \frac{\mu_{i}^{y_i}}{y_{i}!},
+\end{equation}
+where $\mu_{i} = \sum_{j} t_{ij}\lambda_{j}$ for simplicity denotes the average number of events measured in bin $i$.
+
+The likelihood of all the measurements is
+\begin{equation}  
+  p(\mathbf{Y} | \mathbf{T\Lambda} ) = \prod_{i} e^{-\mu_{i}} \frac{\mu_{i}^{y_i}}{y_{i}!}.
+\end{equation}
+
+After taking its logarithm, we have the following:
+
+\begin{equation}  
+  \mathrm{log}\ p(\mathbf{Y} | \mathbf{T\Lambda} ) = \sum_{i}\left ( -\sum_{j} t_{ij}\lambda_{j} + y_{i} \mathrm{log}(\sum_{j} t_{ij}\lambda_{j})  - \mathrm{log}(y_{i}!) \right ).
+  \label{eq:likelihood1}
+\end{equation}
+However, equation \ref{eq:likelihood1} doesn't give an answer to our question - how to determine $\mathbf{\Lambda}$. The solution is to use an iterative EM algorithm.
+
+\subsection{Expectation maximization}
+The EM algorithm for estimation of log-likelihood from incomplete data was proposed in 1977 by \cite{EM}.
+It iteratively improves the estimate of the parameter we want to optimize ($\Lambda$ in our case).
+The values of $\Lambda$ are initialized with some nonzero value.
+The EM algorithm typically consists of two stages - \textbf{E step} and \textbf{M step}.
+
+To use the EM algorithm, we need to define the likelihood in a slightly different way.
+For that purpose, let's assume that we have (in practice unobservable) complete data $\mathbf{X}$, where $x_{ij}$ represents the fact that the photon emitted from $j$ is detected in $i$ (and all the photons can be detected).
+Than we have $E(x_{if}) = t_{ij}\lambda_{j}$ and $y_{i} = \sum_{j}x_{ij}$. 
+We can rewrite the log-likelihood for complete data as follows:
+\begin{equation}  
+  \mathrm{log}\ p(\mathbf{X} | \mathbf{T\Lambda} ) = \sum_{i}\left ( -\sum_{j} t_{ij}\lambda_{j} + x_{i} \mathrm{log}(\sum_{j} t_{ij}\lambda_{j})  - \mathrm{log}(x_{i}!) \right ).
+  \label{eq:likelihood2}
+\end{equation}
+
+In the \textbf{E step}, we fix the current estimate of $\Lambda$. 
+We want to compute the conditional expectation of the log-likelihood with respect to the measured data (with fixed $\Lambda$).
+
+TODO
+
+\mycomment{
+\subsubsection{Poisson distribution}
+Poisson distribution is a discrete probability distribution expressing the probability of a given number of events occurring in a fixed interval of time.
+We assume that all events are independent of the time since the last event occurred.
+It can be expressed as:
+\begin{equation}
+  f(k;\lambda )={\frac {\lambda ^{k}e^{-\lambda }}{k!}},
+\end{equation}
+where $k$ is the number of events in some time interval, and $\lambda$ is an expected value of the distribution.
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\section{Preliminaries}
+The analysis of pre-recorded data from real experiments (with multiple sources of ionizing radiation and a small group of drones using Kalman-filter estimation method described in \cite{Baca}) led to these conclusions:
+
+\section{Theory}
+The probability that a particle emmited from position $m_{j}$ is measured by the compton camera at position $c_{j}$ can be decomposed into multiple probabilities:
+\begin{itemize}
+  \item $P_{1}$ - probability that the particle is emmited from position $m_{j}$
+  \item $\mathbf{P_{2}}$ - probability that the particle is not absorbed by the air
+  \item $\mathbf{P_{3}}$ - probability that the particle reaches the detector located at position $c_{v}$
+	\item $\mathbf{P_{4}}$ - probability that the first interaction occurs inside the detector at position $V_{1}$ and is a Compton scattering
+  \item $\mathbf{P_{5}}$ - probability that the second interaction occurs inside the detector at position $V_{2}$ and is a photoelectric effect
+\end{itemize}.
+
+This description is based on multiple assumptions.
+First of all, we assume that the detected particle interacts first as the Compton scattering and then as Photoelectric effect. 
+(in another words: it holds $E_{0} = E_{1} + E_{2}$ for the energies).
+However, the probability of Compton scattering, photoelectric effect or pair production depends on the energy of the particle and it is not guaranteed that, for instance, the Copto scattering wont happen twice in a row, which would cause outlier in the measurements.
+
+The probability of measuring the particle using a compton camera can be summarized as:
+
+\begin{equation}
+P(V_{1}, V_{2}, E_{1}, E_{2}|M) = P_{1}P_{2}P_{3}P_{4}P_{5} 
+\end{equation}
+
+
+\section{MLEM}
+
+
+
+\section{Localisation of sources of ionizing radiation}
+\section{Inspiration}
+Localization of sources of ionizing radiation is a well-explored and described task in the field of nuclear medicine.
+One possible application of such methods is a cancer diagnostics.
+A small amount of radioactive substance (called tracer) is injected into the patient's vein.
+The tracer is absorbed by different parts of the body in varying amounts, which can show areas with abnormal metabolic activity, which is usually the case for cancer cells.
+The detection of emitted particles and 3D reconstruction of their sources will allow the doctors to find the location of the tumor in the patient's body.
+
+Such medical application typically requires high resolution of the reconstructed image.
+The distances between the source and detector are small (tens of centimeters), number of measured events is high (tens of thousands and more).
+The reconstruction process is typically performed offline (all measurements are collected first and then the algorithms process the data), since there is no need for online estimation and the processing of measured data might take non-negligible time.
+
+The domain of multirobotic detection has multiple differences compared to the medical field.
+The distance between source and detector is much higher (tens of meters).
+The \ac{UAV}s have limited payload (hence the detector carried on board must be light and compact).
+It results in the fact that the number of measurements is much lower.
+Moreover, we would like to reconstruct the sources of ionizing radiation in real time.
+
+\section{Problem formulation}
+The task can be formulated as follows:
+We have a small group of \ac{UAV}s.
+
+Each of the drones is equipped with an onboard MiniPix3 sensor, capable of detecting ioniying radiation.
+The measurements are in the form of compton cones
+
+The drones can communicate within each oher. 
+
+We have no prior knowledge about 
+
+
+
+
+
+
+
+
+
+
+\section{Required features}
+
+One of the frequently used methods is called \ac{MLEM}.
+This method is based on a widely known EM algorithm for incomplete data \cite{EM}, which was adapted for Compton imagining in \cite{wilderman}.
+It is an iterative algorithm that tries to estimate the expected value of emitted photons from each cell in the discretized space of all possible source positions.
+
+Let's divide the area of possible sources of radiation into $J$ discrete bins (indexed with $j$, where $j = 1 \dotsc J$).
+Our observations are divided into $I$ discrete bins (each bin is one Compton cone detected by the sensor, denoted with index $i$, $i = 1 \dotsc I$).
+Let's denote a so-called \textbf{system matrix} $\mathbf{T}$ ($\mathbf{T} \in \mathbb{R}^{I \times J}$), where each position in the matrix is defined as
+\begin{equation}
+  t_{ij} =  P(\textrm{detected in } i | \textrm{emitted from } j).
+\end{equation}
+In other words, $t_{ij}$ represents a probability that we observe observation $i$ given the fact that the radioactive particle was emitted from position $j$.
+
+Lets denote a vector $\mathbf{s}$ ($\mathbf{s} \in \mathbb{R}^{J}$), in literature denoted as \textbf{sensitivity of detection}.
+This vector represents the summation of all possible measurable cones of response, not only those that are measured.
+It corresponds to the probability of a photon emitted by the corresponding position $j$ to be detected by the sensor.
+Each position $s_{j}$ in the sensitivity vector can be seen as 
+\begin{equation}
+  s_{j} =  P(\textrm{detected by the sensor}\ | \textrm{emitted from } j).
+\end{equation}
+
+The hidden parameters we would like to estimate are denoted $\bm{\hat{\lambda}}$.
+Every element of $\bm{\hat{\lambda}}$ (denoted as $\hat{\lambda}_{j}$, $j = 1 \dotsc J$) represents an expected value of the number of photons emitted from position $j$ (assuming Poisson distribution for photon emission).
+
+The \ac{MLEM} algorithm can be formulated as:
+\begin{equation}
+\hat{\lambda}_{j}^{(l+1)} = \frac{\hat{\lambda}_{j}^{(l)}}{s_{j}} \sum_{i \in I} \frac{t_{ij}}{\sum_{k} t_{ik} \hat{\lambda}_{k}^{(l)}},
+  \label{eq:MLEM}
+\end{equation}
+where $l$ denotes the iteration of the algorithm.
+
+\section{System matrix}
+As stated before, we need to specify the system matrix.
+There are many approaches mentioned in the medical imagining literature.
+The model for estimating the probability $t_{ij} = P(\textrm{detected in } i | \textrm{emitted from } j)$ depends on the properties of the specific sensor and on the underlying physical principles.
+One simplified method was proposed in \cite{maxim2016} as
+\begin{equation}
+  t_{ij} = K(\beta_{i},E_{\lambda})   \frac{\left| cos(\theta_{ij}) \right|}{d^{2}_{ij}} h(\delta_{ij}, \sigma),
+\end{equation}
+where $K(\beta_{i},E_{\lambda})$ stands for Klein-Nishina divergence. 
+This term expresses the fact that given the energy of the source (scattered photon) $E_{\lambda}$, the Compton scattering effect with angle $\beta$ happens with a certain probability. 
+The second term  $\frac{\left| cos(\theta_{ij}) \right|}{d^{2}_{ij}}$ expresses the relative position between map position $j$ and Compton camera at the time when cone $j$ was measured.
+Namely, $d_{ij}$ is the euclidean distance between map position $j$ and cone origin $j$.
+$\theta_{ij}$ stands for the angle between the normal vector of the Compton camera and the vector connecting the camera with map position $j$. 
+The third term represents a gaussian distribution of angular difference $\delta_{ij}$. 
+This angular difference expresses how close is the $j$-th position to the Compton cone $i$.
+
+This model is made for a classical Compton camera consisting of absorber and scatterer, hence the term $\frac{\left| cos(\theta_{ij}) \right|}{d^{2}_{ij}}$ is not an accurate estimate, since the MiniPIX3 Compton camera works differently and can reconstruct Compton cone for particles incoming from different directions.
+
+\section{Sensitivity vector}
+The sensitivity term expresses the probability of a photon emitted by the point $j$ to be detected by the camera. 
+\cite{maxim2016} proposed simplified expression
+\begin{equation}
+  s_{vj} \sim \frac{\left| cos(\theta_{vj}) \right|}{d^{2}_{vj}},
+\end{equation}
+where with $v$ we denote the $v$-th viewpoint (=position of the sensor where the particle can be measured). $\theta_{vj}$ and $d^{2}_{vj}$ are defined in the same way as in the system matrix.
+
+\section{Important properties of MLEM algorithm}
+There are multiple differences between the domain of medical imagining and mapping of radioactive sources using \ac{UAV}s.
+The distance between the source and detector in radiotherapy is small (tens of centimetres), and the number of reconstructed Compton cones is high (tens of thousands).
+Other the other hand, distances in robotic exploration scenarios are much bigger (meters). 
+As we know from the previous section, the intensity of the radiation decreases with the inverse square law.
+It means that the source must be reconstructed using a much smaller number of Compton cones.
+Another difference is that \ac{MLEM} is typically used as an offline method.
+In medical imagining, matrix $\mathbb{T}$ is much bigger (since it has the size of $I \times J$ as the number of detected cones $I$ is high).
+The matrix $\mathbf{T}$ then doesn't fit in the memory, and the term $t_{ij}$ should be computed on every iteration of equation \ref{eq:MLEM}, which makes the computation much more demanding.
+\ac{MLEM} is therefore used as an offline method, and the reconstruction of sources is done after the experiment is finished.
+
+\section{MLEM applied in robotics exploration}
+We can view the group of \ac{UAV}s as one big distributed detector.
+The drones can share the information about their positions (to update the sensitivity vector $\mathbf{s}$) and all the cones measured (to update the matrix $\mathbf{T}$).
+The fact that there are much fewer cones available for the reconstruction than in the medical imagining scenario means that the localization of radioactive sources would be less accurate. 
+On the other hand, since matrix $\mathbf{T}$ is much smaller, it can easily fit in the memory, and hence it can be computed online (as the new cone is measured, new row $t_{i\in(1 \dotsc J) j,}$ can be added). 
+It is important to note that the number of discrete bins $I$ (how big is the area of interest and how densely it is discretized) might also be a limiting factor.
+Having the system matrix and sensitivity vector computed in real-time, we can repeatedly use the iterative formula \ref{eq:MLEM} and estimate sources of radiation in real-time.
+
+\section{How the MLEM algorithm is derived}
+
+
+\section{Monte Carlo simulation}
+
+
+ideas:
+\begin{itemize}
+  \item the simplified model by maxim does not work for single scatterer camera
+  \item we need to know what is direction sensitivity (shape of the sensor is different in diff. directions)
+  \item we have simulator from baca et. all
+  \item so we want to simulate it by Monte carlo
+\end{itemize}
+
+\subsection{Simulation process}
+
+simulator adopted from Baca et all.
+probabilities that comes into play
+prob of hitting the sensor
+prob of compton effect
+prob of photo electric effect
+
+\section{Source localisation}
