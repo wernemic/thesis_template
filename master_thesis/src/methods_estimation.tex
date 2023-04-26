@@ -53,11 +53,100 @@ However, equation \ref{eq:likelihood1} doesn't give an answer to our question - 
 
 
 
+\section{MLEM}
+\begin{equation}
+\hat{\lambda}_{j}^{(l+1)} = \frac{\hat{\lambda}_{j}^{(l)}}{s_{j}} \sum_{i \in I} \frac{t_{ij}}{\sum_{k} t_{ik} \hat{\lambda}_{k}^{(l)}},
+  \label{eq:MLEM}
+\end{equation}
+
+\section{System matrix}
+\begin{equation}
+t_{ij} =  P(\textrm{detected in } i | \textrm{emitted from } j).
+\end{equation}
+
+\begin{equation}
+  t_{ij} =  (1-e^{x})  K(\beta_{i},E_{0}) \frac{}{d^{2}_{ij}} h(\delta_{ij}, \sigma),
+\end{equation}
+
+
+\begin{equation}
+  t_{ij} =  p_{1}p_{2}p_{3}p_{4}p_{5}
+\end{equation}
+
+\begin{itemize}
+  \item $p_{1}$ - probability that particle is emmitted from $j$
+  \item $p_{2}$ - probability that particle reaches the detector
+  \item $p_{3}$ - probability that compton effect occured
+\end{itemize}
+
+
+\section{Sensitivity matrix}
+\begin{equation}
+  s_{jv} = (1-p_{air})\frac{\mathrm{lookup}(\sigma_{jv}, \theta_{jv})}{d^{2}_{jv}}
+\end{equation}
+
+
+\begin{equation}
+  \mathrm{lookup}(\sigma_{jv}, \theta_{jv}) = \sum_{N_{particles emitted}} N_{compton cones} 
+\end{equation}
+
+$\Delta_{v} = t_{v} - t_{v-1}$
+
+\begin{equation}
+  s_{j} = \sum_{v} s_{jv} \Delta_{v} 
+\end{equation}
 
 
 
 
 
+\begin{algorithm}
+\caption{Monte-carlo simulation}\label{alg:cap}
+
+\begin{algorithmic}
+
+\Function {create\_lookup\_table}{$N$}
+  \For {$\theta \in (0, \dots ,\pi)$}
+    \For {$\sigma \in (0, \dots , 2\pi)$}
+      \State $\mathrm{lookup\_table}(\theta, \sigma) \gets \Call{compute\_probability}{\theta, \sigma, N}$
+    \EndFor
+  \EndFor
+\EndFunction
+
+\Statex
+
+\Function {compute\_probability}{$\theta, \sigma, N$}
+\State $C \gets 0$
+\State $A \gets N\frac{\Omega_{\theta, \sigma}}{4 \pi}$ \Comment{how many of $N$ particles hits the sensor}
+\State $a \gets 0$
+\While {$a<A$} 
+  \If {\Call{is\_cone\_measured}{$\theta, \sigma$}} \Comment{Compton cone measured}
+      
+  \State $C \gets C + 1 $ 
+  \EndIf
+  \State $a \gets a + 1$
+\EndWhile
+  \State \Return $C/N$ 
+
+  \EndFunction
 
 
+\Statex
 
+  \Function{is\_cone\_measured}{$\theta,\sigma$}
+  \State $ray \gets \Call{sample\_sensor\_surface}{\theta,\sigma}$ \Comment{ray inside the sensor after hitting its surface}
+
+  \If{\Call{is\_compton\_scattering}{$ray, E_{0}$}} \Comment{sample if \ac{CS} occured}
+  \State $new\_ray, E_{1} \gets \Call{compton\_scattering}{ray, E_{0}}$ \Comment{Sample Klein-Nishina formula}
+  \Else{}
+    \State \Return False \Comment{No compton scattering occured}
+  \EndIf
+  
+  \If{\Call{is\_photoelectric\_effect}{$new\_ray, E_{1}$}} \Comment{Sample if \ac{PE} occured} 
+    \State \Return True
+  \Else{}
+    \State \Return False
+  \EndIf
+\EndFunction
+\end{algorithmic}
+\end{algorithm}
