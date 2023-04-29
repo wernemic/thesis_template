@@ -49,76 +49,55 @@ std_msgs/String status
 \end{lstlisting}
 
 
-\section{Finding an optimal sequence of waypoints for each \ac{UAV}}
 \subsection{Travelling salesman problem}
-The \ac{TSP} is a classical problem in computer science. 
-The problem can be formulated as follows: 
+This is a classical problem in computer science.
+The problem is formulated as follows:
 A complete oriented graph is given, where $V$ (set of vertices) represent locations that should be visited and $E$ (set of edges) represents the distances between then vertices.
-The task is to find the path through the vertices (find a Hamiltonian cycle), so that each vertex is visited exactly once, the starting and ending point are the same and the distance of the path (the sum of weights assigned to the edges involved in the path) is minimal.
-The edges of the graph are typically stored in a distance matrix $\mathbf{D}\in \mathbb{R}^{\left|V\right|\times\left|V\right|}$, where $d_{ab} \in \mathbf{D}$ represents the distance from vertex $a$ to vertex $b$.
+The task is to find the path through the vertices (more precisely: Hamiltonian cycle), so that each vertex is visited exactly once, the starting and ending point are the same and the distance of the path is minimal (the sum of weights assigned to the edges involved in the path is minimal possible).
+The edges of the graph are typically stored in the so called distance matrix $\mathbf{D}\in \mathbb{R}^{\left|V\right|\times\left|V\right|}$, where $d_{ab}$ represents distance from vertex $a$ to vertex $b$.
 
-\subsection{Problem modifications}
-The problem of finding the optimal sequence of waypoints $\{1, 2, \dots , n\}$ for an \ac{UAV} is transformed to the travelling salesman problem and solved using LKH solver\footnote{available at: http://webhotel4.ruc.dk/~keld/research/LKH/}.
-However, we require some additional features, not only finding the minimal Hamiltonian cycle in the graph with respect to the euclidean distances between waypoints.
-The starting vertex of the sequence should be the future position of the drone, let's denote it as vertex $0$.
-Secondly, the path of the \ac{UAV} should not end in the starting vertex $0$, the last point of the sequence can be any of the waypoints $\{1, 2, \dots, n\}$.
+The problem of finding optimal sequence of points of interest $\{1, 2, \dots , n\}$ for an \ac{UAV} is transformed to the travelling salesman problem and solved using LKH solver\footnote{available at: http://webhotel4.ruc.dk/~keld/research/LKH/}.
+However, we require some aditional features.
+The starting vertex of the optimal sequence should be the future position of the drone, we denote it as vertex $0$.
+Secondly, we don't require to finish the route in the staring point.
 Because of that, we introduce dummy vertex denoted as $F$.
-We formulate the transformed problem as follows.
-The set of vertices of the graph is $\{0, 1, 2, \dots,n,  F\} \in V$, where: 
-\begin{itemize}
-  \item $0$ is the starting point of the optimal sequence of waypoints
-  \item $1, 2, \dots, n$ are the points to be visited by the \ac{UAV} and   
-  \item $F$ is the dummy vertex that serves as the last point of any sequence found by the solver.
-\end{itemize}
 
-The distance matrix $\mathbf{D}$ of euclidean distances between $\{0, 1, 2, \dots,n,  F\}$ 
-
-\begin{equation}
-  \mathbf{D}_{eukl} = 
-  \begin{pmatrix}
-    0 & d_{0,1} & d_{0,2} & \dots & d_{0, n} & d_{1, F} \\
-    d_{1,0} & 0 & d_{1,2} & \dots & d_{1, n} & d_{2, F} \\
-    d_{2,0} & d_{2,1} & 0       & \dots & d_{2, n} & d_{3, F} \\
-    \dots&\dots & \dots & \dots & \dots & \dots \\
-    d_{n,0}& d_{n, 1} & d_{n, 2} & \dots & 0 & d_{n, F} \\
-    d_{F, 0} & d_{F,1} & d_{F,2} & \dots & d_{F, n} & 0 
-\end{pmatrix}
-\end{equation}
-is then modified in the following way:
-a positive constant $M$ is introduced (it holds that $M>10\mathrm{max}(d),  \forall d \in \mathbf{D}_{eukl}$).
-The purpose of this constant is to forbid some edges in the graph so that they couldn't be chosen by the numerical solver.
-We set to $M$ all edges that connects the dummy vertex $F$ with all vertices $\{1, 2, \dots, n\}$, because we require the vertex $F$ to be the last one in the optimal sequence.
-Additionally, the edge weight connecting the starting point $0$ and $F$ is also set to $M$.
-Furthermore, the distance from any vertex $\{1, 2, \dots, n\}$ to $F$ is set to $0$, same as the vertex from $F$ to $0$. 
-The resulting modified distance matrix is
+We formulate the transformed problem as follows:
+The set of vertices is $\{0, 1, 2, \dots,n,  F\} \in V$, where $0$ is the starting point of the optimal sequence of points, $1, 2, \dots, n$ are the points to be visited by the \ac{UAV} and $F$ is the dummy vertex.
+The distance matrix $\mathbf{D}$ is formulated as
 
 \begin{equation}
   \mathbf{D_{mod}} = 
   \begin{pmatrix}
-    0 & d_{0,1} & d_{0,2} & \dots & d_{0, n} & M \\
-    M & 0 & d_{1,2} & \dots & d_{1, n} & 0 \\
-    M & d_{2,1} & 0       & \dots & d_{2, n} & 0 \\
-    \dots&\dots & \dots & \dots & \dots & \dots \\
-    M & d_{n, 1} & d_{n, 2} & \dots & 0 & 0 \\
-    0 & M & M & \dots & M & 0 .  
+    0 & d_{0,1} & d_{0,2} & \dots & d_{0, n} & d_{0, F} \\
+    d_{1,0} & 0 & d_{1,2} & \dots & d_{0, n} & d_{0, F} \\
+    0 & d_{0,1} & d_{2,2} & \dots & d_{0, n} & d_{0, F} \\
+    0 & d_{0,1} & d_{3,2} & \dots & d_{0, n} & d_{0, F} \\
+    d_{n,0} & d_{n, 1} & d_{n, 2} & d_{n, 3} & d_{n, n} & d_{n, F} \\
+    0 & d_{0,1} & d_{0,2} & \dots & d_{0, n} & d_{0, F} 
 \end{pmatrix}
 \end{equation}
 
-The picture \ref{fig:tsp} illustrates the situation for 3 waypoints.
-The weights of the edges are painted in color.
-The back color represents the euklidean dstance between the point.
-The blue color represent edges whose value is set to $0$.
-The weights of red edges are set to $M$.
+\begin{equation}
+  \mathbf{D_{mod}} = 
+  \begin{pmatrix}
+    0 & d_{0,1} & d_{0,2}     & \dots & M \\
+    M & 0 & d_{1,2} & \dots & 0\\
+    M & d_{2,1} & 0 & \dots & 0\\
+    \dots & \dots & \dots & \dots & \dots \\
+    0 & M & M & \dots & 0,
+\end{pmatrix}
+\end{equation}
+where $d_{a,b}$ is the euklidean distance from vertex $a$ to vertex $b$, $M$ is a positive constant, $M>d \forall d \in D$.
+The picture \ref{} shows the task for 3 waypoints to be visited.
+The starting point (future position of the \ac{UAV}) is represented with vertex $0$.
+This point is required to be the first one.
+Aditionally, the dummy vertex $F$ is introduced.
 
-\begin{figure}[!h]
-    \centering
-    \includegraphics[width=0.7\textwidth]{./fig/photos/TSP.eps}
-    \caption{An illustration of the modified distance matrix $\mathbf{D}_{mod}$ for the \ac{TSP} solver, that finds the optimal sequence of waypoints for each \ac{UAV}. 
-    The vertex $0$ is the starting point of the sequence, vertices $\{1, 2, 3\}$ represent the waypoints to be visited by the \ac{UAV}, $F$ is an additional dummy virtual vertex. 
-    The black edges represent the euclidean distance between corresponding vertices, the value of red edges is set to positive constant $M$, the value of blue edges is set to $0$. }
-    \label{fig:tsp}
-\end{figure}
-%The modified distance matrix $\mathbf{D}_{mod}$ is then passed to the numerical solver.
+
+Unlike in \textbf{TSP} problem, we do not require starting and finishing at the same position.
+Because of tha
+
 
 
 \subsection{Path planning}

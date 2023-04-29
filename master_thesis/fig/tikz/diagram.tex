@@ -1,0 +1,42 @@
+\tikzset{
+  >=stealth',
+  punkt/.style={
+    rectangle,
+    rounded corners,
+    draw=black, very thick,
+    text width=5.7em,
+    minimum height=2em,
+    text centered,
+  },
+  blue_punkt/.style={
+    rectangle,
+    rounded corners,
+    draw=blue, very thick,
+    text width=5.7em,
+    minimum height=2em,
+    text centered,
+  },
+  arrow/.style={
+    ->,
+    very thick,
+    shorten <=2pt,
+    shorten >=2pt,
+  },
+  arrow_red/.style={
+    ->,
+    draw=red, very thick,
+    shorten <=2pt,
+    shorten >=2pt,
+  },
+}
+
+\begin{tikzpicture}[node distance=1cm, auto,]
+
+  % outer circle nodes
+  \node[blue_punkt, inner sep=5pt, shift = {(-4.0, -2.0)}] (emission) {$p_{1}$\\ emmision};
+  \node[punkt, inner sep=5pt, shift = {(0.0, 0.0)}] (int1) {first interaction};
+
+  \path[->] ($(emission.north)+(0, 0)$) edge [arrow, bend right=45, dashed] ($(int1.west)+(0.0, 0.0)$);
+
+  %\draw [->] ($(emission.east)+(0, 0)$) -- ($(int1.west)+(0,-0.4)$) node [midway, shift = {(0.0, 0.0em)}] {smaller};
+\end{tikzpicture}

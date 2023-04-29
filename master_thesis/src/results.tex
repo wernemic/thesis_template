@@ -2,10 +2,71 @@
 
 \chapter{Results\label{chap:results}}
 
+
 This section describes experiments and evaluation of performance of the proposed method for mapping of ionizing radiation.
 An experiment with real sources of ionizing radiation requires (due to specific safety measures, permission from the state authorities...) coordination with other institutions, such as Czech metrology institute.
 Unfortunately, it was not possible to perform experiment with real sources before the deadline of the thesis due to these organizational reasons.
 However, the method was evaluated on pre-recorded data from real-world experiments as well as using the realistic simulator for compton camera \cite{TODO}.
+
+
+
+
+
+
+
+
+
+\section{Monte carlo simulation results}
+In figure \ref{fig:monte_cs_results}, the probability of a Cesium-137 photon generating a Compton cone when emitted from a distance of 1 meter is displayed. 
+The sensor's sensitivity is observed to be nearly uniform regardless of the incoming particle's direction. 
+This outcome can be explained using Figure \ref{fig:monte_clar}. 
+As illustrated in figure \ref{fig:monte_reaching}, particles that approach the sensor from the front side have a greater visible surface area, resulting in a greater likelihood of hitting the sensor. 
+Conversely, particles arriving from the side have a longer intersection with the sensor's material, resulting in a greater probability of producing a Compton cone, as shown in figure \ref{fig:monte_cone_from_hitting}. 
+Surprisingly, these two effects compensate for each other, resulting in an almost consistent sensitivity of the sensor to particles arriving from various directions.
+
+
+
+
+\begin{figure}[!htb]
+  \centering
+  \subfloat {
+    \includegraphics[width=0.7\textwidth]{./fig/photos/mc_cs_prob_compton.eps}
+  }
+  \caption{Probability that particle emitted at certain position produces a compton cone.}
+  \label{fig:monte_cs_results}
+\end{figure}
+
+\begin{figure}[!htb]
+  \centering
+  \subfloat[Probability of reaching the surface] {
+    \includegraphics[width=0.5\textwidth]{./fig/photos/mc_prob_reaching_the_surface.eps}
+    \label{fig:monte_reaching}
+  }
+  \subfloat[probability that particle hitting the sensor produce a compton cone.] {
+    \includegraphics[width=0.5\textwidth]{./fig/photos/mc_comptons_from_sensor_hits.eps}
+    \label{fig:monte_cone_from_hitting}
+  }
+  \caption{Results of Monte carlo simulation for cs137.}
+  \label{fig:monte_clar}
+\end{figure}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 \section{Pre-recorded data with real radioactive sources}
 
