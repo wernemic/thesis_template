@@ -211,33 +211,35 @@ We compute the probability of producing a compton cone for particle emitted by a
 where $C_{(\theta, \phi, d)}$ is the number of particles that undergone \ac{CS} and \ac{PE} consecutively inside the compton camera (therefore can be detected), $N$ is the number of all particles emitted at source position $(\theta, \phi, d)$. 
 Number of emitted particles is $N = 1\mathrm{e}11$, the distance $d$ is set to $d = \SI{1}\meter$.
 The simulation process is described in algorithm \ref{alg:monte}. 
-The computed probability is stored in a lookup table:
+The results of the simulation are stored in a lookup table:
 \begin{equation}
-  \mathrm{lookup\_table}(\theta, \phi) = p(\mathrm{cone\ detection})_{(\theta, \phi, d = \SI{1}\meter)}.
+  \mathrm{lookup\_table}(\theta_{k}, \phi_{k}) = p(\mathrm{cone\ detection})_{(\theta_{k}, \phi_{k}, d = \SI{1}\meter)}. 
 \end{equation}
+It is a data structure that allows fast readout of the stored data.
+For arbitrary query ($\theta, \phi$) it finds the closest key pair ($\theta_{k}, \phi_{k}$) in the angle space and returns its value.
 
-\begin{figure}[!h]
+%multifigure montecarlo
+\begin{figure}[!h]% %%{
   \centering
 
-  \subfloat[Polar coordinates] {
+  \subfloat[\centering Polar coordinates] {
+    \centering
     \includegraphics[width=0.3\textwidth]{./fig/photos/axes.eps}
     \label{fig:polar}
   }
-  \subfloat[Locations of simulated sources] {
-    \includegraphics[width=0.3\textwidth]{./fig/photos/mc_sources.eps}
+  \subfloat[\centering Locations of the simulated sources] {
+    \includegraphics[width=0.33\textwidth]{./fig/photos/mc_sources.eps}
     \label{fig:sources_loc}
   }
-  \subfloat[Sampling of the sphere] {
-    \includegraphics[width=0.3\textwidth]{./fig/photos/mc_angle_space.eps}
+  \subfloat[\centering Sampling of the $\frac{1}{8}$ of the unit sphere in the angle space] {
+    \includegraphics[width=0.33\textwidth]{./fig/photos/mc_angle_space.eps}
     \label{fig:sampling}
   }
   \caption{}
   \label{fig:mc_multi}
-\end{figure}
+\end{figure}% %%}
 
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%% ALGORITHM %%%%%%%%%%%%%%%%%
+%%%%%%%%%%% ALGORITHM %%%%%%%%%%%%%%%%%% %%{
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{algorithm}[h!]
 \caption{Monte-carlo simulation}\label{alg:cap}
@@ -281,40 +283,64 @@ The computed probability is stored in a lookup table:
   \caption{Monte-carlo simulation}
 \end{algorithm}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% %%}
 
 \section{Sensitivity matrix}
-The sensitivity for each map position $j$ and sampled detector position $v$ is computed as follows:
+The sensitivity of detection by the sensor placed at sampled position $v$ for map position $j$ is computed as:
+
 \begin{equation}
-  s_{jv} = \underset{(p_{air})}{\underbrace{(1-p_{air}) }} \underset{(p_{solid\ angle})\\(p_{compton})\\(p_{absorbtion})} {\underbrace{\frac{\mathrm{lookup}(\phi_{jv}, \theta_{jv})}{d^{2}_{jv}}}},  
+  s_{jv} = \underset{(1-p_{air})}{\underbrace{e^{-((\mu/\rho) d_{jv})} }} \underset{(p_{solid\ angle})\\(p_{compton})\\(p_{absorbtion})} {\underbrace{\frac{\mathrm{lookup\_table}(\phi_{jv}, \theta_{jv})}{d^{2}_{jv}}}},  
+  \label{eq:sjv}
 \end{equation}
-where $d_{jv}$ is the euklidean distance between map position $j$ and sensor position $v$. 
+where $d_{jv}$ is the euclidean distance between map position $j$ and sensor position $v$, ($\mu/\rho$) is the total attenuation coefficient for air (based on \cite{nist}), ($\phi_{jv}, \theta_{jv}$) are polar coordinates determining the relative position of $v$ and the sensor. 
+The term $\frac{1}{d^{2}_{jv}}$ in \ref{eq:sjv} ensures that the $p_{solid\ angle}$ (already contained in the $\mathrm{lookup\_table}$ for $d = \SI{1}\meter$) approximately holds even for distances other than $d = \SI{1}\meter$.
 
+\subsection{Iterative formula}
+The equation \ref{eq:sjv} presents the sensitivity computation for one viewpoint $v$. 
+It is required to compute the sensitivity of detection online during the experiment for all the viewpoints from all \ac{UAV}s sampled so far. 
+Therefore it is iteratively updated with the new sampled viewpoints (\ac{UAV} positions).
+Let denote $\mathbf{S}^{[n]}$ the sensitivity matrix at update step $n$.
+The initial value of $\mathbf{S}^{[0]}$ is set to $0$ ($s_{j}^{[0]} = 0 ,\forall s_{j}^{[0]} \in \mathbf{S}^{[0]}$).
+Lets denote $V^{[n:n+1]}$ the set of viewpoints that were newly sampled after update step $n$ and needs to be processed. 
 
-The sensitivity matrix $\mathbf{S}$ with elements $s_{j}$ is computed as follows:
+The sensitivity matrix $\mathbf{S}^{[n+1]}$ with elements $s_{j}^{[n+1]}$ is computed as follows:
 \begin{equation}
-  s_{j} = \sum_{v = 0}^{V} s_{jv} \Delta_{v}, 
+  s_{j}^{[n+1]} = s_{j}^{[n]} + \sum_{v \in V^{[n:n+1]}} s_{jv} \Delta_{v}, 
+  \label{eq:sen_iter}
 \end{equation}
-where the sum $\sum_{v = 0}i^{V}$ represents the fact that we sum over all $V$ sampled sensor positions recorded so far during the experiment. 
-The term $\Delta_{v} = t_{v} - t_{v-1}$ expresses the difference between current 
+where the sum $\sum_{v \in V^{[n:n+1]}}$ iterates over all newly processed viewpoints, 
+the term $\Delta_{v} = t_{v} - t_{v-1}$ expresses the time difference between current viewpoint $v$ sampled at time $t_{v}$ and its predecessor (previous viewpoint generated from the trajectory of the same \ac{UAV}) sampled at time $t_{v-1}$. 
 
-
+This formulation of sensitivity has multiple advantages.
+Firstly, the memory requirements for storing the matrix $\mathbf{S}$ remain the same during the whole experiment, the values $s_{j}$ are updated in place.
+Secondly, the sensitivity is updated online as new sampled trajectories of the \ac{UAV} arrive, therefore the computation time scale well with increasing duration of the experiment.
+Lastly, it takes into account the time difference between sampled viewpoints $\Delta_{v}$.
 
 \section{System matrix}
+The system matrix $\mathbf{T} \in \mathbb{R}^{I \times J}$ is defined as
+\begin{equation}
+t_{ij} =  P(\textrm{detected in } i | \textrm{emitted from } j).
+\end{equation}
+In other words, it says how likely the photon causing measurement $i$ came from the map position $j$.
+The illustration of the system matrix is depicted in figure \ref{fig:sys_ilustration}, where the blue color represents $t_{ij}$ values of the individual cells. 
 \begin{figure}[!h]
   \centering
 
-  \subfloat[discretization] {
     \includegraphics[width=0.48\textwidth]{./fig/photos/sys.eps}
+  \caption{System matrix $\mathbf{T}$. The blue color represent the value of $t_{ij}$ in each cell.}
     \label{fig:sys_ilustration}
-  }
-  \caption{An illustration of algorithm setting}
 \end{figure}
 
+The main question remains the same as for the sensitivity computation: how to evaluate the system matrix for given scenario and \ac{pix} sensor?
 
-\begin{equation}
-  s_{jv} =  p_{1}p_{2}p_{3}p_{4}p_{5}
-\end{equation}
+The measurement $i$ is composed of multiple components:
+The first interaction (electron produced as a side product of \ac{CS}) at position $X_{1}$) with measured energy $E_{1}$ 
+and the second interaction (absorbed electron at position $X_{2}$ inside the sensor with measured energy $E_{2}$.
+The compton cone $i$ with scattering angle $\Theta$ is then reconstructed from these measurements using equation \ref{eq:theta}.
+
+
+
+\subsection{Literature overview}
 
 where 
 \begin{itemize}
@@ -330,16 +356,6 @@ where
 
 
 
-\section{MLEM}
-\begin{equation}
-\hat{\lambda}_{j}^{(l+1)} = \frac{\hat{\lambda}_{j}^{(l)}}{s_{j}} \sum_{i \in I} \frac{t_{ij}}{\sum_{k} t_{ik} \hat{\lambda}_{k}^{(l)}},
-  \label{eq:MLEM}
-\end{equation}
-
-\section{System matrix}
-\begin{equation}
-t_{ij} =  P(\textrm{detected in } i | \textrm{emitted from } j).
-\end{equation}
 
 \begin{equation}
   t_{ij} =  (1-p_{air})  K(\beta_{i},E_{0}) \frac{}{d^{2}_{ij}} h(\delta_{ij}, \phi)
@@ -350,8 +366,3 @@ t_{ij} =  P(\textrm{detected in } i | \textrm{emitted from } j).
   t_{ij} =  p_{1}p_{2}p_{3}p_{4}p_{5}
 \end{equation}
 
-\begin{itemize}
-  \item $p_{1}$ - probability that particle is emmitted from $j$
-  \item $p_{2}$ - probability that particle reaches the detector
-  \item $p_{3}$ - probability that compton effect occured
-\end{itemize}

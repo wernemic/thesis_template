@@ -99,12 +99,29 @@ The centroids are initialized at the future positions of the \ac{UAV}s.
 
 
 \section{Filtering recently visited waypoints}
+The following assumption is made:
+to acquire more measurements from different sides and localize the sources more precisely, it is better to keep the \ac{UAV}s in motion, better then statically measure radiation at certaion position for longer time.
+Therefore are prioritized the waypoints that were not recently explored by any of the \ac{UAV}s (meaning that no \ac{UAV} was in a close proximity of the sensor in past seconds).
+For that purpose, we define short-term sensitivity matrix $\mathbf{\hat{S}}$, which is independent of the sensitivity matrix $\mathbf{\hat{S}}$ defined in \ref{eq:sen_iter}, 
+although it is computed analogically.
 
-
-
+Same as before, the matrix $\mathbf{\hat{S}}^{[0]}$ is initialized with zeros.
+Lets denote $V^{[n:n+1]}$ the set of viewpoints that were newly sampled after update step $n$ and needs to be processed. 
+The short-term sensitivity matrix $\mathbf{\hat{S}}^{[n+1]}$ with elements $\hat{s}_{j}^{[n+1]}$ is computed as:
 \begin{equation}
-  \hat{s}_{j}^{[n]} = \alpha \hat{s}_{j}^{[0:n-1]}+\hat{s}_{j}^{[n]}
+  \hat{s}_{j}^{[n+1]} = \alpha \hat{s}_{j}^{[n]} + \sum_{v \in V^{[n:n+1]}} s_{jv} \Delta_{v}. 
+  \label{eq:sen_iter_shortterm}
 \end{equation}
+We may notice that the only difference between short-term sensitivity equation \ref{eq:sen_iter_shortterm} and sensitivity equation \ref{eq:sen_iter} is that new scaling parameter $\alpha \in [0, 1)$ was added.
+The $\alpha$ can be named as a forgetting factor.
+It scales past $\hat{s}_{j}$ values with some non-negative $<1$ number, making newly sampled viewpoints more important.
+
+
+
+
+
+
+
 
 %%%%%%%%%%%%%%%%%%%%%%%
 %%% TASK ASSIGNMENT %%%
