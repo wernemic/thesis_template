@@ -1,7 +1,6 @@
 %!TEX root = ../main.tex
 
-\chapter{Mapping of ionizing radiation}
-
+\chapter{Mlem Theory medicine}
 
 \section{Inspiration in medicine}
 The problem of reconstructing 3D positions of sources of ionizing radiation has been studied in depth in the field of medical imagining.
@@ -29,23 +28,6 @@ The nuclear medicine reconstruction method for compton camera measurements that 
 
 \section{Maximum likelihood expectation maximization}
 
-\begin{figure}[!h]
-  \centering
-
-  \subfloat[area of interest] {
-    \includegraphics[width=0.32\textwidth]{./fig/photos/dis1.eps}
-    \label{fig:dis1}
-  }
-  \subfloat[discretization] {
-    \includegraphics[width=0.32\textwidth]{./fig/photos/dis2.eps}
-    \label{fig:dis2}
-  }
-  \subfloat[hidden parameters $\lambda$] {
-    \includegraphics[width=0.32\textwidth]{./fig/photos/dis3.eps}
-    \label{fig:dis3}
-  }
-  \caption{An illustration of algorithm setting}
-\end{figure}
 
 
 \cite{1982_shepp_vardi_MLEM} \cite{EM} \cite{wilderman}
@@ -100,28 +82,6 @@ However, equation \ref{eq:likelihood1} doesn't give an answer to our question - 
 
 The \ac{EM} algorithm was originally proposed by \cite{EM}. 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 \section{differences}
 Such medical application typically requires high resolution of the reconstructed image.
 The distances between the source and detector are small (tens of centimeters), number of measured events is high (tens of thousands and more).
@@ -133,52 +93,51 @@ It results in the fact that the number of measurements is much lower (hundreds-t
 Moreover, we would like to reconstruct the sources of ionizing radiation in real time.
 Despite all of these differences, the aim of this work is to adapt such algorithms to our problem.
 
+\chapter{Methods}
+The \ac{MLEM} algorithm described previously serves as an inspiration for the mapping method described in this chapter.
+Despite all the differences between the medical and multirobotic domain, the \ac{MLEM} algorithm was chosen for several reasons.
+First of all, the nature of the measurements (compton cones) is the same as in the medical algorithms.
+Secondly, the classical method of maximization of likelihood of measured data seems to be good choice for the given problem.
+It can take into account factors influencing the measurements (such as air attenuation, properties of the detector and radioactive emission) in the probabilistic way.
+Lastly, the estimation of sensitivity of detection (how likely the particles from given position were measured) can be beneficial, 
+because it can provide information of how much the \ac{UAV}s already explored the area of interest and where to fly to possibly detect undetected sources.
 
+
+
+\section{Setup}
+Figure \ref{fig:discretization} shows the discretization of the area of interest.
+The area where possible sources of ionizing radiation might be located is divided into $J$ discrete bins, each of them is approximated by its center position and indexed as $j$.
+The individual measurements (compton cones) are indexed with $i$, $i \in 1, \dots , I$, where $I$ is the total number of measurements collected during the experiment.
+Let's denote $\mathbf{\Lambda}$ ($\mathbf{\Lambda} = \begin{bmatrix}\lambda_{0} & \lambda_{1} & \dots & \lambda_{J}\end{bmatrix}$) as the vector of hidden parameters we would like to estimate.
+As described in the previous chapter, $\lambda_{j}$ represents the expected number of particles emitted from the corresponding map position $j$ in the unit time interval.
 
 \begin{figure}[!h]
   \centering
 
-  \begin{adjustbox}{max totalsize={0.6\textwidth}{0.90\textheight}, center}
-    \input{../fig/tikz/diagram.tex}
-  \end{adjustbox}
-
-  \caption{Example of a 2D diagram using tikz \emph{PGFPlots}.}
-  \label{fig:pgfplots}
+  \subfloat[area of interest] {
+    \includegraphics[width=0.32\textwidth]{./fig/photos/dis1.eps}
+    \label{fig:dis1}
+  }
+  \subfloat[discretization] {
+    \includegraphics[width=0.32\textwidth]{./fig/photos/dis2.eps}
+    \label{fig:dis2}
+  }
+  \subfloat[hidden parameters $\Lambda$] {
+    \includegraphics[width=0.32\textwidth]{./fig/photos/dis3.eps}
+    \label{fig:dis3}
+  }
+  \caption{An illustration of algorithm setting}
+  \label{fig:discretization}
 \end{figure}
 
-\section{Maximum likelihood expectation maximization}
-
-
-
-
-
-
-
 \section{MLEM}
+The estimation process proceeds interatively using the \ac{LM-MLEM} algorithm:
 \begin{equation}
-\hat{\lambda}_{j}^{(l+1)} = \frac{\hat{\lambda}_{j}^{(l)}}{s_{j}} \sum_{i \in I} \frac{t_{ij}}{\sum_{k} t_{ik} \hat{\lambda}_{k}^{(l)}},
+  \hat{\lambda}_{j}^{[l]} = \frac{\hat{\lambda}_{j}^{[l-1]}}{s_{j}} \sum_{i \in I} \frac{t_{ij}}{\sum_{k} t_{ik} \hat{\lambda}_{k}^{[l-1]}},
   \label{eq:MLEM}
 \end{equation}
-
-\section{System matrix}
-\begin{equation}
-t_{ij} =  P(\textrm{detected in } i | \textrm{emitted from } j).
-\end{equation}
-
-\begin{equation}
-  t_{ij} =  (1-p_{air})  K(\beta_{i},E_{0}) \frac{}{d^{2}_{ij}} h(\delta_{ij}, \sigma)
-\end{equation}
-
-
-\begin{equation}
-  t_{ij} =  p_{1}p_{2}p_{3}p_{4}p_{5}
-\end{equation}
-
-\begin{itemize}
-  \item $p_{1}$ - probability that particle is emmitted from $j$
-  \item $p_{2}$ - probability that particle reaches the detector
-  \item $p_{3}$ - probability that compton effect occured
-\end{itemize}
+where $l$ is the current iteration of the algorithm, $\lambda_{j}$ is the hidden parameter for each position $j$ we would like to estimate, $t_{ij}$ is the element of system matrix $\mathbf{T}$ and $s_{j}$ is the sensitivity of detection for the map position $j$.
+The estimation of system matrix $\mathbf{T}$ and sensitivity of detection $\mathbf{S}$ is described in the following sections.
 
 
 \section{Sensitivity of detection}
@@ -191,37 +150,37 @@ It can be expressed using conditional probability as
 A series of random occurrences should happen for a photon to be detected by the compton camera.
 First of all, the photon must be emitted from position $j$ towards the sensor surface (emitted under the solid angle subtended by the visible camera surface at the position of the source), not being absorbed by the air along the way.
 Then the photon should interact with the matter of the sensor in form of compton scattering.
-The angle under which it scatters is described by the Klein-Nisniha cross section.
+The angle under which it scatters is described by the Klein-Nisnina cross section.
 The scattered photon then must be absorbed by the camera in form of a photoelectric effect.
-Is model is simplified since other random occurrences might happen - the photon might undergo \ac{CS} twice in a row, etc.
-However, we will stick to the proposed simplified model with particles undergoing \ac{CS} and then \ac{PE} interactions.
+This model is simplified, because other random occurrences might happen - for example the photon might undergo \ac{CS} twice in a row, the sensor might not detect the interations properly, etc.
+However, we will stick to the proposed simplified model with particles undergoing \ac{CS} and then \ac{PE} interactions consecutively.
 
 The literature describes several analytical models for computing sensitivity of the detection. 
 For example \cite{wilderman2001} proposed sensitivity model for multi-layer compton cameras in the close distance to the source.
 \cite{maxim2016} proposed simplified model for comptom-cameras with negligible size compared to the distance from the source.
 However, these models are not suitable for the problem tackled in this thesis.
-The multi-layer compton camera has different properties then single-layer sensor used in this project.
+The multi-layer compton camera has different properties then single-layer sensor \ac{pix}.
 Multi-layer compton cameras are typically measuring only particles coming from certain directions (from the front side of the camera, perpendicular to its layers).
-On the other hand, the Minipix3 sensor used in this project can potentially measure particles coming from all directions.
+On the other hand, the \ac{pix} sensor used in this project can potentially measure particles coming from all directions.
+The sensitivity of the sensor w.r.t. different directions of the incoming particle is unknown and present a scientific question, that needs to be answered to make the \ac{LM-MLEM} working. 
 
 Another option presented in literature is evaluation of sensitivity using the Monte-carlo simulation.
-This approach has multiple advantages: it is not necessary to describe all random occurrences inside the detector by the single expression (which might take non-negligible computation time when evaluating big number of map positions during the experiment).
+This approach has multiple advantages: it is not necessary to describe all random occurrences inside the detector by a single expression (which might take non-negligible computation time when evaluating big number of map positions during the experiment).
 Monte-carlo simulation can be precomputed in advance and the data can be stored in some data structure that allows fast access to the data, shortening the computation time.
 
 In our case, the position of the detector is not static. 
 The \ac{UAV}s carrying the compton camera are dynamically moving through the environment, with varying speed, position and orientation.
 Therefore, the positions of the \ac{UAV}s are sampled in time from \ac{UAV}s trajectories and denoted as $v$, where $v \in (0, \dots , V)$ and $V$ is the total number of viewpoints generated by all \ac{UAV}s during the experiment.
-The sensitivity of detection is evaluated for each $jv$ pair.
-
+The sensitivity of detection is evaluated for each $jv$ pair. 
 
 \begin{figure}[!h]
   \centering
     \includegraphics[width=0.6\textwidth]{./fig/photos/sen.eps}
     \label{fig:sen_illustration}
-  \caption{An illustration of sensitivity computation. Sensitivity describes probability that particle emitted at given position is measured by the compton cameras onboard the \ac{UAV}s. In other words, it describes how well explored is given map position during the experiment. The trajectory of the \ac{UAV} is sampled and denoted as $v$.}
+  \caption{An illustration of sensitivity computation. Sensitivity describes probability that particle emitted at given position is measured by the compton cameras onboard the \ac{UAV}s. In other words, it describes how well explored is given map position during the experiment. The trajectory of the \ac{UAV} is sampled into viewpoints denoted as $v$.}
 \end{figure}
 
-
+\subsection{Probabilistic description}
 
 The series of random occurrences for a photon emitted at position $J$ leading to the detection by the compton camera at position $v$ can be described as follows:
 \begin{equation}
@@ -231,72 +190,86 @@ The series of random occurrences for a photon emitted at position $J$ leading to
 where $p_{solid\ angle}$ is the probability that photon is emitted towards the solid angle of the detector, $p_{air}$ is the probability that photon is absorbed by the air along the way from emission towards the sensor, $p_{compton}$ is probability that compton scattering occurs and $p_{absorbtion}$ denotes that scattered photon is absorbed by the detector and measured.
 We want to approximate the $(p_{solid\ angle})$, $(p_{compton})$ and $(p_{absorbtion})$ using a Monte-carlo simulation.
 
-\section{Monte carlo simulation}
+\subsection{Monte carlo simulation}
 The idea of Monte-carlo simulation is simple:
 instead of deriving analytical expression,
-which might be complicated given the nature of the Minipix3 detector (where all interactions are happening in a single block of matter and probabilities of \ac{CS} or \ac{PE} depend on the length of the ray segment inside the sensor) and time-comsuming for online computations during the experiment),
+which might be complicated given the nature of the \ac{pix} detector (where all interactions are happening in a single block of matter and probabilities of \ac{CS} or \ac{PE} depend on the length of the ray segment inside the sensor) and time-comsuming for online computations during the experiment,
 we will place simulated sources at certain position and compute how many particles produced compton cones in the simulated sensor.
 The realistic compton camera simulator described \cite{baca2019timepix} was used as a template and adapted for this particular application.
 
-The setup is following:
-The positions of the source are parametrized by polar coordinates (angles $\theta$ , $\sigma$ and distance $d$).
-the simulated sources of same activity will are placed at the distance of $d = \SI{1}\meter$ from the compton camera.
-For each source position, we simulate same number of particles emitted in all directions.
-Since the compton camera is a symmetrical object, only $\frac{1}{8}$ of the elementary sphere around the detector needs to be simulated.
 
-We compute probability of producing a compton cone for particle emitted by a source at relative position given by polar angles $\theta, \sigma$ as
+%Figure \ref{fig:polar} shows the polar coordinate system, where angles $\theta$ and $\phi$ determines the relative position of the source with respect to the compton camera.
+
+Position of each simulated source is parametrized by its polar coordinates (angles $\theta$ , $\phi$ and distance $d$), as shown in figure \ref{fig:polar}.
+Each simulated source emits $N$ particles (in all directions).
+Since the compton camera is a symmetrical object, only $\frac{1}{8}$ of the elementary sphere around the detector needs to be simulated.
+Figure \ref{fig:sources_loc} shows the positions of simulated sources and figure \ref{fig:sampling} presents their positions in the angle space.
+We compute the probability of producing a compton cone for particle emitted by a source at relative position given by polar coordinates ($\theta, \phi, d$) as
 \begin{equation}
-  p(\theta, \sigma, d = \SI{1}\meter) = \frac{C_{(\theta, \sigma, d = \SI{1}\meter)}}{N},
+  p(\mathrm{cone\ detection})_{(\theta, \phi, d)} = \frac{C_{(\theta, \phi, d)}}{N},
 \end{equation} 
-where $C_{(\theta, \sigma, d)}$ is a number of particles that undergone \ac{CS} and \ac{PE} consecutively inside the compton camera, divided by $N$ - the number of all particles emitted at source position $(\theta, \sigma, d)$. 
-The computed probability will be stored in the lookup table 
+where $C_{(\theta, \phi, d)}$ is the number of particles that undergone \ac{CS} and \ac{PE} consecutively inside the compton camera (therefore can be detected), $N$ is the number of all particles emitted at source position $(\theta, \phi, d)$. 
+Number of emitted particles is $N = 1\mathrm{e}11$, the distance $d$ is set to $d = \SI{1}\meter$.
+The simulation process is described in algorithm \ref{alg:monte}. 
+The computed probability is stored in a lookup table:
 \begin{equation}
-  \mathrm{lookup\_table}(\theta, \sigma) = p(\theta, \sigma, d = \SI{1}\meter).
+  \mathrm{lookup\_table}(\theta, \phi) = p(\mathrm{cone\ detection})_{(\theta, \phi, d = \SI{1}\meter)}.
 \end{equation}
 
-The simulation process is described in algorithm \ref{alg:monte}. 
+\begin{figure}[!h]
+  \centering
+
+  \subfloat[Polar coordinates] {
+    \includegraphics[width=0.3\textwidth]{./fig/photos/axes.eps}
+    \label{fig:polar}
+  }
+  \subfloat[Locations of simulated sources] {
+    \includegraphics[width=0.3\textwidth]{./fig/photos/mc_sources.eps}
+    \label{fig:sources_loc}
+  }
+  \subfloat[Sampling of the sphere] {
+    \includegraphics[width=0.3\textwidth]{./fig/photos/mc_angle_space.eps}
+    \label{fig:sampling}
+  }
+  \caption{}
+  \label{fig:mc_multi}
+\end{figure}
 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%% ALGORITHM %%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{algorithm}[h!]
 \caption{Monte-carlo simulation}\label{alg:cap}
-
 \begin{algorithmic}
-
 \Function {create\_lookup\_table}{$N$}
   \For {$\theta \in (0, \dots ,\frac{\pi}{2})$}
-    \For {$\sigma \in (0, \dots , \frac{\pi}{2})$}
-      \State $\mathrm{lookup\_table}(\theta, \sigma) \gets \Call{compute\_probability}{\theta, \sigma, N}$
+    \For {$\phi \in (0, \dots , \frac{\pi}{2})$}
+      \State $\mathrm{lookup\_table}(\theta, \phi) \gets \Call{compute\_probability}{\theta, \phi, N}$
     \EndFor
   \EndFor
 \EndFunction
 \Statex
-\Function {compute\_probability}{$\theta, \sigma, N$}
+\Function {compute\_probability}{$\theta, \phi, N$}
 \State $C \gets 0$
-\State $A \gets N\frac{\Omega_{\theta, \sigma}}{4 \pi}$ \Comment{how many of $N$ particles hits the sensor}
+\State $A \gets N\frac{\Omega_{\theta, \phi}}{4 \pi}$ \Comment{how many of $N$ particles hits the sensor}
 \State $a \gets 0$
 \While {$a<A$} 
-  \If {\Call{is\_cone\_measured}{$\theta, \sigma$}} \Comment{Compton cone measured}
-      
+  \If {\Call{is\_cone\_measured}{$\theta, \phi$}} \Comment{Compton cone measured}
   \State $C \gets C + 1 $ 
   \EndIf
   \State $a \gets a + 1$
 \EndWhile
   \State \Return $C/N$ 
-
   \EndFunction
-
-
 \Statex
-
-  \Function{is\_cone\_measured}{$\theta,\sigma$}
-  \State $ray \gets \Call{sample\_sensor\_surface}{\theta,\sigma}$ \Comment{ray inside the sensor after hitting its surface}
-
+  \Function{is\_cone\_measured}{$\theta,\phi$}
+  \State $ray \gets \Call{sample\_sensor\_surface}{\theta,\phi}$ \Comment{ray inside the sensor after hitting its surface}
   \If{\Call{is\_compton\_scattering}{$ray, E_{0}$}} \Comment{sample if \ac{CS} occured}
   \State $new\_ray, E_{1} \gets \Call{compton\_scattering}{ray, E_{0}}$ \Comment{Sample Klein-Nishina formula}
   \Else{}
     \State \Return False \Comment{No compton scattering occured}
   \EndIf
-  
   \If{\Call{is\_photoelectric\_effect}{$new\_ray, E_{1}$}} \Comment{Sample if \ac{PE} occured} 
     \State \Return True
   \Else{}
@@ -308,11 +281,12 @@ The simulation process is described in algorithm \ref{alg:monte}.
   \caption{Monte-carlo simulation}
 \end{algorithm}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Sensitivity matrix}
 The sensitivity for each map position $j$ and sampled detector position $v$ is computed as follows:
 \begin{equation}
-  s_{jv} = \underset{(p_{air})}{\underbrace{(1-p_{air}) }} \underset{(p_{solid\ angle})\\(p_{compton})\\(p_{absorbtion})} {\underbrace{\frac{\mathrm{lookup}(\sigma_{jv}, \theta_{jv})}{d^{2}_{jv}}}},  
+  s_{jv} = \underset{(p_{air})}{\underbrace{(1-p_{air}) }} \underset{(p_{solid\ angle})\\(p_{compton})\\(p_{absorbtion})} {\underbrace{\frac{\mathrm{lookup}(\phi_{jv}, \theta_{jv})}{d^{2}_{jv}}}},  
 \end{equation}
 where $d_{jv}$ is the euklidean distance between map position $j$ and sensor position $v$. 
 
@@ -356,3 +330,28 @@ where
 
 
 
+\section{MLEM}
+\begin{equation}
+\hat{\lambda}_{j}^{(l+1)} = \frac{\hat{\lambda}_{j}^{(l)}}{s_{j}} \sum_{i \in I} \frac{t_{ij}}{\sum_{k} t_{ik} \hat{\lambda}_{k}^{(l)}},
+  \label{eq:MLEM}
+\end{equation}
+
+\section{System matrix}
+\begin{equation}
+t_{ij} =  P(\textrm{detected in } i | \textrm{emitted from } j).
+\end{equation}
+
+\begin{equation}
+  t_{ij} =  (1-p_{air})  K(\beta_{i},E_{0}) \frac{}{d^{2}_{ij}} h(\delta_{ij}, \phi)
+\end{equation}
+
+
+\begin{equation}
+  t_{ij} =  p_{1}p_{2}p_{3}p_{4}p_{5}
+\end{equation}
+
+\begin{itemize}
+  \item $p_{1}$ - probability that particle is emmitted from $j$
+  \item $p_{2}$ - probability that particle reaches the detector
+  \item $p_{3}$ - probability that compton effect occured
+\end{itemize}
