@@ -1,0 +1,208 @@
+%!TEX root = ../main.tex
+\chapter{Methods for compton camera image reconstruction}
+The 3D reconstruction of sources of ionizing radiation poses a challenging problem.
+The difficulty of this task lies in the fact that the detected $\gamma$ particle could originated anywhere on the surface of the reconstructed compton cone.
+Several methods for compton imagining have been investigated in the past.
+This chapter provides a brief overview of such methods.
+
+\section{Compton imagining in nuclear medicine}
+The problem of reconstructing 3D positions of sources of ionizing radiation has been studied in depth in the field of medical imagining.
+It is used as a non-invasive method for diagnostics.
+To give an example:
+In cancer diagnostics, small amount of radioactive substance (called tracer) is injected into the patient's vein.
+The tracer is absorbed by different parts of the body in varying amounts, which can show areas with abnormal metabolic activity, which is usually the case for cancer cells.
+The detection of emitted particles and 3D reconstruction of their sources allow doctors to find the location of the tumor in the patient's body.
+
+\section{Differences}
+Such medical application typically requires high resolution of the reconstructed image.
+The distances between the source and detector are small (tens of centimeters), number of measured events is high (tens of thousands and more).
+The reconstruction process is typically performed offline (all measurements are collected first and then the algorithms process the data), since there is no need for online estimation and the processing of measured data might take non-negligible time.
+The domain of multirobotic radiation mapping has multiple differences compared to the medical field.
+The distance between source and detector is much higher (from meters to tens of meters).
+The \ac{UAV}s have limited payload (hence the detector carried on board must be light and compact).
+It results in the fact that the number of measurements is much lower (hundreds-thousands detected compton events).
+Moreover, we would like to reconstruct the sources of ionizing radiation in real time.
+Despite all of these differences, the aim of this work is to get inspiration in the medical field and apply these algorithms to the given problem.
+
+\section{Analytical and iterative methods}
+Literature describes two main categories of reconstruction methods: analytical and iterative algorithms \cite{lojacono2}.
+In analytical methods, the aim is to find solution directly from the conical projections of reconstructed Compton events.
+Such solution might be exact in the continuous model, yet impractical in real world applications, where the measurements might be noisy (thus conical surface projections might not intersect the real position of the source) or where the computational power is limited.
+
+To illustrate difficulties of direct reconstruction methods, algorithm proposed in \cite{baca2021mrs} estimates the initial hypothesis of the source position as a point that is closest to all measured cone surfaces (which might be considered as analytical method).
+Finding solution of such non-linear least squares problem is computationally demanding and tractable only for small number of cones.
+Another example of simple analytical method is called backprojection.
+It can be used as follows:
+the detection space is divided into discrete bins.
+For each Compton measurement, the cone surface is backprojected to the discrete bins.
+The intersection of the cone with the bins is recorded.
+The bins with higher number of intersections presents possible locations of $\gamma$ particles sources.
+
+The iterative algorithms work with discretized space.
+These methods  approximate the positions of sources by iteratively adapting the reconstruction to the measured projections.
+This approach do not provide exact and unique solution, on the other hand it is more flexible, can handle noise in the measurements (if it is properly modelled) and is widely used in practise \cite{lojacono2}.
+
+Literature describes there main methods: \ac{MLEM}, \ac{MAP} and \ac{SOE}.
+\ac{MLEM} (\cite{MLEM_Shepp_1982}, \cite{MLEM_Lange_Carlson_1984}, \cite{MLEM_Wilderman_2000}) is an iterative algorithm that is based on the maximum likelihood approach.
+This classical method is widely used for image reconstruction from \ac{CC} data \cite{maxim2016}.
+Another approach called \ac{MAP} \cite{MLEM_Lange_Carlson_1984} is based on bayesian approach.
+It is an extension of \ac{MLEM} that allows to incorporate some prior knowledge about the source distribution or features of the data.
+\ac{SOE} is a stochastic algorithm that randomly assigns origins of the measured events to the conical surfaces.
+During the course of reconstruction, the origins of events are stochastically moved and the acceptance of the new event origin is determined by the change in event density.
+After several iterations, the reconstructed distribution of origins converges to a quasistationary state \cite{SOE_Andreyev_2009}.
+
+The iterative methods were originally developed for \ac{PET} and \ac{SPECT} imagining.
+The \ac{PET}  method is based on positron emission. 
+The emitted positron interacts with electron in the patients body and both particles vanish in a burst of energy. 
+This energy comes in a form of two gamma rays, that goes into a opposite directions.
+Detection of these two gamma rays (measured by the camera at the same time) allows us to reconstruct 3D image of the patient's body.
+In \ac{SPECT}, only a single gamma ray is produced. 
+Medical \ac{SPECT} imagining devices typically acquire measurements from different positions and use collimators to restrict the set of possible directions of incoming gamma ray.
+Measured events in \ac{PET} and \ac{SPECT} are stored in memory in discrete bins (each bin represents count of reconstructed particles in defined time interval or subset of the image space).
+On the other hand, the \ac{CC} events are represented in memory using List-mode approach.
+It is a list data structure, where each record contains information about the exact arrival time, position and energy of measured interactions useful for Compton cone reconstruction.
+Despite all these differences in the nature of the measurements, the methods were adapted for Compton imagining as well.
+
+%Collimators restricts the set of possible directions from which the gamma ray may enter the detector (and be detected), therefore they can improve accuracy of the detection.
+%Since only one gamma-ray is emmited (unlike in \ac{PET}), high number of measurements is needed for accute reconstruction.
+%Medical \ac{SPECT} imagining cameras typically use collimators to get some information about direction of incoming gamma ray.
+%Collimators restricts the set of possible directions from which the gamma ray may enter the detector (and be detected), therefore they can improve accuracy of the detection.
+
+\section{Maximum likelihood expectation maximization}
+The description of the \ac{LM-MLEM} algorithm is given in this section.
+It was originally proposed by \cite{1982_shepp_vardi_MLEM} and later adapted to \ac{CC} data and list-mode form by \cite{wilderman}.
+
+\subsection{Maximum likelihood estimation}
+\ac{MLE} is a classical approach in machine learning.
+It is used to estimate the parameters of a probability distribution based on observed data. 
+The goal of \ac{MLE} is to find the parameter values that make the observed data most probable under the assumed probability distribution.
+This is done by calculating the likelihood function, which is the probability of the observed data given a set of parameter values.
+Likelihood can be defined as 
+\begin{equation}
+  \mathcal{L}(\boldsymbol{O}| \Phi) = p(\ \mathrm{observing\ measurements} \  \boldsymbol{O} \ \mathrm{given\ parameters\ } \Phi ).
+  \label{eq:likelihood}
+\end{equation}
+We want to maximize this expression with respect to the hidden parameters.
+In other words, we want to find such parameters so that they fit our observations in the best possible way.
+
+\subsection{Original MLEM formulation}
+Let's divide the area of possible sources of radiation into $J$ discrete bins (indexed with $j$, where $j = 1 \dotsc J$).
+Each discrete bin is represented by its center position.
+Suppose the binned data space of all measured events is $\mathbf{I}$, divided in $I$ discrete bins indexed with $i$, $i = 1 \dotsc I$.
+The unobservable data space of all not measured events is denoted $\mathbf{\hat{I}}$.
+The vector $\mathbf{Y}$ with elements $y_{i}, i \in (1, \dots I)$ denotes the number of particles detected in the corresponding bin $i$.
+%(the algorithm was originally developed for \ac{PET} imaging, where $y_{i}$ can be arbitrary number, $y_{i} = 1$ in list-mode representation).
+Let's define matrix $\mathbf{T}$ ($\mathbf{T} \in \mathbb{R}^{I \times J}$), where each position in the matrix is defined as
+
+\begin{equation}
+  t_{ij} =  P(\textrm{detected in } i | \textrm{emitted from } j).
+\end{equation}
+
+In other words, $t_{ij}$ represents a probability that we observe observation $i$ given the fact that a radioactive particle was emitted from position $j$.
+Lets assume that we know the matrix $\mathbf{T}$.
+
+Let's assume that the number of photons emitted from one position $j$ is a discrete random variable that follows a Poisson distribution with expected value $\lambda_{j}$.
+Our goal is to estimate $\mathbf{\lambda}$, which has elements $\lambda_{j}$, each corresponding to the expected intensity of emission from the position $j$.
+Then a vector $\mathbf{M}$ can be defined, where each element of $\mathbf{M}$ 
+\begin{equation}
+  \mu_{i} = \sum_{j} t_{ij}\lambda_{j}
+  \label{eq:mu}
+\end{equation}
+denotes the average number of events measured in bin $i$.
+
+The probability of measuring $y_{i}$ particles in the measurement bin $i$ w.r.t. to some given $\mathbf{\lambda}$ can be expressed as (Poisson distribution):
+\begin{equation}
+  p(y_{i} |\mu_{i} ) = e^{-\mu_{i}} \frac{\mu_{i}^{y_i}}{y_{i}!},
+\end{equation}
+
+The likelihood of all the measurements (assuming the events to be independent) is
+\begin{equation}  
+  \mathcal{L}(\mathbf{Y} | \mathbf{\lambda}) = \prod_{i}p(y_{i} |\mu_{i} ) = \prod_{i} e^{-\mu_{i}} \frac{\mu_{i}^{y_i}}{y_{i}!}.
+\end{equation}
+
+Instead of maximizing the product, it is natural to maximize its logarithm, since the logarithm is monotonically increasing function.
+After taking its logarithm and substituting \ref{eq:mu}, we have the following:
+\begin{equation}  
+  \mathrm{log}\ \mathcal{L}(\mathbf{Y} | \mathbf{\lambda}) = \sum_{i}\left ( -\sum_{j} t_{ij}\lambda_{j} + y_{i} \mathrm{log}(\sum_{j} t_{ij}\lambda_{j})  - \mathrm{log}(y_{i}!) \right ).
+  \label{eq:likelihood1}
+\end{equation}
+Then the maximum likelihood solution of the given problem is
+\begin{equation}
+  \mathbf{\lambda}_{best} = \underset{\mathbf{\lambda}}{\mathrm{argmax}}( \mathrm{log}\ \mathcal{L}(\mathbf{Y} | \mathbf{\lambda}))
+\end{equation}
+However, the nonlinear equation \ref{eq:likelihood1} can not be maximized directly.
+The solution is to use an iterative \ac{EM} algorithm, as proposed in \cite{MLEM_Lange_Carlson_1984}.
+\subsection{Expectation maximization algorithm}
+The \ac{EM} algorithm was originally developed by \cite{EM}. 
+It is an iterative algorithm consisting of two steps performed in each iteration - E-step and M-step.
+Lets denote $l$ the number of iteration of the algorithm.
+The vector of hidden parameters $\mathbf{\hat{\lambda}}^{[l = 0]}$ is initialized to some starting value using back-projection of the compton cones.
+
+The purpose of the E-step is to determine the expectation of the likelihood function given the measurements $\mathbf{Y}$ and the estimation of hidden parameters $\mathbf{\hat{\lambda}}^{[l-1]}$ obtained from the previous iteration. 
+Then in the M-step, this expectation is maximized by setting its derivatives w.r.t. $\mathbf{\hat{\lambda}}^{[l-1]}=0$.
+According to \cite{MLEM_Lange_Carlson_1984}, the final formula for iterative \ac{MLEM} algorithm with binned data is 
+\begin{equation}
+  \hat{\lambda}_{j}^{[l]} = \frac{\hat{\lambda}_{j}^{[l-1]}}{\sum_{i}t_{ij}} \sum_{i \in I} \frac{t_{ij} y_{i}}{\sum_{k} t_{ik} \hat{\lambda}_{k}^{[l-1]}}.
+  \label{eq:mlem_class}
+\end{equation}
+The term $\sum_{i}t_{ij}$ is called sensitivity of detection $s_{j}$ and presents a probability that particle emitted at position $j$ is detected by the sensor:
+\begin{equation}
+  s_{j} = P(\textrm{detected by the sensor}\ | \textrm{emitted from } j) =  \sum_{i}t_{ij}
+\end{equation}
+
+\subsection{List-mode Maximum Likelihood Expectation Maximization}
+The List-mode extension of \ac{MLEM} for \ac{CC} imaging was proposed in \cite{wilderman}.
+Each measurement bin in \ac{LM-MLEM} is consisting of only one detected Compton event.
+Therefore the number of detected events $y_{i}$ in data bin $i$ is either $y_{i} = 1$ for detected event or $y_{1} = 0$ when no event was recorded.
+This simplifies the formula \ref{eq:mlem_class} to
+
+\begin{equation}
+  \hat{\lambda}_{j}^{[l]} = \frac{\hat{\lambda}_{j}^{[l-1]}}{s_{j}} \sum_{i \in \mathbf{I}}\frac{t_{ij} }{\sum_{k} t_{ik} \hat{\lambda}_{k}^{[l-1]}}.
+  \label{eq:lmmlem}
+\end{equation}
+
+Since only recorded measurements are considered in the list-mode approach, it no longer holds that sensitivity of measurements can be expressed as $s_{j} = \sum_{i}t_{ij}$ (summation over all measurement bins $i$).
+The sensitivity of detection is a sum over all events, not only those that were measured, therefore 
+
+\begin{equation}
+s_{j} = \sum_{\mathbf{I} \cup \mathbf{\hat{I}}} t_{ij} 
+\end{equation}
+for \ac{LM-MLEM}.
+
+\subsection{LM-MLEM in practical application}
+The equation \ref{eq:lmmlem} presents the formulation of iterative algorithm maximalizing the likelihood of measured data.
+The system matrix $\mathbf{T}$ and vector of sensitivity values $\mathbf{S} \in \mathbb{R}^{J}$ with elements $s_{j}$ depend on the particular geometry of the used sensor and need to be derived individually in each application.
+%Another design-choice is the initialization of the vector $\mathbf{\hat{\lambda}}^[l = 0]$.
+
+
+
+%Since the data for \ac{CC} are stored using list-mode approach, the $y_{i}$ (number of detected events in data bin $i$) in equation \ref{eq:mlem_class} is either $0$ or $1$.
+
+
+\section{The algorithm of choice}
+The choice of reconstruction method for the given task (estimation of sources locations from \ac{CC} measurements acquired by a group of \ac{UAV} equipped with \ac{pix} detector) was made under following assumptions.
+The iterative methods are more flexible and can handle noise in the measurements.
+The distance between the source and \ac{CC} onboard the \ac{UAV}s is high and the number of measured events (represented using list-mode approach) is relatively low.
+There is no prior knowledge about the distribution of radioactive sources.
+The \ac{CC} data are represented using list-mode approach.
+
+%\section{Imagining in nuclear medicine}
+%The problem of reconstructing 3D positions of sources of ionizing radiation has been studied in depth in the field of medical imagining.
+%To give an example: one possible application of such methods is a cancer diagnostics.
+
+%There are numerous methods used in medical imagining. 
+%Two main approaches are following: \ac{PET} and \ac{SPECT}.
+%\ac{PET} imagining typically use a gamma emitting radioisotope as a tracer.  
+%The method is based on positron emission. 
+%The emitted positron interacts with electron in the patients body and both particles vanish in a burst of energy. 
+%This energy comes in a form of two gamma rays, that goes into a opposite directions.
+%Detection of these two gamma rays (measured by the camera at the same time) allows us to reconstruct 3D image of the patient's body.
+%In \ac{SPECT}, single gamma ray is produced. 
+%The reconstructed image is computed from gamma rays detected by the camera.
+%Since only one gamma-ray is emmited (unlike in \ac{PET}), high number of measurements is needed for accute reconstruction.
+%Medical \ac{SPECT} imagining cameras typically use collimators to get some information about direction of incoming gamma ray.
+%Collimators restricts the set of possible directions from which the gamma ray may enter the detector (and be detected), therefore they can improve accuracy of the detection.
+
+%Another type of sensor (that can be used in \ac{SPECT} imagining) is a Compton camera.
+%The biggest benefit of compton camera is that it provides information about the direction of detected incoming gamma ray without the use of collimator.
+%The nuclear medicine reconstruction method for compton camera measurements that served as inspiration for for this thesis is called \ac{LM-MLEM}.

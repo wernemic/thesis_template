@@ -27,8 +27,26 @@ As the gamma particle passes through matter, there are three possible effects th
 
 \textbf{The photoelectric effect} is typical at low energies of gamma rays. A photon undergoes an interaction with an electron that is bound in an atom. The incident photon completely disappears in this interaction. A product of this interaction is a photon.
 \textbf{The Compton effect} is typical for mid-energetic gamma rays. In this process, an incident gamma photon loses energy to an atomic electron. A new lower energetic photon is emitted in a different direction (hence the frequently used term "Compton scattering").
+:qa
 \textbf{Pair production} is typical for high-energetic gamma rays. It is a process in which a photon of sufficient energy is converted into an electron and a positron.
 
+\section{Cross section}
+TODO
+
+\begin{figure}[!h]
+  \centering
+  \subfloat[\centering Cross-section for photon interactions in Silicon in the MeV range. The four dominating interaction mechanisms are photo effect, Compton scattering, pair creation and Rayleigh scattering. Source: \cite{zoglauer}] {
+    \includegraphics[width=0.45\textwidth]{./fig/photos/cross_stat.png}
+    \label{fig:dis2}
+  }
+  \subfloat[\centering Cross section for compton scattering. Source: \cite{zoglauer}] {
+
+    \includegraphics[width=0.45\textwidth]{./fig/photos/cross_section.png}
+    \label{fig:dis1}
+  }
+  \caption{TODO}
+  \label{fig:xxx}
+\end{figure}
 \subsection{Compton effect}
 The Compton effect (published in 1923 \cite{}) describes the way how a (gamma or X-ray) photon interacts with a static electron. An incident photon with wavelength $\lambda$ losses some energy to the electron. A new lower energetic photon with wavelength $\lambda^{\prime}$ is emitted under angle $\Theta$. Thanks to the law of conservation of energy and momentum, Compton derived the following equation
 \begin{equation}
@@ -64,6 +82,8 @@ Now we can express the scattering angle $\Theta$ as
 
 Given the measurements on the scatterer and absorber and computed scattering angle $\Theta$ using the equation \ref{eq:theta} (using known energy of the incoming photon $E_{\lambda}$), we can reconstruct a set of possible directions from where the original photon arrived. Since the Compton effect is symmetrical, the set of possible directions towards the source of ionizing radiation forms a surface of a cone.
 
+
+
 \section{MiniPIX TPX3 sensor}
 The sensor used in this work is a small CdTe event-based camera that is capable of witnessing the interactions between gamma photons and the matter of the sensor and reporting them in real time.
 Unlike the traditional model of the Compton camera mentioned before, this is a single-stack detector.
@@ -88,3 +108,5 @@ Thanks to that, we can use this sensor on board a small UAV.
 
 TODO
 absorbtion
+
+TODO
