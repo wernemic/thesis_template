@@ -25,18 +25,18 @@ Moreover, we would like to reconstruct the sources of ionizing radiation in real
 Despite all of these differences, the aim of this work is to get inspiration in the medical field and apply these algorithms to the given problem.
 
 \section{Analytical and iterative methods}
-Literature describes two main categories of reconstruction methods: analytical and iterative algorithms \cite{lojacono2}.
+Literature describes two main categories of reconstruction methods: analytical (direct) and iterative algorithms \cite{lojacono2}.
 In analytical methods, the aim is to find solution directly from the conical projections of reconstructed Compton events.
 Such solution might be exact in the continuous model, yet impractical in real world applications, where the measurements might be noisy (thus conical surface projections might not intersect the real position of the source) or where the computational power is limited.
 
-To illustrate difficulties of direct reconstruction methods, algorithm proposed in \cite{baca2021mrs} estimates the initial hypothesis of the source position as a point that is closest to all measured cone surfaces (which might be considered as analytical method).
+To illustrate difficulties of direct reconstruction methods, algorithm proposed in \cite{baca2019compton} estimates the initial hypothesis of the source position as a point that is closest to all measured cone surfaces (which might be considered as analytical method).
 Finding solution of such non-linear least squares problem is computationally demanding and tractable only for small number of cones.
-Another example of simple analytical method is called backprojection.
+Another example of simple direct reconstruction method is called back-projection.
 It can be used as follows:
 the detection space is divided into discrete bins.
-For each Compton measurement, the cone surface is backprojected to the discrete bins.
-The intersection of the cone with the bins is recorded.
-The bins with higher number of intersections presents possible locations of $\gamma$ particles sources.
+For each Compton measurement, the cone surface is back-projected to the discrete bins.
+The intersection of each cone with the bins is recorded.
+The bins with higher number of intersections presents possible locations of $\gamma$ radiation sources.
 
 The iterative algorithms work with discretized space.
 These methods  approximate the positions of sources by iteratively adapting the reconstruction to the measured projections.

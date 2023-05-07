@@ -48,39 +48,39 @@ TODO
   \label{fig:xxx}
 \end{figure}
 \subsection{Compton effect}
-The Compton effect (published in 1923 \cite{}) describes the way how a (gamma or X-ray) photon interacts with a static electron. An incident photon with wavelength $\lambda$ losses some energy to the electron. A new lower energetic photon with wavelength $\lambda^{\prime}$ is emitted under angle $\Theta$. Thanks to the law of conservation of energy and momentum, Compton derived the following equation
+The Compton effect (published in 1923 \cite{}) describes the way how a (gamma or X-ray) photon interacts with a static electron. An incident photon with wavelength $\lambda$ losses some energy to the electron. A new lower energetic photon with wavelength $\lambda^{\prime}$ is emitted under angle $\beta$. Thanks to the law of conservation of energy and momentum, Compton derived the following equation
 \begin{equation}
-    \lambda^{\prime} = \lambda + \frac{h}{m_{e}c}(1-\mathrm{cos} \Theta),
+    \lambda^{\prime} = \lambda + \frac{h}{m_{e}c}(1-\mathrm{cos} \beta),
 \end{equation}
-where $\lambda$ is the wavelength of the incident photon, $\lambda^{\prime}$ is the wavelength of the emitted photon, $h$ is the Planck constant, $m_{e}$ is the electron rest mass, $c$ is the speed of light and $\Theta$ is the scattering angle.
+where $\lambda$ is the wavelength of the incident photon, $\lambda^{\prime}$ is the wavelength of the emitted photon, $h$ is the Planck constant, $m_{e}$ is the electron rest mass, $c$ is the speed of light and $\beta$ is the scattering angle.
 
 \begin{figure}[!h]
     \centering
     \includegraphics[width=0.3\textwidth]{./fig/photos/scattering.png}
     \label{fig:scattering}
-    \caption{An illustration of Compton scattering. The incident photon interacts with the static electron. As a result, a new lower energetic photon is emitted in a direction changed by $\Theta$ as part of its energy is transferred to electron $e^{-}$. Source: \cite{baca2021gamma}}
+    \caption{An illustration of Compton scattering. The incident photon interacts with the static electron. As a result, a new lower energetic photon is emitted in a direction changed by $\beta$ as part of its energy is transferred to electron $e^{-}$. Source: \cite{baca2021gamma}}
 \end{figure}
 
 \section{Compton camera}
 This effect is the fundamental principle in a sensor called a Compton camera. 
 The sensor is typically composed of two main components: the scatterer and the absorber. 
-The incident photon first interacts with the scatterer, where the lower energetic photon is emitted under angle $\Theta$ (thanks to the Compton effect). 
+The incident photon first interacts with the scatterer, where the lower energetic photon is emitted under angle $\beta$ (thanks to the Compton effect). 
 Since it is more common to measure energies instead of wavelength, we can rewrite the Compton formula as
 \begin{equation}
-E_{\lambda^{\prime}} = \frac{E_{\lambda}}{  1 + (E_{\lambda} / m_{e}c^{2}) (1 - \mathrm{cos} \Theta)},
+E_{\lambda^{\prime}} = \frac{E_{\lambda}}{  1 + (E_{\lambda} / m_{e}c^{2}) (1 - \mathrm{cos} \beta)},
 \end{equation}
 where $E_{\lambda}$ is the energy of the incoming photon from the source, $E_{\lambda^{\prime}}$ is the energy of the scattered photon.  
 The bi-product of the interaction (electron $e_{e^{-}}$) is immediately measured in the scatterer, and its position is recorded.
 Then, the scattered lower energetic photon interacts with the second layer of the sensor - the absorber. 
 The photoelectric effect is witnessed while measuring the product of it - the energy of the electron $e_{\lambda^{prime}}$ and its position on the absorber.
 
-Now we can express the scattering angle $\Theta$ as
+Now we can express the scattering angle $\beta$ as
 \begin{equation}
-    \Theta = \mathrm{arccos} \left (  1-\frac{m_{e}c^{2}E_{\lambda^{\prime}}}{E_{\lambda} (E_{\lambda} - E_{\lambda^{\prime}})} \right )
-    \label{eq:theta}
+    \beta = \mathrm{arccos} \left (  1-\frac{m_{e}c^{2}E_{\lambda^{\prime}}}{E_{\lambda} (E_{\lambda} - E_{\lambda^{\prime}})} \right )
+    \label{eq:compton_beta_formula}
 \end{equation}
 
-Given the measurements on the scatterer and absorber and computed scattering angle $\Theta$ using the equation \ref{eq:theta} (using known energy of the incoming photon $E_{\lambda}$), we can reconstruct a set of possible directions from where the original photon arrived. Since the Compton effect is symmetrical, the set of possible directions towards the source of ionizing radiation forms a surface of a cone.
+Given the measurements on the scatterer and absorber and computed scattering angle $\beta$ using the equation \ref{eq:theta} (using known energy of the incoming photon $E_{\lambda}$), we can reconstruct a set of possible directions from where the original photon arrived. Since the Compton effect is symmetrical, the set of possible directions towards the source of ionizing radiation forms a surface of a cone.
 
 
 

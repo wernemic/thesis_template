@@ -89,7 +89,7 @@ In decentralized system, each robot operates independently, making decisions bas
 
 \begin{figure}[!htb]
     \centering
-    \includegraphics[width=0.99\textwidth]{./fig/photos/pipeline_main.eps}
+    \includegraphics[width=0.99\textwidth]{./fig/photos/system_new.eps}
     \caption{\centering The system architecture diagram. The search and planning method is composed of \ac{MLEM} radiation mapping node, waypoint generation, clustering, waypoint filtering, optimal sequence deduction using TSP and path planning. The exploration (green) and exploitation (yellow) waypoints are processed separately.}
     \label{fig:sysarch}
 \end{figure}
@@ -202,8 +202,9 @@ The more detailed description of each individual step follows in the next sectio
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-\section{Waypoints generation, weighting and filtering}% %%{
-\subsection{Local maxima filter}
+\section{Waypoints generation}% %%{
+\subsection{Exploitation}
+\subsubsection{Local maxima filter}
 The current estimate of ionizing radiation sources positions serves as an input for the waypoint generation method.
 The map estimated by the \ac{MLEM} method is processed and local maxima of the map are detected.
 Local maximum is a cell in the discretized map that has the highest value among all cells in its neighborhood. 
@@ -216,21 +217,21 @@ The local maxima filter is illustrated in figure \ref{fig:filter}.
   \subfloat[\centering input of the filter] {
     \includegraphics[width=0.2\textwidth]{./fig/photos/filter1.eps}
 
-    \label{fig:pip1}
+    \label{fig:fil1}
   }
   \subfloat[\centering filter window size 3] {
     \includegraphics[width=0.2\textwidth]{./fig/photos/filter3.eps}
-    \label{fig:pip2}
+    \label{fig:fil2}
   }
   \subfloat[\centering detected local maxima] {
     \includegraphics[width=0.2\textwidth]{./fig/photos/filter2.eps}
-    \label{fig:pip3}
+    \label{fig:fil3}
   }
   \caption{Local maxima filter demonstration}
   \label{fig:filter}
 \end{figure}% %%}
 
-\subsection{Waypoint weighting and filtration}
+\subsubsection{Waypoint weighting and filtration}
 The waypoints associated with local maxima are weighted using following formula:
 \begin{equation}
   w_{j_{weight}} = \frac{\lambda_{j}}{    s_{j_{normalized}} },
@@ -240,6 +241,34 @@ The purpose of the weighting step is following: it should prioritize the waypoin
 The list of possible waypoints is then sorted from the highest $w_{j_{weight}}$ to the lowest.
 Top $n$ waypoints based on the $w_{j_{weight}}$ are propagated further in the algorithm, the rest is ignored (parameter $n$ is set to $n = 10d$, where $d$ is number of drones used for exploitation).
 The aim of filtering step is to remove the local maxima that were caused by noise in the \ac{MLEM} estimation.% %%}
+
+\subsection{Exploration}
+The task is to explore the map positions that have low sensitivity values (the probability that particle emitted from such position to be detected is low).
+The process of generating waypoints for exploration is illustrated in figure \ref{fig:downsampling}.
+The sensitivity vector $\mathbf{S}$ is downsampled by a mean filter with the stride equal to the filter window size.
+The positions in the downsampled map are then sorted based on the mean sensitivity value.
+Arbitrary percentage $p$ of the map poses with lowest sensitivity values is taken and exploration waypoints are generated in the centers of such downsampled map positions, as shown in figure \ref{fig:down3} for $p = 25\%$.
+
+%figure downsampling%%{
+\begin{figure}[!htb]
+  \centering
+  \subfloat[\centering input vector $\mathbf{S}$ in 2D] {
+    \includegraphics[width=0.25\textwidth]{./fig/photos/downsampling1.eps}
+
+    \label{fig:down1}
+  }
+  \subfloat[\centering downsampled map (for window size and stride both equal 2)] {
+    \includegraphics[width=0.25\textwidth]{./fig/photos/downsampling2.eps}
+    \label{fig:down2}
+  }
+  \subfloat[\centering generated waypoints in the downsampled map for $p = 25\%$] {
+    \includegraphics[width=0.25\textwidth]{./fig/photos/downsampling3.eps}
+    \label{fig:down3}
+  }
+  \caption{Downsampling and waypoint generation process for exploration}
+  \label{fig:downsampling}
+\end{figure}% %%}
+
 
 %%%%%%%%%%%%%%%%%%%%%%%
 %%%%% CLUSTERING %%%%%%
