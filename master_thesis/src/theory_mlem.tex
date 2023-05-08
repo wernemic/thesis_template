@@ -1,5 +1,5 @@
 %!TEX root = ../main.tex
-\chapter{Methods for compton camera image reconstruction}
+\chapter{Methods for Compton imaging}
 The 3D reconstruction of sources of ionizing radiation poses a challenging problem.
 The difficulty of this task lies in the fact that the detected $\gamma$ particle could originated anywhere on the surface of the reconstructed compton cone.
 Several methods for compton imagining have been investigated in the past.
@@ -179,12 +179,6 @@ The system matrix $\mathbf{T}$ and vector of sensitivity values $\mathbf{S} \in 
 %Since the data for \ac{CC} are stored using list-mode approach, the $y_{i}$ (number of detected events in data bin $i$) in equation \ref{eq:mlem_class} is either $0$ or $1$.
 
 
-\section{The algorithm of choice}
-The choice of reconstruction method for the given task (estimation of sources locations from \ac{CC} measurements acquired by a group of \ac{UAV} equipped with \ac{pix} detector) was made under following assumptions.
-The iterative methods are more flexible and can handle noise in the measurements.
-The distance between the source and \ac{CC} onboard the \ac{UAV}s is high and the number of measured events (represented using list-mode approach) is relatively low.
-There is no prior knowledge about the distribution of radioactive sources.
-The \ac{CC} data are represented using list-mode approach.
 
 %\section{Imagining in nuclear medicine}
 %The problem of reconstructing 3D positions of sources of ionizing radiation has been studied in depth in the field of medical imagining.
