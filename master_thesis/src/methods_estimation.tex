@@ -95,43 +95,45 @@
 }% %%}
 
 \chapter{Compton imaging for a group of UAVs}
-This chapter describes the proposed method for data fusion of Compton measurement acquired by a group of \ac{UAV}s.
-The challenges related to the task and motivation for the proposed solution is described in section \ref{sec:prelim}.
+\alertsuccess{Somehow ok}
+This chapter describes the proposed method for data fusion of Compton measurements acquired by a group of \ac{UAV}s.
+The motivation for the proposed solution is described in section \ref{sec:prelim}.
 Section \ref{sec:setup} presents the adaptation of \ac{MLEM} to the given task.
-The estimation of sensitivity as well as system matrix is then desribed in section \ref{sec:sensitivity} and \ref{sec:system}.
-\section{Preliminaries}
+The estimation of sensitivity as well as system matrix is then described in section \ref{sec:sensitivity} and \ref{sec:system}.
+\mycomment{% %%{
+    \section{Preliminaries}
+    %Localization of multiple sources of ionizing radiation using a group of \ac{UAV}s equipped with Compton cameras \ac{pix} is a challenging task for several reasons.
+    The nature of radioactive emission (as well as the detection and reconstruction process) make the localization of sources of ionizing radiation a challenging task.
+    The following main problems were encountered during the work on this thesis:
+    \subsection{Observed challenges in localization of multiple radioactive sources}
+    \subsubsection{Measurement - position dependency}
+    As described previously, the sensing range of ionizing radiation detectors is limited due to the fact that the intensity of radiation decreases with distance (following the inverse square law).
+    The initial experiments with pre-recorded data from real experiments as well as method proposed in \cite{baca2021gamma} showed that it results into position-measurement dependency, where the quality of measurements heavily depends on the traversed trajectories of the \ac{UAV}s.
+
+    Imagine following scenario:
+    there are two sources of ionizing radiation $A$ and $B$.
+    Both have the same emission activity (average number of particles emitted per second).
+    The is an \ac{UAV} equipped with Compton camera, that is traversing the area.
+    It can either traverse the whole area following some predefined pattern (hence cover the space uniformly), which might be slow and inefficient.
+    The second option is to traverse the space using arbitrary trajectories, which might lead to faster execution time.
+    However, since the coverage of the area is not uniform, the drone could fly above the source $A$ more times than above the source $B$.
+    It means that it measured more $\gamma$ particles above source $A$, although both sources have the same emission activity.
+
+    This observed phenomena is generally not desired.
+    It would be nice to not only localize the sources, but also estimate their (absolute, or at least relative) emission activity.
+    In ideal world, the estimation method should be able to mitigate this effect.
+    The quality of estimate of sources distribution should be as independent on the \ac{UAV} trajectories as possible (given the recorded events).
+
+    \subsubsection{Nature of Compton measurements}
+    The detection and reconstruction process for Compton camera allows us to deduce set of possible sources of such particle.
+    The set is a surface of the Compton cone.
+    It poses a challenge when multiple sources of radiation are present:
+    it is impossible to deduce from which source the particle was emitted, since the source could be anywhere on the conical surface.
+    Therefore it is not known if the $\gamma$ photon originated from already localized source, or it was emitted elsewhere from some yet unobserved source.
+}% %%}
+
+\section{The algorithm of choice}
 \label{sec:prelim}
-%Localization of multiple sources of ionizing radiation using a group of \ac{UAV}s equipped with Compton cameras \ac{pix} is a challenging task for several reasons.
-The nature of radioactive emission (as well as the detection and reconstruction process) make the localization of sources of ionizing radiation a challenging task.
-The following main problems were encountered during the work on this thesis:
-\subsection{Observed challenges in localization of multiple radioactive sources}
-\subsubsection{Measurement - position dependency}
-As described previously, the sensing range of ionizing radiation detectors is limited due to the fact that the intensity of radiation decreases with distance (following the inverse square law).
-The initial experiments with pre-recorded data from real experiments as well as method proposed in \cite{baca2021gamma} showed that it results into position-measurement dependency, where the quality of measurements heavily depends on the traversed trajectories of the \ac{UAV}s.
-
-Imagine following scenario:
-there are two sources of ionizing radiation $A$ and $B$.
-Both have the same emission activity (average number of particles emitted per second).
-The is an \ac{UAV} equipped with Compton camera, that is traversing the area.
-It can either traverse the whole area following some predefined pattern (hence cover the space uniformly), which might be slow and inefficient.
-The second option is to traverse the space using arbitrary trajectories, which might lead to faster execution time.
-However, since the coverage of the area is not uniform, the drone could fly above the source $A$ more times than above the source $B$.
-It means that it measured more $\gamma$ particles above source $A$, although both sources have the same emission activity.
-
-This observed phenomena is generally not desired.
-It would be nice to not only localize the sources, but also estimate their (absolute, or at least relative) emission activity.
-In ideal world, the estimation method should be able to mitigate this effect.
-The quality of estimate of sources distribution should be as independent on the \ac{UAV} trajectories as possible (given the recorded events).
-
-\subsubsection{Nature of Compton measurements}
-The detection and reconstruction process for Compton camera allows us to deduce set of possible sources of such particle.
-The set is a surface of the Compton cone.
-It poses a challenge when multiple sources of radiation are present:
-it is impossible to deduce from which source the particle was emitted, since the source could be anywhere on the conical surface.
-Therefore it is not known if the $\gamma$ photon originated from already localized source, or it was emitted elsewhere from some yet unobserved source.
-
-
-\subsection{The algorithm of choice}
 The algorithms for Compton imaging in nuclear medicine (described in the previous chapter) served as inspiration for the imaging method proposed in this thesis.
 The algorithm of choice is \ac{MLEM} (more precisely its list-mode variant for Compton imaging) for following reasons.
 
@@ -186,16 +188,16 @@ The almost real time estimation is important for active search strategy, where t
     Lastly, the estimation of sensitivity of detection (how likely the particles from given position were measured) can be beneficial, 
     because it can provide information of how much the \ac{UAV}s already explored the area of interest and where to fly to possibly detect undetected sources.
 }% %%}
-\section{MLEM for robotics application}
+\section{Online MLEM Compton imaging for group of \ac{UAV}s}
 \label{sec:setup}
-\subsection{Setup}
+\subsection{Discretization and hidden parameters}
 
 The area of interest (where possible sources of ionizing radiation might be located) is divided into $J$ discrete bins with bin size $l$, each of them is approximated by its center position and indexed as $j$.
 Figure \ref{fig:discretization} shows the discretization of the area of interest.
 Lets denote $\mathbf{I}$ the set of all collected measurements.
 The individual measurements (Compton cones) are indexed with $i$, $i \in (1, \dots , I)$, where $I$ is the total number of measurements collected during the experiment.
 Let's denote $\mathbf{\Lambda}$ ($\mathbf{\Lambda} = \begin{bmatrix}\lambda_{0} & \lambda_{1} & \dots & \lambda_{J}\end{bmatrix}$) as the vector of hidden parameters we would like to estimate.
-As described in the previous chapter, $\lambda_{j}$ represents the expected number of particles emitted from the corresponding map position $j$ in the unit time interval.
+As described in the previous chapter, $\lambda_{j}$ represents the expected emission rate for the corresponding map position $j$.
 
 %multifigure discretization%%{
 \begin{figure}[!h]
@@ -224,7 +226,29 @@ The estimation process proceeds interatively using the \ac{LM-MLEM} algorithm:
   \label{eq:MLEM}
 \end{equation}
 where $l$ is the current iteration of the algorithm, $\lambda_{j}$ is the hidden parameter for each position $j$ we would like to estimate, $t_{ij}$ is the element of system matrix $\mathbf{T}$ and $s_{j}$ is the sensitivity of detection for the map position $j$.
-The estimation of system matrix $\mathbf{T}$ and sensitivity of detection $\mathbf{S}$ is described in the following sections.% %%}
+
+The figure \ref{fig:online_mlem} depicts the workflow of online \ac{LM-MLEM} estimation.
+The sensitivity vector $S$ is iteratively updated using recorded drone positions, that are sampled from drone trajectories (with frequency $\SI{5}\hertz$).
+The details of sensitivity computation is provided in section \ref{sec:sensitivity}.
+The system matrix $\mathbf{T}$ is updated (a new row is added) every time a new Compton cone is detected.
+The estimation of system matrix $\mathbf{T}$ is described in section \ref{sec:system}.
+
+The iterative \ac{LM-MLEM} algorithm described in equation \ref{eq:MLEM} is processed regularly.
+The vector of hidden parameters $\mathbf{\Lambda}$ is initialized with cones back-projection.
+The \ac{LM-MLEM} estimate is recomputed every $2$ seconds.
+
+
+
+% %%}
+
+
+%figure melm online%%{
+\begin{figure}[htb]
+  \centering
+    \includegraphics[width=0.99\textwidth]{./fig/photos/online_estimation.eps}
+  \caption{Workflow of online \ac{MLEM} estimation.}
+    \label{fig:online_mlem}
+\end{figure}% %%}
 
 \section{Sensitivity of detection}% %%{
 \label{sec:sensitivity}
@@ -361,7 +385,7 @@ For arbitrary query ($\theta, \phi$) it finds the closest key pair ($\theta_{k},
   \Function{is\_cone\_measured}{$\theta,\phi$}
   \State $ray \gets \Call{sample\_sensor\_surface}{\theta,\phi}$ \Comment{ray inside the sensor after hitting its surface}
   \If{\Call{is\_compton\_scattering}{$ray, E_{0}$}} \Comment{sample if \ac{CS} occured}
-  \State $new\_ray, E_{1} \gets \Call{compton\_scattering}{ray, E_{0}}$ \Comment{Sample Klein-Nishina formula}
+  \State $new\_ray, E_{1} \gets \Call{compton\_scattering}{ray, E_{0}}$ %\Comment{Sample }
   \Else{}
     \State \Return False \Comment{No compton scattering occured}
   \EndIf

@@ -1,20 +1,14 @@
 %!TEX root = ../main.tex
 
 \chapter{Results\label{chap:results}}
+\alertwarning{under construction}
 
-
-This section describes experiments and evaluation of performance of the proposed method for mapping of ionizing radiation.
-An experiment with real sources of ionizing radiation requires (due to specific safety measures, permission from the state authorities...) coordination with other institutions, such as Czech metrology institute.
-Unfortunately, it was not possible to perform experiment with real sources before the deadline of the thesis due to these organizational reasons.
-However, the method was evaluated on pre-recorded data from real-world experiments as well as using the realistic simulator for compton camera \cite{TODO}.
-
-
-
-
-
-
-
-
+\mycomment{% %%{
+    This section describes experiments and evaluation of performance of the proposed method for mapping of ionizing radiation.
+    An experiment with real sources of ionizing radiation requires (due to specific safety measures, permission from the state authorities...) coordination with other institutions, such as Czech metrology institute.
+    Unfortunately, it was not possible to perform experiment with real sources before the deadline of the thesis due to these organizational reasons.
+    However, the method was evaluated on pre-recorded data from real-world experiments as well as using the realistic simulator for compton camera \cite{TODO}.
+}% %%}
 
 \section{Monte carlo simulation results}
 In figure \ref{fig:monte_cs_results}, the probability of a Cesium-137 photon generating a Compton cone when emitted from a distance of 1 meter is displayed. 
@@ -23,9 +17,6 @@ This outcome can be explained using Figure \ref{fig:monte_clar}.
 As illustrated in figure \ref{fig:monte_reaching}, particles that approach the sensor from the front side have a greater visible surface area, resulting in a greater likelihood of hitting the sensor. 
 Conversely, particles arriving from the side have a longer intersection with the sensor's material, resulting in a greater probability of producing a Compton cone, as shown in figure \ref{fig:monte_cone_from_hitting}. 
 Surprisingly, these two effects compensate for each other, resulting in an almost consistent sensitivity of the sensor to particles arriving from various directions.
-
-
-
 
 \begin{figure}[!htb]
   \centering
@@ -50,30 +41,12 @@ Surprisingly, these two effects compensate for each other, resulting in an almos
   \label{fig:monte_clar}
 \end{figure}
 
+\section{Evaluation on recorded real-world data}
+TODO
+\section{Simulations in gazebo}
 
+\section{Real-world experiment with simulated sources}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-\section{Pre-recorded data with real radioactive sources}
-
-
-\section{Gazebo simulations with the simulated Compton camera}
-
-\section{Real-world experiment with the simulated Compton camera}
 \subsection{Experimental setup}
 The radiation mapping pipeline was tested on a real hardware during the field experiments.
 Three \ac{UAV} were used during this experiment.
@@ -103,56 +76,70 @@ Resolution of the map was $0.5$ m.
 \end{table}
 
 
-to say:
-2 drones were exploring the hospostsss
-1 drone was exploring the unexplored are
 
 
 
 
 
 
-The approach presented in the previous section was applied on a prerecorded rosbag from a real-world experiment.
-Four \ac{UAV}s were used in this experiment.
-The mapped area was $50 \times 35$ meters with $0.4$ m resolution.
-The experiment took approximately 8 minutes and 250 cones were measured.
-
-The estimated vector of $\bf{\lambda}$ is presented in figure \ref{fig:D}. 
-The ground truth positions of radioactive sources with their strength can be seen on figure \ref{fig:C}.
-The sensitivity vector $\mathbf{s}$ and the matrix $\mathbf{T}$ summed over all measurements (which serves as simple projection of the cones to the map) are presented in figures \ref{fig:E} and \ref{fig:F}.
-\begin{figure}[!h]
-  \centering
-  \subfloat[True positions of sources (MBq)] {
-    \includegraphics[width=0.5\textwidth]{./fig/photos/temenight_ground_truth.eps}
-    \label{fig:C}
-  }
-  \subfloat[MLEM estimate after 10 iterations] {
-    \includegraphics[width=0.5\textwidth]{./fig/photos/temenight_lambdas.eps}
-    \label{fig:D}
-  }
-  \label{fig:A}
-  \caption{Comparison of MLEM algorithm estimate and the ground truth.}
-\end{figure}
-
-\begin{figure}[!htb]
-  \centering
-  \subfloat[System matrix $\mathbf{T}$ summed over $\forall i$] {
-    \includegraphics[width=0.5\textwidth]{./fig/photos/temenight_back_projection.eps}
-    \label{fig:E}
-  }
-  \subfloat[Sensitivity vector $\mathbf{s}$] {
-    \includegraphics[width=0.5\textwidth]{./fig/photos/temenight_sensitivity.eps}
-    \label{fig:F}
-  }
-  \label{fig:B}
-  \caption{System matrix and sensitivity vector estimated during the experiment}
-\end{figure}
-
-\section{Discussion}
-We can see that the algorithm precisely detected the 500 MBq source. Two smallest source were not recognised, probably due to low number of cones measured.
-The 1900 MBg source was partially detected. 
-In is important to note that the drones were flying mostly around the 500 MBg source and most of the measured cones originated from that source, as we can see in the sensitivity vector and system matrix.
-This approach seems to be beneficial compared to naive back-projection of the cones to the map (without weighting with the sensitivity), since it can "see" the 1900 MBq source despite the fact that only few cones originated there.
 
 
 
+\mycomment{% %%{
+
+
+
+
+    \section{Pre-recorded data with real radioactive sources}
+
+
+    \section{Gazebo simulations with the simulated Compton camera}
+
+    \section{Real-world experiment with the simulated Compton camera}
+
+
+
+    The approach presented in the previous section was applied on a prerecorded rosbag from a real-world experiment.
+    Four \ac{UAV}s were used in this experiment.
+    The mapped area was $50 \times 35$ meters with $0.4$ m resolution.
+    The experiment took approximately 8 minutes and 250 cones were measured.
+
+    The estimated vector of $\bf{\lambda}$ is presented in figure \ref{fig:D}. 
+    The ground truth positions of radioactive sources with their strength can be seen on figure \ref{fig:C}.
+    The sensitivity vector $\mathbf{s}$ and the matrix $\mathbf{T}$ summed over all measurements (which serves as simple projection of the cones to the map) are presented in figures \ref{fig:E} and \ref{fig:F}.
+    \begin{figure}[!h]
+      \centering
+      \subfloat[True positions of sources (MBq)] {
+        \includegraphics[width=0.5\textwidth]{./fig/photos/temenight_ground_truth.eps}
+        \label{fig:C}
+      }
+      \subfloat[MLEM estimate after 10 iterations] {
+        \includegraphics[width=0.5\textwidth]{./fig/photos/temenight_lambdas.eps}
+        \label{fig:D}
+      }
+      \label{fig:A}
+      \caption{Comparison of \ac{MLEM} algorithm estimate and the ground truth.}
+    \end{figure}
+
+    \begin{figure}[!htb]
+      \centering
+      \subfloat[System matrix $\mathbf{T}$ summed over $\forall i$] {
+        \includegraphics[width=0.5\textwidth]{./fig/photos/temenight_back_projection.eps}
+        \label{fig:E}
+      }
+      \subfloat[Sensitivity vector $\mathbf{s}$] {
+        \includegraphics[width=0.5\textwidth]{./fig/photos/temenight_sensitivity.eps}
+        \label{fig:F}
+      }
+      \label{fig:B}
+      \caption{System matrix and sensitivity vector estimated during the experiment}
+    \end{figure}
+
+    \section{Discussion}
+    We can see that the algorithm precisely detected the 500 MBq source. Two smallest source were not recognised, probably due to low number of cones measured.
+    The 1900 MBg source was partially detected. 
+    In is important to note that the drones were flying mostly around the 500 MBg source and most of the measured cones originated from that source, as we can see in the sensitivity vector and system matrix.
+    This approach seems to be beneficial compared to naive back-projection of the cones to the map (without weighting with the sensitivity), since it can "see" the 1900 MBq source despite the fact that only few cones originated there.
+
+
+}% %%}

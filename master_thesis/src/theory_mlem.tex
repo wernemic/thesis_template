@@ -1,8 +1,9 @@
 %!TEX root = ../main.tex
 \chapter{Methods for Compton imaging}
+\alertsuccess{somehow ok}
 The 3D reconstruction of sources of ionizing radiation poses a challenging problem.
-The difficulty of this task lies in the fact that the detected $\gamma$ particle could originated anywhere on the surface of the reconstructed compton cone.
-Several methods for compton imagining have been investigated in the past.
+The difficulty of this task lies in the fact that the detected $\gamma$ particle could originated anywhere on the surface of the reconstructed Compton cone.
+Several methods for Compton imagining have been investigated in the past.
 This chapter provides a brief overview of such methods.
 
 \section{Compton imagining in nuclear medicine}
@@ -17,10 +18,10 @@ The detection of emitted particles and 3D reconstruction of their sources allow 
 Such medical application typically requires high resolution of the reconstructed image.
 The distances between the source and detector are small (tens of centimeters), number of measured events is high (tens of thousands and more).
 The reconstruction process is typically performed offline (all measurements are collected first and then the algorithms process the data), since there is no need for online estimation and the processing of measured data might take non-negligible time.
-The domain of multirobotic radiation mapping has multiple differences compared to the medical field.
+The domain of multirobot radiation mapping has multiple differences compared to the medical field.
 The distance between source and detector is much higher (from meters to tens of meters).
 The \ac{UAV}s have limited payload (hence the detector carried on board must be light and compact).
-It results in the fact that the number of measurements is much lower (hundreds-thousands detected compton events).
+It results in the fact that the number of measurements is much lower (hundreds-thousands detected Compton events).
 Moreover, we would like to reconstruct the sources of ionizing radiation in real time.
 Despite all of these differences, the aim of this work is to get inspiration in the medical field and apply these algorithms to the given problem.
 
@@ -29,7 +30,7 @@ Literature describes two main categories of reconstruction methods: analytical (
 In analytical methods, the aim is to find solution directly from the conical projections of reconstructed Compton events.
 Such solution might be exact in the continuous model, yet impractical in real world applications, where the measurements might be noisy (thus conical surface projections might not intersect the real position of the source) or where the computational power is limited.
 
-To illustrate difficulties of direct reconstruction methods, algorithm proposed in \cite{baca2019compton} estimates the initial hypothesis of the source position as a point that is closest to all measured cone surfaces (which might be considered as analytical method).
+To illustrate difficulties of direct reconstruction methods, algorithm proposed in \cite{baca2021gamma} estimates the initial hypothesis of the source position as a point that is closest to all measured cone surfaces (which might be considered as analytical method).
 Finding solution of such non-linear least squares problem is computationally demanding and tractable only for small number of cones.
 Another example of simple direct reconstruction method is called back-projection.
 It can be used as follows:
@@ -170,7 +171,7 @@ s_{j} = \sum_{\mathbf{I} \cup \mathbf{\hat{I}}} t_{ij}
 for \ac{LM-MLEM}.
 
 \subsection{LM-MLEM in practical application}
-The equation \ref{eq:lmmlem} presents the formulation of iterative algorithm maximalizing the likelihood of measured data.
+The equation \ref{eq:lmmlem} presents the formulation of iterative algorithm maximizing the likelihood of measured data.
 The system matrix $\mathbf{T}$ and vector of sensitivity values $\mathbf{S} \in \mathbb{R}^{J}$ with elements $s_{j}$ depend on the particular geometry of the used sensor and need to be derived individually in each application.
 %Another design-choice is the initialization of the vector $\mathbf{\hat{\lambda}}^[l = 0]$.
 

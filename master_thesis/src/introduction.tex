@@ -1,5 +1,6 @@
 %!TEX root = ../main.tex
 \chapter{Introduction\label{chap:introduction}}
+\alertwarning{Under construction}
 The field of mobile robotics has undergone significant progress in the past decades.
 Robots are nowadays capable of performing a wide variety of tasks. 
 Such systems can be more efficient than human workers and can replace them in environments that are dangerous for human beings.
@@ -14,7 +15,7 @@ There are multiple ways how to measure ionizing radiation.
 Widely known dosimeters can measure the intensity of radioactivity by counting the number of detected particles.
 Another type of sensor (referred as the Compton camera) is based on the Compton effect, discovered in 1923 by \cite{compton}.
 This sensor can not only detect the particle, but also reconstruct a set of possible directions from where it came.
-Thanks to innovations in the field of sensory equipment, Compton camera Minipix3 became small and lightweight enough to be carried by a small \ac{UAV} onboard.
+Thanks to innovations in the field of sensory equipment, Compton camera \ac{pix} became small and lightweight enough to be carried by a small \ac{UAV} onboard.
 The aim of this work is to present a method that performs the fusion of sensory data from multiple \ac{UAV}s (equipped with Compton camera sensor) in order to localize multiple sources of ionizing radiation.
 
 %First, introduce the reader to the research topic.
@@ -58,7 +59,7 @@ These measurements were fused using \ac{LKF}.
 
 Paper \cite{baca2021gamma} presents a multi-robotic approach to an autonomous localization of a compact gamma radiation source. 
 All unmanned aerial vehicles are equipped with a compact MiniPIX CdTe event camera (same as in our work), which is capable of measuring gamma particles and reconstructing Compton events. 
-The reconstructed compton cones are used for localization in the following way.
+The reconstructed Compton cones are used for localization in the following way.
 In the first phase of autonomous exploration, the \ac{UAV}s are exploring the area to measure the first Compton cones. 
 After the first eight cones are reconstructed, their intersection is computed using optimization methods (quadratic programming). 
 This initial estimate is then incrementally updated using new measurements. 
@@ -78,29 +79,6 @@ The main purpose of this thesis is to improve the solution presented in \cite{ba
 secondly, 
 design high-level planning approach that would control a group of \ac{UAV}s in order to explore the whole area and maximize information gain given the properties of the used sensor.
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 \section{Mathematical notation}
 
 It is a good practice to define basic mathematical notation in the introduction.
@@ -111,22 +89,28 @@ See \reftab{tab:mathematical_notation} for an example.
   \centering
   \noindent\rule{\textwidth}{0.5pt}
   \begin{tabular}{lll}
-    $\mathbf{U}$, $\bm{\alpha}$ & vector, pseudo-vector, or tuple\\
-    $\mathbf{\hat{x}}$, $\bm{\hat{\omega}}$& unit vector or unit pseudo-vector\\
-    $\mathbf{\hat{e}}_1, \mathbf{\hat{e}}_2, \mathbf{\hat{e}}_3$ & elements of the \emph{standard basis} \\
-    $\mathbf{X}, \bm{\Omega}$ & matrix \\
-    $\mathbf{I}$ & identity matrix \\
-    $x = \mathbf{a}^\intercal\mathbf{b}$ & inner product of $\mathbf{a}$, $\mathbf{b}$ $\in \mathbb{R}^3$\\
-    $\mathbf{x} = \mathbf{a}\times\mathbf{b}$ & cross product of $\mathbf{a}$, $\mathbf{b}$ $\in \mathbb{R}^3$\\
-    $\mathbf{x} = \mathbf{a}\circ\mathbf{b}$ & element-wise product of $\mathbf{a}$, $\mathbf{b}$ $\in \mathbb{R}^3$ \\
-    $\mathbf{x}_{(n)}$ = $\mathbf{x}^\intercal\mathbf{\hat{e}}_n$ & $\mathrm{n}^{\mathrm{th}}$ vector element (row), $\mathbf{x}, \mathbf{e} \in \mathbb{R}^3$\\
-    $\mathbf{X}_{(a,b)}$ & matrix element, (row, column)\\
-    $x_{d}$ & $x_d$ is \emph{desired}, a reference\\
-    $\dot{x}, \ddot{x}, \dot{\ddot{x}}$, $\ddot{\ddot{x}}$ & ${1^{\mathrm{st}}}$, ${2^{\mathrm{nd}}}$, ${3^{\mathrm{rd}}}$, and ${4^{\mathrm{th}}}$ time derivative of $x$\\
-    $x_{[n]}$ & $x$ at the sample $n$ \\
-    $\mathbf{A}, \mathbf{B}, \mathbf{x}$ & LTI system matrix, input matrix and input vector\\
-    \emph{SO(3)} & 3D special orthogonal group of rotations\\
-    \emph{SE(3)} & \emph{SO(3)}~$\times~\mathbb{R}^3$, special Euclidean group\\
+    $\mathbf{J}$  & set of discretized map positions indexed with $j$, $j \in (1, \dots, J)$ \\
+    $\mathbf{I}$  & set of Compton measurements $i$, $i \in (1, \dots, I)$ \\
+    $\mathbf{S}$   &  sensitivity vector with elements $s_{j}$, $\mathbf{S} \in \mathbb{R}^{J}$ \\
+    $\mathbf{T}$   & system matrix with elements $t_{ij}$, $\mathbf{T} \in \mathbb{R}^{I \times J}$ \\
+    $v$            & sampled drone position (composed of 3D position and orientation) \\
+    $\beta$       & Compton angle
+    %$\mathbf{U}$, $\bm{\alpha}$ & vector, pseudo-vector, or tuple\\
+    %$\mathbf{\hat{x}}$, $\bm{\hat{\omega}}$& unit vector or unit pseudo-vector\\
+    %$\mathbf{\hat{e}}_1, \mathbf{\hat{e}}_2, \mathbf{\hat{e}}_3$ & elements of the \emph{standard basis} \\
+    %$\mathbf{X}, \bm{\Omega}$ & matrix \\
+    %$\mathbf{I}$ & identity matrix \\
+    %$x = \mathbf{a}^\intercal\mathbf{b}$ & inner product of $\mathbf{a}$, $\mathbf{b}$ $\in \mathbb{R}^3$\\
+    %$\mathbf{x} = \mathbf{a}\times\mathbf{b}$ & cross product of $\mathbf{a}$, $\mathbf{b}$ $\in \mathbb{R}^3$\\
+    %$\mathbf{x} = \mathbf{a}\circ\mathbf{b}$ & element-wise product of $\mathbf{a}$, $\mathbf{b}$ $\in \mathbb{R}^3$ \\
+    %$\mathbf{x}_{(n)}$ = $\mathbf{x}^\intercal\mathbf{\hat{e}}_n$ & $\mathrm{n}^{\mathrm{th}}$ vector element (row), $\mathbf{x}, \mathbf{e} \in \mathbb{R}^3$\\
+    %$\mathbf{X}_{(a,b)}$ & matrix element, (row, column)\\
+    %$x_{d}$ & $x_d$ is \emph{desired}, a reference\\
+    %$\dot{x}, \ddot{x}, \dot{\ddot{x}}$, $\ddot{\ddot{x}}$ & ${1^{\mathrm{st}}}$, ${2^{\mathrm{nd}}}$, ${3^{\mathrm{rd}}}$, and ${4^{\mathrm{th}}}$ time derivative of $x$\\
+    %$x_{[n]}$ & $x$ at the sample $n$ \\
+    %$\mathbf{A}, \mathbf{B}, \mathbf{x}$ & LTI system matrix, input matrix and input vector\\
+    %\emph{SO(3)} & 3D special orthogonal group of rotations\\
+    %\emph{SE(3)} & \emph{SO(3)}~$\times~\mathbb{R}^3$, special Euclidean group\\
   \end{tabular}
   \noindent\rule{\textwidth}{0.5pt}
   \caption{Mathematical notation, nomenclature and notable symbols.}
