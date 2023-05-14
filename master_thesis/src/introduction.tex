@@ -31,6 +31,7 @@ The aim of this work is to present a method that performs the fusion of sensory 
 Several works related to radiation mapping appeared in 2011 when the biggest radioactive accident in past decades happened in Japan.
 The strong earthquake and following tsunami wave caused several leakages of radioactive substances from \ac{FDNPP}.
 The contaminated area of the powerplant was explored by the group o f\ac{UGV}, as presented in \cite{fuku2012}.
+
 Work presented in \cite{fuku_compton} showed a radioactive hotspot localization by one \ac{UGV} equipped with Compton camera.
 However, the work focused only on 2D image reconstruction, and the robot was moving only in one direction during the experiment.
 
@@ -45,6 +46,61 @@ In all these works, relatively large \ac{UAV} was following a predefined traject
 
 More recent works, such as TODO...
 
+An overview presented in \cite{radiation_detection_systems_overview} shows that various mobile radiation detection systems were presented in the past decade.
+
+
+ 
+
+Papers closely attached to the topic of this thesis are following.
+
+
+%compton ground robot
+
+\subsection{Compton imaging in robotics}
+Radiation mapping using an \ac{UGV} equipped with a Compton camera sensor is presented in \cite{3D_compton_mobile_robot_2017}.
+The authors combine \ac{SLAM} method with Compton measurements in order to reconstruct a 3D position of a radioactive source.
+The \ac{UGV} stops at predefined positions for $\SI{5}{\minute}$ and collects around $4000$ Compton measurements during the presented simulated experiment.
+The reconstruction method is based on iterative \ac{MLEM} algorithm.
+However, authors of the paper do not specify the details of the proposed \ac{MLEM} reconstruction method (system matrix is not further described).
+
+%Paper \cite{china_robot_compton_moving_source} presents a  
+
+Speaking of aerial platforms, following examples of deployment of a Compton camera onboard an aerial vehicle can be provided.
+
+
+
+
+%compton handheld
+Another application of \ac{MLEM} reconstruction technique is shown  \cite{handheld_mlem_reconstruction}, where authors present a handheld device for localisation of radioactive sources. 
+The presented device is composed of a CdZnTe-based omnidirectional imaging system (capable of acquiring Compton measurements) as well as \ac{LiDAR} sensor.
+%The reconstruction method is also based on \ac{MLEM} algorithm.
+The \ac{MLEM} estimate is combined with 3D map of the environment, created from \ac{LiDAR} measurements using a \ac{SLAM} method.
+The device weighting $\SI{6.3}{\kilogram}$ is capable of online estimation of radioactive sources.
+Another handheld device with online reconstruction method for Compton camera measurements is presented in \cite{handheld_visual}.
+Authors there combine visual data with radiation estimate computed using \ac{MLEM} method (without evaluating the sensitivity of detection).
+
+
+
+
+maping using ground robot in 3D using mlem method 
+
+
+
+
+%flow
+fukushima and autonomous exploration
+
+ground based robots
+
+aerial platforms
+
+mostly intensity based
+
+planning 
+
+compton camera - FEL
+stibinger
+baca
 
 A recent paper \cite{mascarich2022} presented a method for radiation mapping in the indoor environment.
 The method is based on estimating the gradient of radiation from multiple dosimetric data.
