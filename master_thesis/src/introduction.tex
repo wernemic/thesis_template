@@ -15,26 +15,33 @@ During the Compton scattering, an ionizing photon interacts with an electron and
 This principle allows the Compton camera to not only detect the presence of ionizing particles (as common in intensity-based sensors, such as widely known dosimeters), but also reconstruct a set of possible directions from where the photon arrived to the sensor.
 Thanks to innovations in the field of sensory equipment, Compton camera \ac{pix} became small and lightweight enough to be carried by a small \ac{UAV} onboard.
 
-This work aims to present a method that performs the fusion of sensory data from multiple \ac{UAV}s (equipped with Compton camera sensor), 
-in order to localize multiple sources of ionizing radiation.
-The presented method is based on the \ac{MLEM} algorithm that maximizes the likelihood of the measured data.
+
+\begin{figure}[!h]
+    \centering
+  \includegraphics[width=0.6\textwidth]{./fig/photos/uav.jpg}
+    \caption{A small T650 multi-rotor UAV equipped with the \ac{pix} sensor. Source: \cite{baca2021gamma}.}
+    \label{fig:uavvv}
+\end{figure}
+
+
+This work aims to present a method that performs the fusion of sensory data from multiple \ac{UAV}s (equipped with Compton camera sensor) in order to localize multiple sources of ionizing radiation.
+The method is based on the \ac{MLEM} algorithm that estimates distribution of sources of ionizing radiation while maximizing likelihood of measured data.
 The localization of radioactive sources is performed online during the flight.
-Thanks to that, the group of \ac{UAV}s autonomously adapts its actions to the current estimates in order to increase the precision of the estimate and minimize the search time.
+Thanks to the online estimation, the group of \ac{UAV}s autonomously adapts its actions accordingly  in order to increase the precision of the estimate and minimize the search time.
 The presented data fusion method, as well as the high-level control system, are tested in simulations and on prerecorded data from real-world experiments.
 
 
 \section{Related work}
 The remote sensing of ionizing radiation is a very broad topic involving many disciplines, such as medicine, astronomy, industry, public safety or robotics.
 The overview presented in \cite{radiation_detection_systems_overview} shows various mobile radiation detection systems, sensors and reconstruction methods that were presented in the past decade.
-The focus of this thesis is on the remote sensing using unmanned vehicles.
-
+The focus of this thesis is on remote sensing using unmanned vehicles.
 Several works describing radiation mapping using robots appeared in 2011 when the biggest radioactive accident in past decades happened in Japan.
 The strong earthquake and following tsunami wave caused several leakages of radioactive substances from \ac{FDNPP}.
 The contaminated area of the powerplant was explored by \ac{UGV}s (\cite{fuku2012,fuku_compton}) as well as \ac{UAV}s equipped with different radioactivity sensors (\cite{sanada2015, towler2012, Jiang2015, Mochizuki_2017, sato_drone_compton_camera_2018}).
 
 %\subsubsection{Intensity-based methods}
 The sensors used for radiation measurements can be generally classified into two groups: intensity-based and direction-based.
-Intensity-based detectors are measuring only the number of particles recorded in the sensor (particle flux at the sensor's position).
+Intensity-based detectors measure only the number of particles recorded in the sensor (particle flux at the sensor's position).
 The distribution of radioactive material is then estimated thanks to measurements acquired at different positions.
 A group of \ac{UGV}s remotely sensing contaminated indoor area is presented in \cite{fuku2012}.
 Radiation mapping of a large-scale area around the \ac{FDNPP} powerplant using an unmanned helicopter equipped with large scintillation intensity-based detectors is shown in \cite{sanada2015} and \cite{towler2012}.
@@ -49,43 +56,43 @@ Moreover, the authors have presented an active search path planning method that 
 
 Work presented in \cite{stibinger2020} shows a method for radioactivity mapping using intensity-based dosimetric measurements acquired by the same sensor as in this thesis.
 Each drone measured intensities in multiple directions while hovering at the actual position.
-The direction with highest intensity was chosen as a direction vector towards the source.
+The direction with the highest intensity was chosen as a direction vector towards the source.
 These directions vectors acquired at different positions were fused using \ac{LKF}.
-However, this method is not designed for localization of multiple sources of radiation.
+However, this method is not designed for the localization of multiple sources of radiation.
 
 This thesis focuses on the direction-based sensor --- the Compton camera.
-Speaking of aerial platforms, a radiation mapping around \ac{FDNPP} using an \ac{UAV} equipped with a Compton camera is presented in \cite{Jiang2015}, \cite{Mochizuki_2017}, \cite{sato_drone_compton_camera_2018}.
-In all cases, the platforms were hovering for certain time above the predefined positions and the radiation images were reconstructed offline after the flight.
-Work presented in \cite{fuku_compton} shows a radioactive hotspot localization inside the \ac{FDNPP} by one \ac{UGV} equipped with Compton camera.
+Radiation mapping around \ac{FDNPP} using an \ac{UAV} equipped with a Compton camera is presented in \cite{Jiang2015}, \cite{Mochizuki_2017}, \cite{sato_drone_compton_camera_2018}.
+In all cases, the platforms were hovering for a certain time above the predefined positions and the radiation images were reconstructed offline after the flight.
+Work presented in \cite{fuku_compton} shows a radioactive hotspot localization inside the \ac{FDNPP} by one \ac{UGV} equipped with a Compton camera.
 However, this work focused only on 2D image reconstruction, and the robot was moving only in one direction during the experiment.
 A 3D localization of a single radioactive source (using an \ac{UGV} equipped with a Compton camera) is presented in \cite{3D_compton_mobile_robot_2017}.
 The authors combine \ac{SLAM} method (estimating the 3D map of the environment) with Compton camera measurements. % in order to reconstruct a 3D position of a radioactive source.
 The \ac{UGV} stops at predefined positions for $\SI{5}{\minute}$ and collects around $4000$ Compton measurements during the presented simulated experiment.
-The reconstruction method is based on iterative \ac{MLEM} algorithm, same as in this work.
-However, authors of the paper do not specify the details of the proposed \ac{MLEM} reconstruction method (the system matrix is not further described).
+The reconstruction method is based on the iterative \ac{MLEM} algorithm, the same as in this work.
+However, the authors of the paper do not specify the details of the proposed \ac{MLEM} reconstruction method (the system matrix is not further described).
 
-The \ac{MLEM} reconstruction method has been originally developed for nuclear medicine imaging, as described in one of the following chapters.
+The \ac{MLEM} reconstruction method was originally developed for nuclear medicine imaging, as described in one of the following chapters.
 Except few applications in robotic radiation sensing (\cite{fuku_compton}, \cite{3D_compton_mobile_robot_2017}), authors of \cite{handheld_mlem_reconstruction}
-present a handheld device for localisation of radioactive sources. 
+present a handheld device for the localization of radioactive sources. 
 The presented device is composed of an omnidirectional imaging system (capable of acquiring Compton measurements) as well as a \ac{LiDAR} sensor.
 %The reconstruction method is also based on \ac{MLEM} algorithm.
-The \ac{MLEM} estimate is combined with 3D map of the environment, created from \ac{LiDAR} measurements using a \ac{SLAM} method.
+The \ac{MLEM} estimate is combined with a 3D map of the environment, created from \ac{LiDAR} measurements using a \ac{SLAM} method.
 The device weighting $\SI{6.3}{\kilogram}$ is capable of online estimation of radioactive sources.
-Another handheld device with online reconstruction method for Compton camera measurements is presented in \cite{handheld_visual}.
+Another handheld device with an online reconstruction method for Compton camera measurements is presented in \cite{handheld_visual}.
 Authors there combine visual data with radiation estimate computed using \ac{MLEM} method (without evaluating the sensitivity of detection).
 
 In general, one of the key limiting factors is the size of the sensor.
-There is a tradeoff between detector's size and detector's sensitivity.
+There is a tradeoff between the detector's size and the detector's sensitivity.
 The bigger the sensor is, the more ionizing particles can measure (given the nature of the radiation).
-On the other hand, heavy and bulky sensors must be carried by \ac{UGV}s or \ac{UAV}s with sufficient load capacity that reduce their operability. 
-Ground robots can't compete with aerial platforms in the speed of exploration and flexibility, large aerial platforms can't fly close to the obstacle due safety reasons.
+On the other hand, heavy and bulky sensors must be carried by \ac{UGV}s or \ac{UAV}s with a sufficient load capacity that reduces their operability. 
+Ground robots can't compete with aerial platforms in the speed of exploration and flexibility. 
+Large aerial platforms (unmanned helicopters) can't fly close to the obstacle due to safety reasons.
+This motivates the use of small \ac{UAV}s equipped with small direction-based sensors.
+The limited sensor's sensitivity can be compensated by the use of multiple \ac{UAV}s cooperating together on the given task.
+Moreover, small \ac{UAV}s can fly closer to obstacles (acquire more measurements) and use the full potential of small agile aerial platforms (acquire measurements from different positions simultaneously and therefore find sources of radiation in a shorter time).
+This could be achieved thanks to the lightweight \ac{pix} \cite{baca2019timepix} sensor, which is further described in the next section.
 
-This motivates use of small \ac{UAV}s equipped with small direction-based sensors.
-The limited sensor's sensitivity can be compensated by use of multiple \ac{UAV}s cooperating together on the given task.
-Moreover, small \ac{UAV}s can fly closer to obstacles (acquire more measurements) and use the full potential of small agile aerial platforms (find sources of radiation in shorter time).
-This might be achieved thanks to lightweight \ac{pix} \cite{baca2019timepix} sensor, that is further described in next sections.
-
-This thesis builds on the work of the MRS group (Faculty of Electrical engineering, CTU in Prague), that explored the possibilities of \ac{pix} sensor deployment onboard a small \ac{UAV}s. 
+This thesis builds on the work of the MRS group (Faculty of Electrical Engineering, CTU in Prague) that explored the possibilities of \ac{pix} sensor deployment onboard a small \ac{UAV}s. 
 Paper \cite{baca2021gamma} presents a multi-robotic approach to an autonomous localization of a compact gamma radiation source. 
 All unmanned aerial vehicles are equipped with a \ac{pix} sensor same as in our work), which is capable of measuring gamma particles and reconstructing Compton events. 
 The reconstructed Compton cones are used for localization in the following way.
@@ -100,8 +107,7 @@ The source can be static or dynamic.
 However, this iterative method cannot localize multiple sources of radiation.
 Once the drones detect one source of radioactive particles, they start encircling the current estimate and cannot find other sources in the area.
 
-To the author's best knowledge, there are no related works that were solving the task of online autonomous multirobot mapping of multiple sources of ionizing radiation 
-with use of lightweight Compton camera sensor (e.g. \ac{pix}).
+To the author's best knowledge, there are no related works that solve the task of online autonomous multi-robot mapping of multiple sources of ionizing radiation with the use of a lightweight Compton camera sensor (e.g. \ac{pix}).
 
 \mycomment{\section{TRASH}% %%{
 
@@ -174,20 +180,22 @@ In all cases, the platforms were hovering for certain time above the predefined 
 
 
 }% %%}
-
 \section{Contributions}
-The main contribution of this thesis is a novel approach to the localization of multiple compact radioactive sources based on Compton imagining.
-The main purpose of this thesis is to improve the solution presented in \cite{baca2021gamma} in the following ways: firstly, introduce a new method that could localize multiple sources of ionizing radiation based on the measured Compton cones and, 
+The main contribution of this thesis is a novel approach to the localization of multiple compact radioactive sources based on Compton imaging.
+The main purpose of this thesis is to improve the solution presented in \cite{baca2021gamma} in the following ways: 
+firstly, introduce a new method that could localize multiple sources of ionizing radiation based on the measured Compton cones and, 
 secondly, 
-design high-level planning approach that would control a group of \ac{UAV}s in order to explore the whole area and maximize the chance that all sources of ionizing radiation would be detected, while estimating their relative activity.
+design high-level planning approach that would control a group of \ac{UAV}s in order to autonomously explore the whole area and maximize the chance that all sources of ionizing radiation would be detected while estimating their relative emission activity.
 
 \section{Thesis organization}
-The section \ref{} describes properties of ionizing radiation and it's interactions with matter, working principle of the Compton camera and \ac{pix} sensor, as well as \ac{ROS} used within this project.
-The theoretical background of \ac{MLEM} estimation method is provided in section \ref{}.
-Section \ref{} presents the proposed radiation mapping method designed for the \ac{pix}
+The chapter \ref{chap:preliminaries} describes basic properties of ionizing radiation and its interactions with matter, the working principle of the Compton camera and \ac{pix} sensor.
+The theoretical background of \ac{MLEM} estimation method is provided in the chapter \ref{chap:mlem_theory}.
+The chapter \ref{chap:methods_estimation} presents the proposed radiation mapping method for a group of \ac{UAV}s equipped with a \ac{pix} Compton camera sensor.
+The chapter \ref{chap:methods_robotics} describes the high-level control method that controls the \ac{UAV}s in order to improve the precision of radiation mapping, acquire more measurements and explore the area of interest. 
+Finally, the proposed methods were tested both in simulation and on real-world data. 
+The results are presented in the chapter \ref{chap:results}.
 
 \mycomment{
-
 \section{Mathematical notation}% %%{
 
 It is a good practice to define basic mathematical notation in the introduction.
