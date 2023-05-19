@@ -1,14 +1,181 @@
 %!TEX root = ../main.tex
 
 \chapter{Results\label{chap:results}}
-\alertwarning{under construction}
+
+\section{Monte Carlo simulation}
+
+
+% Answer: [trim={left bottom right top},clip]
+\newpage
+
+\begin{figure}[!htb]% %%{
+  \centering
+  \subfloat[$p(\mathrm{cone\ detected})$] {
+    \centering
+    \includegraphics[width=0.5\textwidth,trim={1cm 1cm 2.5cm 1cm},clip]{./fig/photos/monte_carlo_final_prob.eps}
+    \label{fig:monte_finalll}
+  }
+  \subfloat[\ac{pix} sensor geometry.] {
+    \centering
+    \includegraphics[width=0.5\textwidth]{./fig/photos/axes.eps}
+    \label{fig:monte_axes}
+  }
+  \newline
+  \noindent
+  \subfloat[$p(\mathrm{reaching\ the\ sensor})$] {
+    \includegraphics[width=0.5\textwidth,trim={1cm 1cm 1cm 1cm},clip]{./fig/photos/monte_carlo_total_activity.eps}
+    \label{fig:monte_reaching}
+  }
+  \subfloat[$p(\mathrm{cone\ detected}\ |\ \mathrm{reaching\ the\ sensor})$] {
+    \includegraphics[width=0.5\textwidth,trim={1cm 1cm 1cm 1cm},clip]{./fig/photos/monte_carlo_fraction.eps}
+    \label{fig:monte_cone_from_hitting}
+  }
+  \caption{Direction sensitivity of the \ac{pix} sensor (geometry of the sensor depicted in \ref{fig:monte_axes}). 
+  Probability that a $\SI{662}{\kilo\electronvolt}$ photon emitted at corresponding position causes a Compton cone is depicted in \ref{fig:monte_finalll}. 
+  Probability that particle emitted at given position reaches the detector is depicted in \ref{fig:monte_reaching}. 
+  Lastly, probability that a photon (that reached the sensor) causes a Compton cone is illustrated in figure \ref{fig:monte_cone_from_hitting}. }
+  \label{fig:monte_clar}
+\end{figure}% %%}
+
+\newpage
+\section{Real-world (Experiment 1)}% %%{
+
+\begin{figure}[!htb]% %%{
+  \centering
+  \subfloat[estimate of sources locations $\bm{\lambda}$ (normalized)] {
+    \includegraphics[width=0.5\textwidth,trim={0 0.5cm 2cm 1cm},clip]{./fig/photos/auto_lam.eps}
+    \label{fig:}
+  }
+  \subfloat[ground truth positions of sources ($\si{\mega\becquerel}$)] {
+    \includegraphics[width=0.5\textwidth,trim={0 0.5cm 2cm 1cm},clip]{./fig/photos/auto_gt.eps}
+    \label{fig:}
+  }
+  \newline
+  \noindent 
+  \subfloat[back projection (number of Compton cones)] {
+    \includegraphics[width=0.5\textwidth,trim={0 0.5cm 2cm 1cm},clip]{./fig/photos/auto_bp.eps}
+    \label{fig:}
+  }
+  \subfloat[sensitivity of detection $\mathbf{s}$] {
+    \includegraphics[width=0.5\textwidth,trim={0 0.5cm 2cm 1cm},clip]{./fig/photos/auto_sen.eps}
+    \label{fig:}
+  }
+  \newline
+  \noindent 
+  \subfloat[] {
+    \includegraphics[width=0.5\textwidth,trim={0 0.5cm 2cm 1cm},clip]{./fig/photos/auto_mse_realworld.eps}
+    \label{fig:}
+  }
+  \caption{Results of Monte carlo simulation for cs137.Lorem ipsum  Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem }
+  \label{fig:}
+\end{figure}% %%}
+
+setup 
+4 drones, 3 seraching, 1 encircling the hypothesis
+initial phase: sweeping until 3 cones detected
+
+found the 500 MBq source
+
+To say
+x
+x
+x
+
+
+
+
+
+
+% %%}
+
+\newpage
+\section{Simulation (experiment 2)}% %%{
+
+\begin{figure}[!htb]
+  \centering
+  \subfloat[estimate of sources locations $\bm{\lambda}$ (normalized)] {
+    \includegraphics[width=0.5\textwidth,trim={0 0.5cm 2cm 1cm},clip]{./fig/photos/auto_simulation_lam.eps}
+    \label{fig:}
+  }
+  \subfloat[ground truth positions of sources ($\si{\mega\becquerel}$)] {
+    \includegraphics[width=0.5\textwidth,trim={0 0.5cm 2cm 1cm},clip]{./fig/photos/auto_simulation_gt.eps}
+    \label{fig:}
+  }
+  \newline
+  \noindent 
+  \subfloat[back projection (number of Compton cones)] {
+    \includegraphics[width=0.5\textwidth,trim={0 0.5cm 2cm 1cm},clip]{./fig/photos/auto_simulation_bp.eps}
+    \label{fig:}
+  }
+  \subfloat[sensitivity of detection $\mathbf{s}$] {
+    \includegraphics[width=0.5\textwidth,trim={0 0.5cm 2cm 1cm},clip]{./fig/photos/auto_simulation_sen.eps}
+    \label{fig:}
+  }
+  \newline
+  \noindent 
+  \subfloat[] {
+    \includegraphics[width=0.5\textwidth,trim={0 0.5cm 2cm 1cm},clip]{./fig/photos/auto_mse_simulation.eps}
+    \label{fig:}
+  }
+  \caption{Results of Monte carlo simulation for cs137.Lorem ipsum  Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem }
+  \label{fig:}
+\end{figure}% %%}
+
+\newpage
+\section{Real-world simulation (experiment 3)}% %%{
+
+% Answer: [trim={left bottom right top},clip]
+% Ex. 1: trim from left edge
+
+%\includegraphics[width=0.5\textwidth,trim={0 0 2cm 2cm},clip]{./fig/photos/auto_temesvar_drone_paths.eps}
+
+
+\begin{figure}[ht!]
+  \centering
+  \subfloat[final estimate of source intensities $\bm{\lambda}$] {
+    \includegraphics[width=0.5\textwidth,trim={1cm 0 2.5cm 1cm},clip]{./fig/photos/auto_temesvar_lam.eps}
+    \label{fig:}
+  }
+  \subfloat[ground truth ($\si{MBq}$)] {
+    \includegraphics[width=0.5\textwidth,trim={1cm 0 2.5cm 1cm},clip]{./fig/photos/auto_temesvar_gt.eps}
+    \label{fig:}
+  }
+  \newline
+  \noindent 
+  \subfloat[Sensitivity $\mathbf{s}$ after the initial phase.] {
+    \includegraphics[width=0.5\textwidth,trim={1cm 0 2.5cm 1cm},clip]{./fig/photos/auto_temesvar_senzig.eps}
+    \label{fig:}
+  }
+  \subfloat[Sensitivity $\mathbf{s}$ at the end of the experiment.] {
+    \includegraphics[width=0.5\textwidth,trim={1cm 0 2.5cm 1cm},clip]{./fig/photos/auto_temesvar_sen.eps}
+    \label{fig:}
+  }
+  \newline
+  \noindent 
+  \subfloat[Paths of \ac{UAV}s during the search phase (red, green --- exploitation, blue --- exploration)] {
+    \includegraphics[width=0.5\textwidth,trim={1cm 0 2.5cm 1cm},clip]{./fig/photos/auto_temesvar_drone_paths.eps}
+    \label{fig:}
+  }
+  \subfloat[Final back-propagation.] {
+    \includegraphics[width=0.5\textwidth,trim={1cm 0 2.5cm 1cm},clip]{./fig/photos/auto_temesvar_bp.eps}
+    \label{fig:}
+  }
+
+  \caption{Results of Monte carlo simulation for cs137}
+  \label{fig:}
+\end{figure}% %%}
+
+\begin{figure}[!htb]
+  \centering
+  \subfloat {
+    \includegraphics[width=0.7\textwidth]{./fig/photos/experiments.jpg}
+  }
+  \caption{Field experiments with real hardware.}
+  \label{fig:}
+\end{figure}
+
 
 \mycomment{% %%{
-    This section describes experiments and evaluation of performance of the proposed method for mapping of ionizing radiation.
-    An experiment with real sources of ionizing radiation requires (due to specific safety measures, permission from the state authorities...) coordination with other institutions, such as Czech metrology institute.
-    Unfortunately, it was not possible to perform experiment with real sources before the deadline of the thesis due to these organizational reasons.
-    However, the method was evaluated on pre-recorded data from real-world experiments as well as using the realistic simulator for compton camera \cite{TODO}.
-}% %%}
 
 \section{Monte carlo simulation results}
 In figure \ref{fig:monte_cs_results}, the probability of a Cesium-137 photon generating a Compton cone when emitted from a distance of 1 meter is displayed. 
@@ -21,25 +188,12 @@ Surprisingly, these two effects compensate for each other, resulting in an almos
 \begin{figure}[!htb]
   \centering
   \subfloat {
-    \includegraphics[width=0.7\textwidth]{./fig/photos/mc_cs_prob_compton.eps}
+    \includegraphics[width=0.7\textwidth]{./fig/photos/monte_carlo_final_prob.eps}
   }
-  \caption{Probability that particle emitted at certain position produces a compton cone.}
+  \caption{$p(\mathrm{cone\ detected})$ - probability that particle emitted at certain position produces a compton cone.}
   \label{fig:monte_cs_results}
 \end{figure}
 
-\begin{figure}[!htb]
-  \centering
-  \subfloat[Probability of reaching the surface] {
-    \includegraphics[width=0.5\textwidth]{./fig/photos/mc_prob_reaching_the_surface.eps}
-    \label{fig:monte_reaching}
-  }
-  \subfloat[probability that particle hitting the sensor produce a compton cone.] {
-    \includegraphics[width=0.5\textwidth]{./fig/photos/mc_comptons_from_sensor_hits.eps}
-    \label{fig:monte_cone_from_hitting}
-  }
-  \caption{Results of Monte carlo simulation for cs137.}
-  \label{fig:monte_clar}
-\end{figure}
 
 \section{Evaluation on recorded real-world data}
 TODO
@@ -75,15 +229,28 @@ Resolution of the map was $0.5$ m.
 \end{center}
 \end{table}
 
+% Answer: [trim={left bottom right top},clip]
+% Ex. 1: trim from left edge
 
 
+\begin{figure}[!htb]
+  \centering
+  \subfloat {
+    \includegraphics[width=0.7\textwidth]{./fig/photos/auto_mse_realworld.eps}
+  }
+  \caption{$p(\mathrm{cone\ detected})$ - probability that particle emitted at certain position produces a compton cone.}
+  \label{fig:monte_cs_results}
+\end{figure}
 
 
+}% %%}
 
-
-
-
-
+\mycomment{% %%{
+    This section describes experiments and evaluation of performance of the proposed method for mapping of ionizing radiation.
+    An experiment with real sources of ionizing radiation requires (due to specific safety measures, permission from the state authorities...) coordination with other institutions, such as Czech metrology institute.
+    Unfortunately, it was not possible to perform experiment with real sources before the deadline of the thesis due to these organizational reasons.
+    However, the method was evaluated on pre-recorded data from real-world experiments as well as using the realistic simulator for compton camera \cite{TODO}.
+}% %%}
 
 \mycomment{% %%{
 

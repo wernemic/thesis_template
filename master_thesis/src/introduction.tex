@@ -23,24 +23,22 @@ Thanks to innovations in the field of sensory equipment, Compton camera \ac{pix}
     \label{fig:uavvv}
 \end{figure}
 
-
-This work aims to present a method that performs the fusion of sensory data from multiple \ac{UAV}s (equipped with Compton camera sensor) in order to localize multiple sources of ionizing radiation.
-The method is based on the \ac{MLEM} algorithm that estimates distribution of sources of ionizing radiation while maximizing likelihood of measured data.
+This thesis aims to present a method that performs the fusion of sensory data from multiple \ac{UAV}s (equipped with Compton camera sensor) in order to localize multiple sources of ionizing radiation.
+The estimation method is based on the \ac{MLEM} algorithm that estimates distribution of sources of ionizing radiation while maximizing likelihood of measured data.
 The localization of radioactive sources is performed online during the flight.
 Thanks to the online estimation, the group of \ac{UAV}s autonomously adapts its actions accordingly  in order to increase the precision of the estimate and minimize the search time.
-The presented data fusion method, as well as the high-level control system, are tested in simulations and on prerecorded data from real-world experiments.
-
+The presented data fusion method, as well as the high-level search strategy, are tested in simulations and on prerecorded data from real-world experiments.
 
 \section{Related work}
 The remote sensing of ionizing radiation is a very broad topic involving many disciplines, such as medicine, astronomy, industry, public safety or robotics.
 The overview presented in \cite{radiation_detection_systems_overview} shows various mobile radiation detection systems, sensors and reconstruction methods that were presented in the past decade.
 The focus of this thesis is on remote sensing using unmanned vehicles.
-Several works describing radiation mapping using robots appeared in 2011 when the biggest radioactive accident in past decades happened in Japan.
+Several works describing radiation mapping using robots appeared after 2011 when the biggest radioactive accident in past decades happened in Japan.
 The strong earthquake and following tsunami wave caused several leakages of radioactive substances from \ac{FDNPP}.
 The contaminated area of the powerplant was explored by \ac{UGV}s (\cite{fuku2012,fuku_compton}) as well as \ac{UAV}s equipped with different radioactivity sensors (\cite{sanada2015, towler2012, Jiang2015, Mochizuki_2017, sato_drone_compton_camera_2018}).
 
 %\subsubsection{Intensity-based methods}
-The sensors used for radiation measurements can be generally classified into two groups: intensity-based and direction-based.
+Sensors used for remote monitoring of ionizing radiation can be generally classified into two groups: intensity-based and direction-based.
 Intensity-based detectors measure only the number of particles recorded in the sensor (particle flux at the sensor's position).
 The distribution of radioactive material is then estimated thanks to measurements acquired at different positions.
 A group of \ac{UGV}s remotely sensing contaminated indoor area is presented in \cite{fuku2012}.
@@ -72,7 +70,7 @@ The reconstruction method is based on the iterative \ac{MLEM} algorithm, the sam
 However, the authors of the paper do not specify the details of the proposed \ac{MLEM} reconstruction method (the system matrix is not further described).
 
 The \ac{MLEM} reconstruction method was originally developed for nuclear medicine imaging, as described in one of the following chapters.
-Except few applications in robotic radiation sensing (\cite{fuku_compton}, \cite{3D_compton_mobile_robot_2017}), authors of \cite{handheld_mlem_reconstruction}
+Except few applications in robotic ionizing radiation sensing (\cite{fuku_compton}, \cite{3D_compton_mobile_robot_2017}), authors of \cite{handheld_mlem_reconstruction}
 present a handheld device for the localization of radioactive sources. 
 The presented device is composed of an omnidirectional imaging system (capable of acquiring Compton measurements) as well as a \ac{LiDAR} sensor.
 %The reconstruction method is also based on \ac{MLEM} algorithm.
@@ -108,6 +106,22 @@ However, this iterative method cannot localize multiple sources of radiation.
 Once the drones detect one source of radioactive particles, they start encircling the current estimate and cannot find other sources in the area.
 
 To the author's best knowledge, there are no related works that solve the task of online autonomous multi-robot mapping of multiple sources of ionizing radiation with the use of a lightweight Compton camera sensor (e.g. \ac{pix}).
+
+\section{Contributions}
+The main contribution of this thesis is a novel approach to the localization of multiple compact radioactive sources based on Compton imaging.
+The main purpose of this thesis is to improve the solution presented in \cite{baca2021gamma} in the following ways: 
+firstly, introduce a new method that could localize multiple sources of ionizing radiation based on the measured Compton cones and, 
+secondly, 
+design high-level planning approach that would control a group of \ac{UAV}s in order to autonomously explore the whole area and maximize the chance that all sources of ionizing radiation would be detected while estimating their relative emission activity.
+
+\section{Thesis organization}
+The chapter \ref{chap:preliminaries} describes basic properties of ionizing radiation and its interactions with matter, the working principle of the Compton camera and \ac{pix} sensor.
+The theoretical background of \ac{MLEM} estimation method is provided in the chapter \ref{chap:mlem_theory}.
+The chapter \ref{chap:methods_estimation} presents the proposed radiation mapping method for a group of \ac{UAV}s equipped with a \ac{pix} Compton camera sensor.
+The chapter \ref{chap:methods_robotics} describes the search strategy that controls the \ac{UAV}s in order to improve the precision of radiation mapping, acquire more measurements and explore the area of interest. 
+Finally, the proposed methods were tested both in simulation and on real-world data. 
+The results are presented in the chapter \ref{chap:results}.
+
 
 \mycomment{\section{TRASH}% %%{
 
@@ -180,21 +194,6 @@ In all cases, the platforms were hovering for certain time above the predefined 
 
 
 }% %%}
-\section{Contributions}
-The main contribution of this thesis is a novel approach to the localization of multiple compact radioactive sources based on Compton imaging.
-The main purpose of this thesis is to improve the solution presented in \cite{baca2021gamma} in the following ways: 
-firstly, introduce a new method that could localize multiple sources of ionizing radiation based on the measured Compton cones and, 
-secondly, 
-design high-level planning approach that would control a group of \ac{UAV}s in order to autonomously explore the whole area and maximize the chance that all sources of ionizing radiation would be detected while estimating their relative emission activity.
-
-\section{Thesis organization}
-The chapter \ref{chap:preliminaries} describes basic properties of ionizing radiation and its interactions with matter, the working principle of the Compton camera and \ac{pix} sensor.
-The theoretical background of \ac{MLEM} estimation method is provided in the chapter \ref{chap:mlem_theory}.
-The chapter \ref{chap:methods_estimation} presents the proposed radiation mapping method for a group of \ac{UAV}s equipped with a \ac{pix} Compton camera sensor.
-The chapter \ref{chap:methods_robotics} describes the high-level control method that controls the \ac{UAV}s in order to improve the precision of radiation mapping, acquire more measurements and explore the area of interest. 
-Finally, the proposed methods were tested both in simulation and on real-world data. 
-The results are presented in the chapter \ref{chap:results}.
-
 \mycomment{
 \section{Mathematical notation}% %%{
 

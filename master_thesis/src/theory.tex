@@ -1,4 +1,4 @@
-%!TEX root = ../main.tex
+
 
 \chapter{Preliminaries\label{chap:preliminaries}}
 
@@ -10,23 +10,21 @@ Ionizing radiation refers to any form of radiation with enough energy to remove 
 Among others, radioactive decay releases three main types of ionizing radiation: alpha, beta and gamma. 
 
 \section{Some properties of ionizing radiation}
-
 \subsection{Health risks}% %%{
 Several health risks are associated with ionizing radiation.
 While traversing the human body, ionizing radiation can interact with living tissues causing damage or mutations of individual cells.
 In the long-term horizon, exposure to ionizing radiation might cause cancer or even genetic disorders.
 The severity of health problems depends on the exposure time and dose of absorbed radiation.
-High doses of ionizing radiation over a short period can cause acute radiation syndrome (radiation sickness).
-The disease is manifested by nausea, vomiting, fatigue or even skin burns. 
-Depending on the absorbed radioactive dose, it causes several neurological or cardiovascular problems or might lead to death.% %%}
+High doses of ionizing radiation over a short period can cause acute radiation syndrome (radiation sickness), that is manifested by nausea, vomiting, fatigue or even skin burns. 
+High exposure to ionizing radiation also cause several neurological or cardiovascular problems or might lead to death.% %%}
 
 \subsection{Activity}% %%{
-``Activity'' is one of the terms used to quantify and describe the properties of radioactive sources.
-It is defined as the number of radioactive decays per second.
+``Activity'' is one of the terms used to quantify and describe the properties of radioactive sources and is defined as the number of radioactive decays per second.
 The unit of activity is called Becquerel ($\si{\becquerel}$) and belongs to SI\footnote{International System of units} units.
 In other words, if a radioactive source has activity one Becquerel, it means that one unstable nucleus decays per second (on average, since the decay is a stochastic process).
-It is important to note that the Becquerel only measures the rate of decay and does not take into account the type or energy of the radiation involved.% %%}
-However, for the purpose of this thesis, ``activity''  is used as the number of gamma photons emitted from the source position in any direction per second.
+The standard definition of activity only measures the rate of decay and does not take into account the type or energy of the radiation involved.
+However, for the purpose of this thesis, the term activity is used as the number of gamma photons emitted from the source position in any direction per second.
+% %%}
 
 \subsection{Inverse square law}% %%{
 The inverse square law is a fundamental principle that applies to diverse physical phenomena, including radiation.
@@ -37,7 +35,7 @@ The intensity of radiation is inversely proportional to the square distance from
 \end{equation}
 For example, doubling the distance to the source means that the intensity decreases to $\frac{1}{4}$.
 As illustrated in figure \ref{fig:islaw}, this principle comes from the fact that the radiation spreads out over a larger area when the observer is further away from the source.
-This rapid decrease makes the search for sources of ionizing radiation challenging since it limits the sensing range of the detectors.
+This rapid decrease makes the search for sources of ionizing radiation challenging since it limits the sensing range of the sensors.
 
   \begin{figure}[!h]
     \centering
@@ -50,8 +48,7 @@ This rapid decrease makes the search for sources of ionizing radiation challengi
 \section{Main types of ionizing radiation}
 \subsection{Alpha radiation}
 Alpha radiation is an emission of positively charged alpha particles consisting of two protons and two neutrons bound together (helium nuclei).
-This gives alpha particles a significantly larger mass and higher reactivity compared to other types of ionizing radiation.
-On the other hand, they interact strongly with matter and can't penetrate far.
+This gives alpha particles a significantly larger mass and higher reactivity compared to other types of ionizing radiation, on the other hand, alpha particles interact strongly with matter and can't penetrate far.
 Alpha particles can travel only a few centimetres in the air and can be blocked by a single sheet of paper or the outer layer of human skin.
 Because of that, external sources of alpha radiation are generally not considered a significant threat to human health.
 The limited range of alpha radiation makes it difficult to sense from a distance.
@@ -66,10 +63,10 @@ Although beta radiation is generally less dangerous than gamma, when particles c
 \subsection{Gamma radiation}
 Gamma particles are often produced alongside alpha or beta particles during radioactive decay. 
 Unlike them, gamma radiation of composed of high-energy photons. 
-They are extremely penetrating and can travel long distances in the air and get through most of materials or living tissues thanks to their high energy and lack of charge.
+$\gamma$ photons are extremely penetrating, can travel long distances in the air and get through most of materials or living tissues thanks to their high energy and lack of charge.
 Only a thick layer of concrete or lead might block this type of ionizing radiation.
 These features make gamma radiation significantly more dangerous than alpha and beta.
-The long-range of gamma radiation, together with its negative effects on human health, makes it an ideal candidate for remote sensing and detection.
+The long-range of gamma radiation, together with its negative effects on human health, motivates the development of methods for the $\gamma$ radiation sensing and detection.
   \begin{figure}[!h]
     \centering
       \includegraphics[width=0.6\textwidth]{./fig/photos/pene2.png}
@@ -79,23 +76,23 @@ The long-range of gamma radiation, together with its negative effects on human h
 
 \subsubsection{Cesium-137}
 Cesium-137 is a radioactive isotope of cesium and one of the most common bi-products of nuclear fission.
-It is used in radiotherapy in medicine, for calibration of radiation detection equipment in the industry and 
+Cesium-137 is used in radiotherapy in medicine, for calibration of radiation detection equipment in the industry and 
 (most importantly) it is one of the most common fission products by the nuclear fission of uranium-235, which is used as a fuel in nuclear power plants and in nuclear weapons.
 Cesium-137 is also the main source of radioactive pollution caused by accidents in Chornobyl (1986) and Fukushima (2011).
 The half-life (defined as the interval of time required for one-half of the atomic nuclei of a radioactive sample to decay) of cesium-137 is $30.05$ years.
-It is important to note that cesium-137 itself is not a source of $\gamma$ radiation.
-However, it decays by beta emission to metastable Barium-137, which decays almost immediately (with a half-life of about $2.5$ minutes) and emits $\gamma$ photons with initial energy $\SI{662}{\kilo\electronvolt}$.
+Notably, cesium-137 itself is not a source of $\gamma$ radiation.
+Cesium-137 decays by beta emission to metastable Barium-137, which decays almost immediately (with a half-life of about $2.5$ minutes) and emits $\gamma$ photons with initial energy $\SI{662}{\kilo\electronvolt}$.
 Cesium-137 (with its long half-life, negative health effects, wide usage and high penetrating power of $\SI{662}{\kilo\electronvolt}$ photons) is a good candidate for remote sensing. 
 The methods proposed in this thesis have been tested using Cesium-137 radioactive isotope as a source of radiation (during simulated and real-world experiments).
 
 \section{Interaction of $\gamma$ radiation with matter}
 Sensing of $\gamma$ radiation is possible through interactions of ionizing photons with imaging devices.
 %A variety of interactions may take place as a high-energy photon travels through matter.
-Several interactions might occur when a high energetic photon travels through matter.
 Type of the interaction depends on both the energy of the incoming photon and the properties of the material it encounters. 
+Several interactions might occur when a high energetic photon travels through matter.
 %epending on the energy of the incoming photon as well as on the properties of material.
 %Three main types of interactions are: a photoelectric effect, Compton scattering and pair production.
-The three primary types of interactions include the photoelectric effect, Compton scattering, and photon-electron pair production.
+The three primary types of interactions include the photoelectric effect, Compton scattering, and electron-positron pair production.
 Figure \ref{fig:dominant} describes the dominant type of interactions depending on the energy of the incoming photon and the atomic number of the material.
 
 \subsection{Photoelectric effect and pair production}
@@ -104,22 +101,20 @@ The photon transfers all its energy to the electron and disappears.
 As a consequence, the electron exceeds its binning energy and is emitted from the atom.
 Photoelectric absorption is dominant at lower energies of the incident photon, although it can occur at any photon energy.
 The \ac{PP} occurs only if the $\gamma$ photon has energy exceeding $\approx \SI{1}{\mega\electronvolt}$.
-In this case, the highly energetic photon interacts with the atom's nucleus. 
+In the pair-production, the highly energetic photon interacts with the atom's nucleus. 
 The interaction results in the creation of an electron-positron pair.
 
 \begin{figure}[!h]
   \centering 
-
     \includegraphics[width=0.6\textwidth]{./fig/photos/dominant.png}
   \caption{Dominant types of interactions for different energy of photon (x-axis) and atomic number of material (y-axis). Source of image: \cite{schwank}}
     \label{fig:dominant}
-  
 \end{figure}
 
 \subsection{Compton scattering}
 The third potential interaction, primarily prevalent at mid-level energies, is Compton scattering.
 In this process, the $\gamma$ photon interacts with an electron that is loosely attached to the nucleus. 
-The photon, with its initial energy $E_{0}$, transfers a portion of its energy to the electron.
+The photon (with its initial energy $E_{0}$) transfers a portion of its energy to the electron.
 As a result of the interaction, the lower energetic photon with energy $E_{2}$ is scattered and emitted in a direction changed by angle $\beta$. 
 The energy difference $E_{1} = E_{0} - E_{2}$ is transferred to a bi-product of the interaction --- an electron.
 The situation is illustrated in figure \ref{fig:scattering}.
@@ -135,74 +130,6 @@ where $E_{0}$ is the initial energy of the incoming photon, $E_{2}$ is the energ
     \caption{An illustration of the Compton scattering. The incident $\gamma$ photon with energy $E_{0}$ (blue) undergoes the Compton scattering. As a result of the interaction, the lower energetic photon (green) with energy $E_{2}$ is emitted under angle $\beta$. Part of the energy ($E_{1}$) is transferred to a bi-product of the interaction- the electron (grey).}
     \label{fig:scattering}
 \end{figure}
-
-\mycomment{ %klein nishina % %%{
-  The probability that a photon with an energy $E_{0}$ undergoes a Compton scattering through an angle $\beta$ is described by the Klein-Nishina formula
-  \begin{equation}
-    K(\beta, E_{0}) = \frac{r_{e}^{2}}{2} \left( \frac{E_{2}}{E_{0}}  \right)^{2} \left(  \frac{E_{2}}{E_{0}} + \frac{E_{0}}{E_{2}} - \mathrm{sin}^{2}(\beta)  \right),
-    \label{eq:klein_nishina}
-  \end{equation}
-  where $r_{e}$ is the classical electron radius. 
-}% %%}
-
-\mycomment{% %%{
-  \section{Measuring radioactivity}
-  Ionizing radiation is unperceivable by human senses yet poses a significant health risk for human beings.
-  Effective monitoring methods are therefore needed to detect and measure the presence of such radiation. %, that is potentially harmful to human beings.
-  %Sensors of ionizing radiation are made of different materials that interact with ionizing particles.
-  Therefore, efficient methods for monitoring and detecting this type of radiation are essential. 
-  Various materials that interact with ionizing particles are used to construct sensors for ionizing radiation.
-
-  Three common types of these sensors include Geiger-Müller counters, scintillation detectors, and semiconductor detectors (among many others).
-   Geiger-Müller counters are tubes filled with gas that, when ionized by passing particles, conduct an electrical charge proportional to the detected particle flux.
-  Scintillation detectors work differently. 
-  They contain a material that emits light when hit by ionizing radiation, 
-  which is then transformed into an electrical signal by a photodiode. 
-  The third type of detector is made from semiconductive materials sensitive to ionizing photons. 
-  The ejected electrons from the ionization process can be measured to deduce the type and energy of the incoming radiation.
-
-  Most of these sensors function by counting the number of particles detected, thus estimating the intensity of the particle flux at the sensor's location. 
-  However, this does not provide information about the direction from which the particles are coming. 
-  Following \cite{baca2019timepix}, the direction of incoming particles can be deduced by different detector configurations illustrated in figure \ref{fig:sensor_overview}.
-  \textbf{Pinhole camera aperture} (which is based on same principles as pinhole camera in classical optics) consists of a small hole in shielding material (e.g. lead), blocking all rays in other directions.
-  This approach significantly reduces the field of view of the camera. 
-  \textbf{Colimators} (frequently used in medical imaging) also restrict the set of possible directions.
-  The openings in the shielding material are organized in a way that each part of the detector is responsible for measuring particles coming from certain direction.
-  \textbf{Stacked detectors} employ multiple layers of detectors, where the particle's direction is computed from multiple interactions as the ray passes through the layers.
-  Finally, the \textbf{Compton camera} use the Compton scattering for deducing the set of possible directions of the original particle. 
-
-
-
-  %Each of the proposed methods have some drawbacks in context of deployment onboard a small \ac{UAV}.
-  Intensity-only detectors must be relative large to get accurate measurements (collect enough interactions and compensate the stochastic nature of radioactive decay).  
-  Moreover, localization of multiple sources might require many measurements at different positions, which is time consuming.
-  The use of collimators or pin-hole apertures is not possible due to their limited field of view and large weight and dimensions (caused by the presence of shielding material, which must be thick enough to effectively block the other rays).
-  Multi-stack detectors are complicated 
-  \begin{figure}[!h]
-      \centering
-      \includegraphics[width=0.5\textwidth]{./fig/photos/detector_overview_baca2019.png}
-      \caption{Different ways how to deduce the direction of the incoming particle. Source: \cite{baca2019timepix}}
-      \label{fig:sensor_overview}
-  \end{figure}
-}% %%}
-
-\mycomment{% %%{
-\begin{figure}[!h]% %%{
-  \centering
-  \subfloat[\centering different ways how to detect the direction of incoming particle. Source: \cite{baca2019timepix}] {
-    \includegraphics[width=0.49\textwidth]{./fig/photos/detector_overview_baca2019.png}
-    \label{fig:sensor_overview}
-  }
-  \subfloat[\centering Geometry for two-layer Compton camera. The $\gamma$ particle emitted at position $j$ interacts with the first layer of the sensor (scatterer) at position $X_{1}$. A lower energetic photon is scattered under angle $\beta$ and absorbed by the second layer of the detector (absorber) at position $X_{2}$. The reconstructed Compton cone is parametrized by angle $\beta$, axis vector $a$ and origin of the cone $X_{1}$.] {
-      \label{fig:compton_camera_geometry}
-  
-      \includegraphics[width=0.49\textwidth]{./fig/photos/compton_camera_modelll.eps}
-  }
-  \caption{TODO}
-  \label{fig:xxx}
-\end{figure}% %%}
-}% %%}
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Measuring the gamma radiation}
 Ionizing radiation is unperceivable by human senses yet poses a significant health risk for human beings. 
@@ -211,32 +138,11 @@ Therefore, efficient methods for monitoring and detecting this type of radiation
 The primary operating mode of most sensors of radioactivity is counting the number of particles detected,
 thus estimating the intensity of the particle flux at the sensor's location. 
 However, the dosimetric measurements do not provide information about the direction from which the radiation is emitted. 
-Intensity-only detectors must be relatively large to get accurate measurements (must collect enough interactions and compensate for the stochastic nature of radioactive decay).
+Intensity-only sensors must be relatively large to get accurate measurements (must collect enough interactions and compensate for the stochastic nature of radioactive decay).
 Moreover, the localization of multiple sources might require many measurements at different positions, which is time-consuming. 
 The direction of incoming $\gamma$ photons might be deduced using
 the Compton camera, which is based on the Compton scattering principle.
 
-\mycomment{% %%{
-Ionizing radiation is unperceivable by human senses yet poses a significant health risk for human beings.
-%Sensors of ionizing radiation are made of different materials that interact with ionizing particles.
-Therefore, efficient methods for monitoring and detecting this type of radiation are essential. 
-Various materials that interact with ionizing particles are used to construct sensors for ionizing radiation.
-
-The basic operation mode of these sensors is counting the number of particles detected, thus estimating the intensity of the particle flux at the sensor's location.
-The dosimetric measurements do not provide information about the direction from which direction the radiation is emitted. 
-Intensity-only detectors must be relative large to get accurate measurements (must collect enough interactions and compensate the stochastic nature of radioactive decay).  
-Moreover, localization of multiple sources might require many measurements at different positions, which is time consuming.
-The direction of incoming $\gamma$ photons might be deduced using the Compton camera, which is based on the Compton scattering principle.
-}% %%}
-\mycomment{% %%{
-  %The 
-  Geiger-Müller counters, scintillation detectors, and semiconductor detectors (among many others).
-   Geiger-Müller counter a tube filled with gas that, when ionized by passing particles, conducts an electrical charge corresponding to the detected particle flux.
-  Scintillation contains a luminescent material that emits light when hit by ionizing radiation, 
-  which is then transformed into an electrical signal by a photodiode. 
-  The third common type of detector is made from semiconductive materials sensitive to ionizing radiation. 
-  The ejected electrons from the ionization process can be measured to deduce the type and energy of the incoming radiation.
-}% %%}
 \subsection{Compton Camera}% %%{
 The Compton camera is typically composed of two detectors: a scatterer and an absorber.
 The incident photon with energy $E_{0}$ first interacts with the scatterer at position $X_{1}$ in the form of Compton scattering.
@@ -266,16 +172,17 @@ The geometry is illustrated in figure \ref{fig:compton_camera_geometry}.
     \label{fig:compton_camera_geometry}
 \end{figure}
 % %%}
+
 \subsection{The MiniPIX TPX3 sensor} % %%{
 The MiniPIX TPX3 detector\footnote{produced by \textit{Advacam}, https://advacam.com/camera/minipix-tpx3} (in the rest of this thesis denoted as \ac{pix}) belongs to the class of semiconductor-based radiation sensors.
 The \ac{pix} is composed of a) miniature version Timepix3 pixel detector \cite{timepix3},
-b) the body of the sensor made of a compact block of Cadmium telluride (CdTe) semiconductor material (with dimensions $14 \times 14 \times 2 \ \si{\milli\meter}$) 
+b) the body of the sensor made of a compact block of \ac{CdTe} semiconductor material (with dimensions $14 \times 14 \times 2 \ \si{\milli\meter}$) 
 and c) necessary electronics.
 The whole \ac{pix} device is very compact and lightweight (the size of the whole \ac{pix} sensor is only $80 \times 21 \times 14 \ \si{\milli\meter}$ and it weights $\SI{44}{\gram}$), therefore it can be carried onboard a small \ac{UAV}.
 Unlike other devices, the \ac{pix} sensor can report the recorded $\gamma$ particles almost in real-time, which allows us to use it for an active strategy, where autonomous \ac{UAV}s react according to the measurements acquired during the flight.
 
 Although \ac{pix} has only one detection layer, it can still be used as a Compton camera.
-As described in \cite{baca2021gamma} and \cite{baca2019timepix}, the incoming ionizing radiation interacts with the matter of the sensor and separates electrons from the CdTe material.
+As described in \cite{baca2021gamma} and \cite{baca2019timepix}, the incoming ionizing radiation interacts with the matter of the sensor and separates electrons from the \ac{CdTe} material.
 The separated electrons are accelerated by a $\SI{450}{\volt}$ electric potential towards one facet of the sensor, where the Timepix3 pixel detector is located.
 The resolution of pixel detector is $256 \times 256\ \mathrm{px}$, each pixel being $55\ \si{\micro\meter}$ large.
 The pixel detector can estimate the energy of the absorbed particle and record the time when it was taken with high resolution.
@@ -283,9 +190,9 @@ Given the measured times of arrival, the coinciding products of Compton scatteri
 
 Figure \ref{fig:minipix} depicts the geometry of the \ac{pix} sensor and the detection process.
 The x-axis and y-axis coordinates (see figure \ref{fig:minipix}) of the interaction are determined by the position of corresponding pixels.
-The z-axis coordinate (the depth of interaction in the CdTe block) is unknown.
-However, the relative z-axis distance of the two coinciding events might be deduced from the times of arrival of the two interactions captured by the pixel detector (given the known speed of electrons in the CdTe material).
-The absolute z-axis coordinate is not needed since the size of the CdTe block is negligible in the context of the detection task.
+The z-axis coordinate (the depth of interaction in the \ac{CdTe} block) is unknown.
+However, the relative z-axis distance of the two coinciding events might be deduced from the times of arrival of the two interactions captured by the pixel detector (given the known speed of electrons in the \ac{CdTe} material).
+The absolute z-axis coordinate is not needed since the size of the \ac{CdTe} block is negligible in the context of the detection task.
 More technical details related to the sensor operation are provided in \cite{baca2019timepix}.
 %The \ac{pix} detector is very compact and lightweight (the size of the whole \ac{pix} sensor is only $80 \times 21 \times 14 \ \si{\milli\meter}$ and it weights $\SI{44}{\gram}$), therefore it can be carried onboard a small \ac{UAV}.
 %The \ac{pix} detector can report the recorded intersections almost in real time, which allows us to use it for an active strategy, where autonomous \ac{UAV}s react according to the measurements acquired during the flight.
@@ -297,19 +204,19 @@ More technical details related to the sensor operation are provided in \cite{bac
     The incident photon (blue) scatters under angle $\beta$ at position $X_{1}$. 
     The bi-product of the interaction (electron) is immediately absorbed. 
     Scattered photon undergoes photoelectric absorption at position $X_{2}$. 
-    The free electrons (produced by the electron's absorption and scattered photon's absorption) are detected by the Timepix3 pixel detector. 2D positions ($\hat{c}_{x}, \hat{c}_{y}$) and energies ($E_{1}, E_{2}$) are recorded. 
-    The relative z-axis distance between $X_{1}$ and $X_{2}$ is deduced from the time difference $t_{2}-t_{1}$ and the known speed of electrons in the CdTe block.
+    The free electrons (produced by the electron's absorption and scattered photon's absorption) are detected by the Timepix3 pixel detector. 2D positions and energies ($E_{1}, E_{2}$) are recorded. 
+    The relative z-axis distance between $X_{1}$ and $X_{2}$ is deduced from the time difference $t_{2}-t_{1}$ and the known speed of electrons in the \ac{CdTe} block.
     The Compton cone (red) is then reconstructed.}
     \label{fig:minipix}
 \end{figure}
 
 \begin{figure}[!h]% %%{
   \centering
-  \subfloat[\centering The real size of \ac{pix} sensor. Source: \cite{baca2021gamma} ] {
+  \subfloat[The real size of \ac{pix} sensor. Source: \cite{baca2021gamma} ] {
     \includegraphics[width=0.35\textwidth]{./fig/photos/minipix_pen.jpg}
     \label{fig:minipix_pen}
   }
-  \subfloat[\centering Pixel output of the Timepix3 detector with recorded pair of coinciding events and computed parameters of the Compton cone. Source: \cite{baca2021gamma}] {
+  \subfloat[Pixel output of the Timepix3 detector with recorded pair of coinciding events and computed parameters of the Compton cone. Source: \cite{baca2021gamma}] {
 
     \begin{tikzpicture}
       \node[anchor=south west,inner sep=0] (a) at (0,0) {
@@ -391,7 +298,7 @@ The main advantage of \ac{ROS} is its flexibility - multiple \textit{nodes} migh
 %The key feature of \ac{ROS} is the \textit{transformation} library, which provides transformations between different coordinate frames of the robotic system.
 %The \ac{ROS} master provides the registration of the individual \ac{ROS} nodes as well as maintains communication between them.
 
-\subsubsection{ROS communication model}
+\subsection{ROS communication model}
 The fundamental \ac{ROS} communication mechanism used for exchanging messages between different \ac{ROS} \textit{nodes} is called \textit{topics}.
 \textit{Topics} are based on a publish-subscribe model, where nodes can either publish data to a topic or subscribe to receive data from a topic. 
 Each topic has a specific data type associated with it.
@@ -413,17 +320,17 @@ Such a communication scheme might be used, for example, for triggering some acti
 \end{figure}
 
 \subsection{simulations}
-The simulations within this project were made using \textbf{Gazebo}, an open-source 3D simulator for robotic research.
-It is fully compatible with \ac{ROS} and allows realistic simulations of robotic systems.
-The ionizing radiation was simulated using \textbf{Rospix}\footnote{available at: \url{https://github.com/rospix}} simulation package.
+The simulations within this project were made using \textit{Gazebo}, an open-source 3D simulator for robotic research.
+Gazebo is fully compatible with \ac{ROS} and allows realistic simulations of robotic systems.
+The ionizing radiation was simulated using \textit{Rospix}\footnote{available at: \url{https://github.com/rospix}} simulation package.
 The simulation process incorporates properties of the environment (air attenuation) as well as the geometry of the sensor and all the underlying principles leading to the detection of an ionizing photon by the Compton camera.
 The properties of the simulator of ionizing radiation are described in \cite{baca2019timepix}.
 
 \section{MRS UAV system}
-The proposed high-level control method builds on the MRS UAV system\footnote{available at: \url{https://github.com/ctu-mrs/mrs_uav_system}} \cite{mrs_system}.
+The proposed high-level search strategy builds on the MRS UAV system\footnote{available at: \url{https://github.com/ctu-mrs/mrs_uav_system}} \cite{mrs_system}.
 The MRS UAV system is a research-oriented software platform developed at Czech Technical University in Prague.
-The MRS system is based on \ac{ROS} and provides full control pipeline for different types of \ac{UAV}s, including state estimation, sensor fusion, trajectory generation, multi-robot communication, planning and feedback control.
-Methods proposed in this thesis builds on some parts of the MRS UAV System --- localization and state estimation (it is assumed the drones are localized using \ac{GPS} or other localization method), communication (the drones can exchange information between each other) and control (the \ac{UAV}s can execute given path).
+The MRS system is based on \ac{ROS} and provides full control pipeline for different types of \ac{UAV}s, including state estimation, sensor fusion, trajectory generation, multi-robot communication, motion planning and feedback control.
+%Methods proposed in this thesis builds on some parts of the MRS UAV System --- localization and state estimation (it is assumed the drones are localized using \ac{GPS} or other localization method), communication (the drones can exchange information between each other) and control (the \ac{UAV}s can execute given path).
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%
@@ -436,6 +343,97 @@ Methods proposed in this thesis builds on some parts of the MRS UAV System --- l
 %%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% %%{
+\mycomment{% %%{
+Ionizing radiation is unperceivable by human senses yet poses a significant health risk for human beings.
+%Sensors of ionizing radiation are made of different materials that interact with ionizing particles.
+Therefore, efficient methods for monitoring and detecting this type of radiation are essential. 
+Various materials that interact with ionizing particles are used to construct sensors for ionizing radiation.
+
+The basic operation mode of these sensors is counting the number of particles detected, thus estimating the intensity of the particle flux at the sensor's location.
+The dosimetric measurements do not provide information about the direction from which direction the radiation is emitted. 
+Intensity-only detectors must be relative large to get accurate measurements (must collect enough interactions and compensate the stochastic nature of radioactive decay).  
+Moreover, localization of multiple sources might require many measurements at different positions, which is time consuming.
+The direction of incoming $\gamma$ photons might be deduced using the Compton camera, which is based on the Compton scattering principle.
+}% %%}
+\mycomment{% %%{
+  %The 
+  Geiger-Müller counters, scintillation detectors, and semiconductor detectors (among many others).
+   Geiger-Müller counter a tube filled with gas that, when ionized by passing particles, conducts an electrical charge corresponding to the detected particle flux.
+  Scintillation contains a luminescent material that emits light when hit by ionizing radiation, 
+  which is then transformed into an electrical signal by a photodiode. 
+  The third common type of detector is made from semiconductive materials sensitive to ionizing radiation. 
+  The ejected electrons from the ionization process can be measured to deduce the type and energy of the incoming radiation.
+}% %%}
+
+
+\mycomment{ %klein nishina % %%{
+  The probability that a photon with an energy $E_{0}$ undergoes a Compton scattering through an angle $\beta$ is described by the Klein-Nishina formula
+  \begin{equation}
+    K(\beta, E_{0}) = \frac{r_{e}^{2}}{2} \left( \frac{E_{2}}{E_{0}}  \right)^{2} \left(  \frac{E_{2}}{E_{0}} + \frac{E_{0}}{E_{2}} - \mathrm{sin}^{2}(\beta)  \right),
+    \label{eq:klein_nishina}
+  \end{equation}
+  where $r_{e}$ is the classical electron radius. 
+}% %%}
+
+\mycomment{% %%{
+  \section{Measuring radioactivity}
+  Ionizing radiation is unperceivable by human senses yet poses a significant health risk for human beings.
+  Effective monitoring methods are therefore needed to detect and measure the presence of such radiation. %, that is potentially harmful to human beings.
+  %Sensors of ionizing radiation are made of different materials that interact with ionizing particles.
+  Therefore, efficient methods for monitoring and detecting this type of radiation are essential. 
+  Various materials that interact with ionizing particles are used to construct sensors for ionizing radiation.
+
+  Three common types of these sensors include Geiger-Müller counters, scintillation detectors, and semiconductor detectors (among many others).
+   Geiger-Müller counters are tubes filled with gas that, when ionized by passing particles, conduct an electrical charge proportional to the detected particle flux.
+  Scintillation detectors work differently. 
+  They contain a material that emits light when hit by ionizing radiation, 
+  which is then transformed into an electrical signal by a photodiode. 
+  The third type of detector is made from semiconductive materials sensitive to ionizing photons. 
+  The ejected electrons from the ionization process can be measured to deduce the type and energy of the incoming radiation.
+
+  Most of these sensors function by counting the number of particles detected, thus estimating the intensity of the particle flux at the sensor's location. 
+  However, this does not provide information about the direction from which the particles are coming. 
+  Following \cite{baca2019timepix}, the direction of incoming particles can be deduced by different detector configurations illustrated in figure \ref{fig:sensor_overview}.
+  \textbf{Pinhole camera aperture} (which is based on same principles as pinhole camera in classical optics) consists of a small hole in shielding material (e.g. lead), blocking all rays in other directions.
+  This approach significantly reduces the field of view of the camera. 
+  \textbf{Colimators} (frequently used in medical imaging) also restrict the set of possible directions.
+  The openings in the shielding material are organized in a way that each part of the detector is responsible for measuring particles coming from certain direction.
+  \textbf{Stacked detectors} employ multiple layers of detectors, where the particle's direction is computed from multiple interactions as the ray passes through the layers.
+  Finally, the \textbf{Compton camera} use the Compton scattering for deducing the set of possible directions of the original particle. 
+
+
+
+  %Each of the proposed methods have some drawbacks in context of deployment onboard a small \ac{UAV}.
+  Intensity-only detectors must be relative large to get accurate measurements (collect enough interactions and compensate the stochastic nature of radioactive decay).  
+  Moreover, localization of multiple sources might require many measurements at different positions, which is time consuming.
+  The use of collimators or pin-hole apertures is not possible due to their limited field of view and large weight and dimensions (caused by the presence of shielding material, which must be thick enough to effectively block the other rays).
+  Multi-stack detectors are complicated 
+  \begin{figure}[!h]
+      \centering
+      \includegraphics[width=0.5\textwidth]{./fig/photos/detector_overview_baca2019.png}
+      \caption{Different ways how to deduce the direction of the incoming particle. Source: \cite{baca2019timepix}}
+      \label{fig:sensor_overview}
+  \end{figure}
+}% %%}
+
+\mycomment{% %%{
+\begin{figure}[!h]% %%{
+  \centering
+  \subfloat[\centering different ways how to detect the direction of incoming particle. Source: \cite{baca2019timepix}] {
+    \includegraphics[width=0.49\textwidth]{./fig/photos/detector_overview_baca2019.png}
+    \label{fig:sensor_overview}
+  }
+  \subfloat[\centering Geometry for two-layer Compton camera. The $\gamma$ particle emitted at position $j$ interacts with the first layer of the sensor (scatterer) at position $X_{1}$. A lower energetic photon is scattered under angle $\beta$ and absorbed by the second layer of the detector (absorber) at position $X_{2}$. The reconstructed Compton cone is parametrized by angle $\beta$, axis vector $a$ and origin of the cone $X_{1}$.] {
+      \label{fig:compton_camera_geometry}
+  
+      \includegraphics[width=0.49\textwidth]{./fig/photos/compton_camera_modelll.eps}
+  }
+  \caption{TODO}
+  \label{fig:xxx}
+\end{figure}% %%}
+}% %%}
 
 % %%{
 \mycomment{
@@ -540,4 +538,6 @@ Methods proposed in this thesis builds on some parts of the MRS UAV System --- l
 
   \section{MRS UAV system}
 }
-% %%}
+% %%}% %%}
+
+

@@ -430,39 +430,37 @@ The path is then smoothed by the mrs uav system \cite{mrs_system} onboard the dr
 
 
 
+  \begin{algorithm}[!h]
+  \caption{Multi-path planning}\label{alg:cap}
+  \begin{algorithmic}
 
-\begin{algorithm}[!h]
-\caption{Multi-path planning}\label{alg:cap}
-\begin{algorithmic}
+  \Function {plan\_paths}{$drones\_waypoints, drones\_poses$}
+    \State $planned\_paths \gets \{\}$
+    \For {$drone \in drones$} \Comment{iterate over drones based on priority}
+      \State $obstacles \gets \{\}$
+      \For {$path \in planned\_paths$}
+        \State $obstacles \gets obstacles \cup \Call{inflate\_points}{path}$ %\Comment{mark positions around already planned paths as obstacles}
+      \EndFor
+      \State $path \gets \{\}$
+      \State $segment\_start \gets drone\_pose$
+      \For {$waypoint \in drone\_waypoints$}
 
-\Function {plan\_paths}{$drones\_waypoints, drones\_poses$}
-  \State $planned\_paths \gets \{\}$
-  \For {$drone \in drones$} \Comment{iterate over drones based on priority}
-    \State $obstacles \gets \{\}$
-    \For {$path \in planned\_paths$}
-      \State $obstacles \gets obstacles \cup \Call{inflate\_points}{path}$ %\Comment{mark positions around already planned paths as obstacles}
+        \If{ $waypoint \in obstacles$}
+          \State \textbf{continue}
+        \EndIf
+        \State $path\_segment \gets \Call{astar\_planner}{start, waypoint, obstacles}$
+        \State $segment\_start \gets waypoint$
+        \State $path \gets path \cup path\_segment$
+      \EndFor
+      \State $planned\_paths \gets planned\_paths \cup path$
     \EndFor
-    \State $path \gets \{\}$
-    \State $segment\_start \gets drone\_pose$
-    \For {$waypoint \in drone\_waypoints$}
-
-      \If{ $waypoint \in obstacles$}
-        \State \textbf{continue}
-      \EndIf
-      \State $path\_segment \gets \Call{astar\_planner}{start, waypoint, obstacles}$
-      \State $segment\_start \gets waypoint$
-      \State $path \gets path \cup path\_segment$
-    \EndFor
-    \State $planned\_paths \gets planned\_paths \cup path$
-  \EndFor
-  \State \Return $planned\_paths$
-\EndFunction
+    \State \Return $planned\_paths$
+  \EndFunction
 
 
-\end{algorithmic}
-  \label{alg:planning}
-\end{algorithm}% %%}
-
+  \end{algorithmic}
+    \label{alg:planning}
+  \end{algorithm}% %%}
 
 
 
