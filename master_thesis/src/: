@@ -1,64 +1,57 @@
 %!TEX root = ../main.tex
 
 \chapter{Results\label{chap:results}}
-This chapter demonstrates the functionality of the proposed method for localization of sources of ionizing radiation.
-%The directional sensitivity of \ac{pix} sensor (simulated using Monte Carlo simulation) is presented in section \ref{chap:mcr}.
-The directional sensitivity of the \ac{pix} sensor, modeled via Monte Carlo simulation, is presented in section \ref{chap:mcr}.
-The evaluation of the \ac{MLEM} estimation approach, carried out on previously gathered data from experiments with real radioactive sources, is shown in section \ref{chap:exp1}.
-%The \ac{MLEM} estimation method was evaluated on pre-recorded data from experiments with real radioactive sources.
-%The results are presented in section \ref{chap:exp1}.
-Functionality of the whole system (estimation method together with the proposed search strategy) in simulation is presented in section \ref{chap:exp2}.
-Finally, the whole system was also tested on a real hardware with simulated radioactive sources, as shown in section \ref{chap:exp3}.
+This chapter demonstrates the functionality of the proposed estimation method for ionizing radiation mapping and search strategy for a small group of \ac{UAV}s.
+The chapter is divided into four sections.
+The directional sensitivity of \ac{pix} sensor (simulated using Monte Carlo simulation) is presented in section \ref{chap:mcr}.
+Section \ref{chap:exp1} evaluates the \ac{MLEM} estimation method using pre-recorded data from real-world experiments (experiment 1).
+Functionality of the whole system (estimation method together with the proposed search strategy) in realistic simulation is presented in section \ref{chap:exp2} (experiment 2).
+The whole system was also tested on real hardware with simulated radioactive sources, as shown in section \ref{chap:exp3} (experiment 3).
 
-
-
-\section{Monte Carlo simulation of the sensor's sensitivity\label{chap:mcr}}
+\section{Monte Carlo simulation\label{chap:mcr}}
 %ranging from $3.79 \times 10^{-8}$ to $5.15\times 10^{-8}$
 The assessment of the directional sensitivity  of the \ac{pix} sensor was carried out using the Monte Carlo simulation described in chapter \ref{chap:methods_estimation}.
 Each omnidirectional simulated source (located $\SI{1}{\meter}$ from the sensor) emitted $10^{10}$ $\SI{662}{\kilo\electronvolt}$ photons from each position.
 Shortly speaking, the simulator recorded the number of photons that a) reached the sensor's surface (more precisely the \ac{CdTe} block, where the ionizing particles interacts with \ac{CdTe} material) and b) undergone the interactions (Compton scattering, photoelectric absorption) leading to the Compton cone detection.  
-Results of the Monte Carlo simulations are shown in figure \ref{fig:monte_clar}.
-Corresponding geometry of the \ac{CdTe} block is shown in figure \ref{fig:monte_axes}.
+Results of the simulations are shown in figure \ref{fig:monte_clar}.
+Corresponding geometry of the \ac{pix} sensor (sensor's ) is illustrated in figure \ref{fig:monte_axes}. 
 
 The \ac{pix} sensor's directional sensitivity is depicted in figure \ref{fig:monte_finalll}.
 It can be observed that the probability of a particle being detected as a Compton event is nearly the same from all directions (more precisely, it varies from $3.79 \times 10^{-8}$ to $5.15\times 10^{-8}$).
 The probability of reaching the sensor's surface (given the solid angle of the sensor from different positions) is shown in figure \ref{fig:monte_reaching}.
 A particle emitted in front of the sensor (along x-axis) more likely hits the \ac{CdTe} block that another one emitted from the side (y-axis and z-axis), where the visible surface of the \ac{CdTe} block is the smallest.
 On the other hand, the probability of Compton scattering as well as photoelectric absorption (that together lead to detection of a Compton cone) depend on the trajectory of incident and scattered photon.
-The longer the intersection of an ionizing particle and the \ac{CdTe} block is, the more likely the interactions happen.
+The longer the intersection is, the more likely the interactions happen.
 Therefore a photon reaching the sensor's surface from the side more likely causes the Compton measurement, as can be seen in figure \ref{fig:monte_cone_from_hitting}.
 In summary, both effects (probability of reaching the \ac{CdTe} block and probability of necessary interactions) neglect each other and lead to the almost uniform directional sensitivity of the \ac{pix} sensor.
 %on the length of the intersection of the photon trajectory with the sensor \ac{CdTe} block.
 
+\subsection{Conclusion}
+The Monte Carlo simulation showed that the directional sensitivity is almost uniform in all directions (despite the uneven geometry of the sensor's \ac{CdTe} block).
 The absolute values of estimated probabilities and also worth mentioning.
 The \ac{pix} sensor with it's dimensions $14.08 \times 14.08 \times 2 \ \si{\milli\meter}$ is very small compared to the distance between the \ac{UAV} carrying the sensor and sources of ionizing radiation.
-Moreover, approximately only 1 of 100 $\SI{662}{\kilo\electronvolt}$ photons that reach the \ac{pix} sensor can be detected in the Compton camera mode.
-For illustration: based on the simulation results, only $\approx 15$ Compton events can be possibly detected (on average) by a \ac{pix} sensor located $\SI{5}{\meter}$ 
-from a source of $\SI{662}{\kilo\electronvolt}$ photons  with activity $\SI{1}{\giga\becquerel}$
-(assuming exposure time $\SI{10}{\second}$). 
-This estimate can be seen as an upper bound, since it does not take into account other aspects of the detection process.
-For example: other interactions might occur (the incident photon might be immediately absorbed without any Compton scattering) and the detection process might not estimate all the Compton cones correctly due to the noise cuased by other particles detected by the Timepix detector at the same time.
+ 
+
 %The probability that a photon that reached the sensor's surface causes a Compton cone is presented in figure \ref{fig:monte_cone_from_hitting}.
 
 
 % Answer: [trim={left bottom right top},clip]
+\newpage
 
 \begin{figure}[!htb]% %%{
+  \centering
   \subfloat[$p(\mathrm{cone\ detected})$] {
     \centering
     \includegraphics[width=0.5\textwidth,trim={1cm 1cm 2.5cm 1cm},clip]{./fig/photos/monte_carlo_final_prob.eps}
     \label{fig:monte_finalll}
   }
-	\centering
   \subfloat[\ac{pix} sensor geometry. The \ac{CdTe} block (grey) has dimensions $14.08 \times 14.08 \times 2 \ \si{\milli\meter}$]{
     \centering
-    \includegraphics[width=0.4\textwidth]{./fig/photos/axes.eps}
+    \includegraphics[width=0.5\textwidth]{./fig/photos/axes.eps}
     \label{fig:monte_axes}
   }
   \newline
-
   \noindent
-
   \subfloat[$p(\mathrm{reaching\ the\ sensor})$] {
     \includegraphics[width=0.5\textwidth,trim={1cm 1cm 1cm 1cm},clip]{./fig/photos/monte_carlo_total_activity.eps}
     \label{fig:monte_reaching}
@@ -73,94 +66,60 @@ For example: other interactions might occur (the incident photon might be immedi
   Lastly, probability that a photon (that reached the sensor) causes a Compton cone is illustrated in figure \ref{fig:monte_cone_from_hitting}.}
   \label{fig:monte_clar}
 \end{figure}% %%}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\section{Evaluation of MLEM method based on real-world data\label{chap:exp1}}
-The proposed \ac{MLEM} method for radiation mapping has been tested using data from real-world experiments that were carried out in September 2022 (before the work on this thesis started).
-The back-projection of measured Compton cones serves as a baseline method for comparison.
-\subsection{Setup and course of the experiment (data collection)}
-The area of interest of size $\approx 40 \times 30\ \si{\meter}$ was scanned by a group of four \ac{UAV}s equipped with \ac{pix} sensor.
-The \ac{UAV}s were localized using \ac{GPS}.
-The drones were controlled by the method proposed in \cite{baca2021gamma}.
-In the beginning of the experiment, the drones were following a predefined trajectory covering the whole area of interest uniformly.
-After the first 8 Compton cones were detected, three drones were flying $\SI{3}{\meter}$ above the ground encircling the current single-hypothesis estimate of the source position (filtered by a \ac{LKF}). 
-The last drone with flight height $\SI{6}{\meter}$ was following predefined path covering the whole area.
-Four sources of Cesium-137 with activity $1900, 500, 180, 50\ \si{\mega\becquerel}$ were located at positions shown in figure \ref{e1:gt}.
-During the run of the experiment, the drones were mostly encircling the $\SI{500}{\mega\becquerel}$ source position.
-The fourth \ac{UAV} flying $\SI{6}{\meter}$ above the ground twice detected photons originating from the $\SI{1900}{\mega\becquerel}$ source. 
-As a consequence, the single-hypothesis moved towards the strongest source, however, the group of \ac{UAV}s moved back to the $\SI{500}{\mega\becquerel}$ source after while.
-The whole experiment took $\approx \SI{10}{\minute}$ and $263$ Compton cones were recorded.
-
-\subsection{Evaluation of the MLEM method}
-The results of the proposed \ac{MLEM} estimation method are presented in figure \ref{fig:e1_all}.
-The area of interest was discretized with $\SI{1}{\meter}$ resolution, the number of iterations of the \ac{MLEM} method was set to 10.
-The viewpoints (positions of the drones) were sampled with $\SI{5}{\hertz}$, the \ac{MLEM} estimate was updated every $\SI{2}{\second}$.
-The uncertainty of the cone angle  
-The final estimate of the emission intensity $\bm{\lambda}$ (based on all data acquired during the experiment) is presented in figure \ref{e1:lam}. 
-Sensitivity of detection (figure \ref{e1:sen}) confirms what stated before - the drones were mostly encircling the $\SI{500}{\mega\becquerel}$ source at position $(-2, -10)$, which was also correctly localized.
-The area in the vicinity of the $\SI{1900}{\mega\becquerel}$ source at position $(16, 0)$ was much less explored by the \ac{UAV}s (and therefore less Compton cones originating there were recorded).
-Despite the much lower sensitivity in that area, the \ac{MLEM} method estimated some local maxima in the neighbourhood of the true position of the strongest source.
-The two weakest sources of radiation are indistinguishable from the noise.
-
-\subsection{Convergence of the MLEM algorithm}
-The convergence of \ac{MLEM} algorithm (using \ac{MSE} as the metric) is shown in figure \ref{e1:mse}. 
-\ac{MSE} in this scenario is defined as
-\begin{equation}
-MSE = \frac{1}{J} \sum_{j = 0}^{J} (\lambda_{j_{normalized}} - g_{j})^{2},
-\end{equation}
-where the ground truth is defined as $g_{j} = \frac{\mathrm{source\ activity}}{\mathrm{max}(\mathrm{source\ activity})}$ at the sources locations and $g_{j} = 0$ elsewhere.
-The iterative \ac{MLEM} algorithm is initialized with back-projection (figure \ref{e1:bp}). 
-We can see in figure \ref{e1:mse} that the decrease of the $MSE$ stopped after few iterations.
+\newpage
+\section{Real-world (Experiment 1)\label{chap:exp1}}
 
 \begin{figure}[!htb]% %%{
   \centering
-  \subfloat[estimate of ionizing radiation intensity $\bm{\lambda}$ (normalized)] {
+  \subfloat[estimate of sources locations $\bm{\lambda}$ (normalized)] {
     \includegraphics[width=0.5\textwidth,trim={0 0.5cm 2cm 1cm},clip]{./fig/photos/auto_lam.eps}
-    \label{e1:lam}
+    \label{fig:}
   }
   \subfloat[ground truth positions of sources ($\si{\mega\becquerel}$)] {
     \includegraphics[width=0.5\textwidth,trim={0 0.5cm 2cm 1cm},clip]{./fig/photos/auto_gt.eps}
-    \label{e1:gt}
+    \label{fig:}
   }
   \newline
   \noindent 
-  \subfloat[back-projection (number of Compton cones)] {
+  \subfloat[back projection (number of Compton cones)] {
     \includegraphics[width=0.5\textwidth,trim={0 0.5cm 2cm 1cm},clip]{./fig/photos/auto_bp.eps}
-    \label{e1:bp}
+    \label{fig:}
   }
   \subfloat[sensitivity of detection $\mathbf{s}$] {
     \includegraphics[width=0.5\textwidth,trim={0 0.5cm 2cm 1cm},clip]{./fig/photos/auto_sen.eps}
-    \label{e1:sen}
+    \label{fig:}
   }
-  \caption{The \ac{MLEM} method evaluated on pre-recorded real-world data.}
-  \label{fig:e1_all}
-\end{figure}% %%}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{figure}
-	\centering
+  \newline
+  \noindent 
+  \subfloat[] {
     \includegraphics[width=0.5\textwidth,trim={0 0.5cm 2cm 1cm},clip]{./fig/photos/auto_mse_realworld.eps}
-		\caption{}
-    \label{e1:mse}
-\end{figure}
-\subsection{Conclusions}
-The results of the \ac{MLEM} reconstruction are heavily affected by noise in measurements.
-First of all, the \ac{UAV}s were localized using \ac{GPS} method that might be effect by a position error of several meters.
-The position error propagates to the uncertainty of the Compton cone origins.
-Furthermore, the real \ac{pix} sensors produced many outliers --- Compton cones pointing upwards or not intersecting any source position. 
-The noisy measurements are caused by the working principle of unshielded single-layer Compton camera, where ionizing particles coming from different directions might affect the Cone reconstruction procedure.
-However, the comparison of \ac{MLEM} estimate (figure \ref{e1:lam}) and back-projection (figure \ref{e1:bp}) shows that the \ac{MLEM} significantly improved the reconstruction quality.
-The $\SI{1900}{\mega\becquerel}$ source was localized (despite the low number of recorded photons originating there) 
-thanks to the weighting of the estimate  with sensitivity of detection in the \ac{MLEM} algorithm.
-Better results might be achieved by using an active search strategy, where the drones are controlled on order to improve quality of the current \ac{MLEM} estimate, which is not the case in this scenario with pre-recorded measurements.
+    \label{fig:}
+  }
+  \caption{Results of Monte carlo simulation for cs137.Lorem ipsum  Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem }
+  \label{fig:}
+\end{figure}% %%}
 
-\section{Evaluation of MLEM and search strategy in simulation\label{chap:exp2}}
-The \ac{MLEM} estimation method have been tested together with proposed search strategy in \textit{Gazebo} simulation. 
+setup 
+4 drones, 3 seraching, 1 encircling the hypothesis
+initial phase: sweeping until 3 cones detected
 
-\subsection{Experiment setup}
-The distribution and activity of the radioactive sources as well as the size of the area was identical as in the previous chapter.
-Three drones flying $\SI{3}{\meter}$ above the ground were used during the experiment.  
-Two drones were designated to the exploitation (visiting the positions where the sources of radiation are present based on the latest \ac{MLEM} estimate), one to exploration (visiting positions with the lowest sensitivity). 
-The experiment took 
+found the 500 MBq source
+
+To say
+x
+x
+x
+
+
+\subsection{Conclusion}
+
+
+
+
+
+\newpage
+\section{Simulation (experiment 2)\label{chap:exp2}}
 
 \begin{figure}[!htb]% %%{
   \centering
@@ -191,6 +150,15 @@ The experiment took
   \caption{Results of Monte carlo simulation for cs137.Lorem ipsum  Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem }
   \label{fig:}
 \end{figure}% %%}
+
+
+
+
+\subsection{Conclusion}
+
+
+
+
 
 \newpage
 \section{Real-world simulation (experiment 3)\label{chap:exp3}}
@@ -235,6 +203,7 @@ The experiment took
   \label{fig:}
 \end{figure}% %%}
 
+
 \begin{figure}[!htb]
   \centering
   \subfloat {
@@ -243,6 +212,7 @@ The experiment took
   \caption{Field experiments with real hardware.}
   \label{fig:}
 \end{figure}
+
 
 \mycomment{% %%{
 
