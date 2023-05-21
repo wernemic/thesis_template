@@ -201,113 +201,67 @@ The proposed search strategy has been tested using real \ac{UAV}s during the fie
 Since the real sources of radiation were not available, the ionizing radiation was simulated onboard each \ac{UAV}.
 The main purpose of the experiment was to test the search strategy with real hardware and gain some experience with real-world conditions, where many things are not as simple as in simulation.
 
-\begin{figure}[!htb]
-  \centering
-  \subfloat[f450 platforms used during the experiments.] {
-    \includegraphics[width=0.5\textwidth]{./fig/photos/experiments.jpg}
-  }
-  \subfloat [Area of interest and \ac{UAV}s searching for (simulated) radiation.]{
-    \includegraphics[width=0.5\textwidth]{./fig/photos/pole3.png}
-  }
-  \caption{Field experiments with real hardware.}
-  \label{fig:}
-\end{figure}
-
 \subsection{Experiment setup}
-The size of the explored area was $100 \times 100\ \si{\meter}$, the resolution of each map cell was set to $\SI{0.5}{\meter}$.
-The simulator of ionizing radiation was running onboard each \ac{UAV}, simulating the radiation coming from sources at predefined positions.
+The area of interest had size $100 \times 100\ \si{\meter}$, the resolution of each map cell was set to $\SI{0.5}{\meter}$.
 The \ac{UAV}s were localized using \ac{GPS}.
-However, the noise in \ac{GPS} position measurement did not affect the simulated radiation data, since the drones used their belief (not the real position) when simulating incoming ionizing photons.
-The viewpoints (positions of the drones) were sampled with $\SI{5}{\hertz}$, the \ac{MLEM} estimate was updated every $\SI{2}{\second}$.
-Four simulated sources of $\SI{662}{\kilo\electronvolt}$ photons with activity $2000, 1000, 1000, 500\ \si{\mega\becquerel}$ were located at positions shown in figure \ref{e3:gt}.
-
-%The communication between the base station (notebook with \textit{Intel i5-1240P} processor, $\SI{16}{\giga\byte}$ RAM, $\SI{4}{\giga\byte}$ GPU) and the \ac{UAV}s was established via \ac{wifi} network. 
+The simulator of ionizing radiation was running onboard each \ac{UAV}, simulating the radiation coming from sources at predefined positions.
+The communication between the base station (notebook with \textit{Intel i5-1240P} processor, $\SI{16}{\giga\byte}$ RAM, $\SI{4}{\giga\byte}$ GB GPU) and the \ac{UAv}s was established via \ac{wifi} network. 
+In the initial phase, the drones were following the predefined trajectory (covering the area uniformly) to acquire first measurements.
+Then the proposed search strategy took control - two drones were designated to the exploitation, one to exploration.
 
 \subsection{Results}
-In the initial phase (from time $t = \SI{0}{\minute}$ to time $t = \SI{2}{\minute}$), the drones flew over the area once in ``zig-zag'' pattern following the predefined trajectory (covering the area uniformly) and measured first $17$ Compton cones.
-The ``zig-zag'' trajectory was precomputed using the MRS UAV System \cite{mrs_system}.
-The \ac{MLEM} estimate and sensitivity of detection after the initial phase is shown in figures \ref{e3:lamzig} and \ref{e3:senzig}.
-Then (at the time $t = \SI{2}{\minute}$) the proposed search strategy took control - two drones were designated to the exploitation, one to exploration.
-The trajectories of the \ac{UAV}s during the search phase (figure \ref{e3:paths}) show that the two ``exploitation`` drones focused on acquiring more measurements while the third drone was exploring the unexplored area.
-The final estimate of radiation sources intensities (at the end of the experiment $t = \SI{10}{\minute}$) is shown in figure \ref{e3:lam}.
-Three of four sources of simulated ionizing radiation were correctly localized (together with their relative emission activity).
-The weakest $\SI{500}{\mega\becquerel}$ source at position ($75, 75$) was not discovered despite the fact that the exploration drone flew around it multiple times.
-The minimum distance between the \ac{UAV}s was not below the safety threshold ($\SI{4}{\meter}$) during the whole flight, therefore all the planned trajectories were non-colliding.
-267 Compton events were recorded during the whole experiment.
-
-\begin{table}[htb]
-\begin{center}
-  \begin{tabular}{ |c|c|c|c| } 
- \hline
-    \multicolumn{2}{|c}{Sources} &  \multicolumn{2}{|c|}{ relative activity } \\
- \hline
-    position & activity & ground truth & MLEM estimate\\ 
- \hline
-    (10, 20) & 2000 MBq & 1.0  & \textbf{1.0} \\ 
-    (20, 20) & 1000 MBq &  0.5 & \textbf{0.49} \\ 
-    (80, 80) & 1000 MBq &  0.5 & \textbf{0.52} \\ 
-    (75, 75) & 500 MBq &  0.25 & \textbf{0.0} \\ 
- \hline
-\end{tabular}
-  \caption{Results of the real world experiment with simulated data. Last column presents estimated relative activity at the map positions that correspond to the ground truth position of the given source.}
-  \label{tab:temenight_results}
-\end{center}
-\end{table}
-\subsection{Conclusions}
-The experiment proved that the whole system can be used for fast radiation mapping in large open areas and perform all the computations in real time.
-The proposed search strategy together with the \ac{MLEM} mapping method worked as intended.
-The initial estimate of source positions was significantly improved during the search phase.
-Although the maximum likelihood do not provide accurate estimate for small number of cones (see \ac{MLEM} estimate in figure \ref{e3:lamzig} generated from 17 Compton cones), the inaccurate estimate ``attracts'' the \ac{UAV}s that come closer and likely measure more ionizing photons, that guide the \ac{UAV}s to the actual position of the source.
-This shows that the online estimation together with active search strategy is beneficial for autonomous detection of ionizing radiaiton.
-
-Three of four sources of simulated radiation were localized during the experiment.
-The weakest $\SI{500}{\mega\becquerel}$ was not discovered during the flight, however, it is caused more by the limited sensitivity of the (simulated) \ac{pix} sensor than by the estimation method.It is important to note that the simulated radiation data were generated in ideal conditions, without any noise in drone position, energies measured in the sensor or particles causing false positive Compton detections.
-Therefore the results of \ac{MLEM} reconstruction results are more accurate compared to the previously described experiments with real sources of ionizing radiation..
+The results of the real-world flight with simulated radiation data are presented in figure \ref{fig:e3}.
+The estimate of radioactivity distribution 
 
 % Answer: [trim={left bottom right top},clip]
 % Ex. 1: trim from left edge
+
 %\includegraphics[width=0.5\textwidth,trim={0 0 2cm 2cm},clip]{./fig/photos/auto_temesvar_drone_paths.eps}
 
 
 \begin{figure}[ht!]% %%{
   \centering
-  
-  \subfloat[source intensities $\bm{\lambda}$ after the initial phase ($t = \SI{2}{\minute}$) ] {
-    \includegraphics[width=0.5\textwidth,trim={1cm 0 2.5cm 1.2cm},clip]{./fig/photos/auto_temesvar_lamzig.eps}
-    \label{e3:lamzig}
+  \subfloat[final estimate of source intensities $\bm{\lambda}$] {
+    \includegraphics[width=0.5\textwidth,trim={1cm 0 2.5cm 1cm},clip]{./fig/photos/auto_temesvar_lam.eps}
+    \label{e3:lam}
   }
-  \subfloat[Sensitivity $\mathbf{s}$ after the initial phase ($t = \SI{2}{\minute}$)] {
-    \includegraphics[width=0.5\textwidth,trim={1cm 0 2.5cm 1.2cm},clip]{./fig/photos/auto_temesvar_senzig.eps}
-    \label{e3:senzig}
+  \subfloat[ground truth ($\si{MBq}$)] {
+    \includegraphics[width=0.5\textwidth,trim={1cm 0 2.5cm 1cm},clip]{./fig/photos/auto_temesvar_gt.eps}
+    \label{e3:gt}
   }
   \newline
   \noindent 
-  \subfloat[final estimate of source intensities $\bm{\lambda}$($t = \SI{10}{\minute}$)] {
-    \includegraphics[width=0.5\textwidth,trim={1cm 0 2.5cm 1.2cm},clip]{./fig/photos/auto_temesvar_lam.eps}
-    \label{e3:lam}
+  \subfloat[Sensitivity $\mathbf{s}$ after the initial phase.] {
+    \includegraphics[width=0.5\textwidth,trim={1cm 0 2.5cm 1cm},clip]{./fig/photos/auto_temesvar_senzig.eps}
+    \label{e3:senzig}
   }
-  \subfloat[Sensitivity $\mathbf{s}$ at the end of the experiment ($t = \SI{10}{\minute}$)] {
-    \includegraphics[width=0.5\textwidth,trim={1cm 0 2.5cm 1.2cm},clip]{./fig/photos/auto_temesvar_sen.eps}
+  \subfloat[Sensitivity $\mathbf{s}$ at the end of the experiment.] {
+    \includegraphics[width=0.5\textwidth,trim={1cm 0 2.5cm 1cm},clip]{./fig/photos/auto_temesvar_sen.eps}
     \label{e3:sen}
   }
   \newline
   \noindent 
-  \subfloat[ground truth ($\si{MBq}$)] {
-    \includegraphics[width=0.5\textwidth,trim={1cm 0 2.5cm 1.7cm},clip]{./fig/photos/auto_temesvar_gt.eps}
-    \label{e3:gt}
-  }
-  \subfloat[Paths of \ac{UAV}s during the search phase \newline (red, green --- exploitation, blue --- exploration)] {
-    \includegraphics[width=0.5\textwidth,trim={1cm 0 2.5cm 1.7cm},clip]{./fig/photos/auto_temesvar_drone_paths.eps}
+  \subfloat[Paths of \ac{UAV}s during the search phase (red, green --- exploitation, blue --- exploration)] {
+    \includegraphics[width=0.5\textwidth,trim={1cm 0 2.5cm 1cm},clip]{./fig/photos/auto_temesvar_drone_paths.eps}
     \label{e3:paths}
   }
-  %\subfloat[Final back-propagation.] {
-  %  \includegraphics[width=0.5\textwidth,trim={1cm 0 2.5cm 1cm},clip]{./fig/photos/auto_temesvar_bp.eps}
-  %  \label{e3:bp}
-  %}
+  \subfloat[Final back-propagation.] {
+    \includegraphics[width=0.5\textwidth,trim={1cm 0 2.5cm 1cm},clip]{./fig/photos/auto_temesvar_bp.eps}
+    \label{e3:bp}
+  }
+
+  \caption{}
   \label{fig:e3}
-  \caption{Real world experiments with simulated data. The \ac{MLEM} estimate, sensitivity and drone paths during and after the experiment ($t = \SI{2}{\minute}$, $t = \SI{10}{\minute}$) are presented.}
 \end{figure}% %%}
 
+\begin{figure}[!htb]
+  \centering
+  \subfloat {
+    \includegraphics[width=0.7\textwidth]{./fig/photos/experiments.jpg}
+  }
+  \caption{Field experiments with real hardware.}
+  \label{fig:}
+\end{figure}
 
 \mycomment{% %%{
 
