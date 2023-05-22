@@ -23,28 +23,29 @@ It results in the fact that the number of measurements is much lower (hundreds-t
 Moreover, we would like to reconstruct the sources of ionizing radiation in real time.
 Despite all of these differences, the aim of this work is to get inspiration in the medical field and apply these algorithms to the given problem.
 
-\section{Analytical and iterative methods}
+\section{Reconstruction methods}
 The reconstruction methods can be divided into two categories: analytical (direct) and iterative algorithms \cite{lojacono2}.
+\subsection{Analytical reconstruction methods}
 In analytical methods, the aim is to find solution directly from the conical projections of reconstructed Compton events.
-Such solution might be exact in the continuous model, yet impractical in real world applications, where the measurements might be noisy (thus conical surface projections might not intersect the real position of the source) or where the computational power is limited.
-
+Such solution might be exact in the continuous model (e.g. computing exact intersection point of all acquired Compton mesurements), yet impractical in real world applications, where the measurements might be noisy (thus conical surface projections might not intersect the real position of the source) or where the computational power is limited.
 To illustrate difficulties of direct reconstruction methods, algorithm proposed in \cite{baca2021gamma} estimates the initial hypothesis of the source position as a point that is closest to all measured cone surfaces (which might be considered as analytical method).
 Finding solution of such non-linear least squares problem is computationally demanding and tractable only for small number of cones.
 Another example of simple direct reconstruction method is called back-projection.
-It can be used as follows:
-\alertwarning{TODO obrázek vysvětlení}
-
+\subsubsection{Back-projection}
+Back-projection is one of the simplest reconstruction methods. 
+The Compton cones are projected to the (discretized) space of possible sources locations and each bin records the number of cones intersecting its position. 
+The bins with more intersections are considered as possible source positions.
+The back-projection for 2D image reconstruction is illustrated in figure \ref{fig:bppp}.
+The advantage of back-projection method is it's simplicity and the fact that in can be easily parametrized when processing large number of measurements.
+On the other hand, the back-projection requires significant number of data in order to make the reconstruction accurate and do not take into account properties of the detector.
   \begin{figure}[!h]
     \centering
-      \includegraphics[width=0.4\textwidth]{./fig/photos/backprop.eps}
-    \caption{Penetrating power of different types of radiation. Source: \cite{penetrating_power}}
-      %\label{fig:islaw}
+      \includegraphics[width=0.5\textwidth]{./fig/photos/back_proppp.eps}
+    \caption{Simple back-projection reconstruction method illustrated in 2D. Recorded Compton cones are back-projected to the space of possible source positions. Number of cones intersecting each bin is computed, as illustrated in the figure.}
+    \label{fig:bppp}
   \end{figure}
-the detection space is divided into discrete bins.
-For each Compton measurement, the cone surface is back-projected to the discrete bins.
-The intersection of each cone with the bins is recorded.
-The bins with higher number of intersections presents possible locations of $\gamma$ radiation sources.
 
+\subsection{Iterative reconstruction methods}
 The iterative reconstruction methods approximate the positions of sources by iteratively adapting the reconstruction to the measured projections.
 Starting from some initial estimate or prior belief of sources distribution, each iteration improves the current estimate so based on the recorded measurements (the Compton cones).
 The iteratively approach do not provide exact and unique solution, on the other hand is more flexible, can handle noise in the measurements (if it is properly modelled) and is widely used in practise.
@@ -67,7 +68,7 @@ Medical \ac{SPECT} imagining devices typically acquire measurements from differe
 Measured events in \ac{PET} and \ac{SPECT} are stored in memory in discrete bins (each bin represents count of reconstructed particles in defined time interval or subset of the image space).
 The Compton camera events are represented in memory using List-mode approach.
 List-mode approach stores measured Compton cones in a list data structure, where each record contains information about the exact arrival time, position and energy of measured interactions.
-Despite all these differences in the nature of the measurements, the methods were adapted for Compton imagining as well.
+Despite all these differences in the nature of the measurements, the iterative methods were also adapted for the Compton imaging.
 
 %Collimators restricts the set of possible directions from which the gamma ray may enter the detector (and be detected), therefore they can improve accuracy of the detection.
 %Since only one gamma-ray is emmited (unlike in \ac{PET}), high number of measurements is needed for accute reconstruction.
