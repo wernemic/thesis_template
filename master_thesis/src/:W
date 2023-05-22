@@ -106,35 +106,37 @@ Then a vector $\bm{\mu}$ can be defined, where each element of $\bm{\mu}$
   \label{eq:mu}
 \end{equation}
 denotes the average number of events measured in bin $i$.
-The probability of measuring $y_{i}$ particles in the measurement bin $i$ with respect to some given average emission intensity $\bm{\lambda}$ is then expressed as (Poisson distribution):
+
+The probability of measuring $y_{i}$ particles in the measurement bin $i$ w.r.t. to some given $\mathbf{\lambda}$ can be expressed as (Poisson distribution):
 \begin{equation}
-  p(y_{i} |\mu_{i} ) = e^{-\mu_{i}} \frac{\mu_{i}^{y_i}}{y_{i}!}.
+  p(y_{i} |\mu_{i} ) = e^{-\mu_{i}} \frac{\mu_{i}^{y_i}}{y_{i}!},
 \end{equation}
+
 The likelihood of all the measurements (assuming the events to be independent) is
 \begin{equation}  
   \mathcal{L}(\mathbf{Y} | \mathbf{\lambda}) = \prod_{i}p(y_{i} |\mu_{i} ) = \prod_{i} e^{-\mu_{i}} \frac{\mu_{i}^{y_i}}{y_{i}!}.
-  \label{eq:prod}
 \end{equation}
-We want to maximize the likelihood by finding the best possible values of $\bm{\lambda}$. 
-The maximum likelihood solution is:
-\begin{equation}
-  \mathbf{\lambda}_{best} = \underset{\mathbf{\lambda}}{\mathrm{argmax}}( \mathrm{log}\ \mathcal{L}(\mathbf{Y} | \mathbf{\lambda})).
-\end{equation}
-Instead of maximizing the product in equation \ref{eq:prod}, it is common to maximize its logarithm since the logarithm is monotonically increasing function.
-After taking the logarithm of \ref{eq:prod} and substitution $\mu_{i} = \sum_{j} t_{ij}\lambda_{j}$, we have the following:
+
+Instead of maximizing the product, it is natural to maximize its logarithm, since the logarithm is monotonically increasing function.
+After taking its logarithm and substituting \ref{eq:mu}, we have the following:
 \begin{equation}  
   \mathrm{log}\ \mathcal{L}(\mathbf{Y} | \mathbf{\lambda}) = \sum_{i}\left ( -\sum_{j} t_{ij}\lambda_{j} + y_{i} \mathrm{log}(\sum_{j} t_{ij}\lambda_{j})  - \mathrm{log}(y_{i}!) \right ).
   \label{eq:likelihood1}
 \end{equation}
+Then the maximum likelihood solution of the given problem is
+\begin{equation}
+  \mathbf{\lambda}_{best} = \underset{\mathbf{\lambda}}{\mathrm{argmax}}( \mathrm{log}\ \mathcal{L}(\mathbf{Y} | \mathbf{\lambda}))
+\end{equation}
 However, the nonlinear equation \ref{eq:likelihood1} can not be maximized directly.
 The solution is to use an iterative \ac{EM} algorithm, as proposed in \cite{MLEM_Lange_Carlson_1984}.
 \subsection{Expectation maximization algorithm}
-The \ac{EM} algorithm was originally described in \cite{EM}. 
-It is an iterative algorithm consisting of two steps performed in each iteration --- E-step and M-step.
-Lets denote $l$ the number of iterations of the algorithm.
-The vector of hidden parameters  $\mathbf{\hat{\lambda}}^{[l = 0]}$ we would like to find is initialized to some starting value using back-projection of the Compton cones or with uniform distribution.
+The \ac{EM} algorithm was originally developed by \cite{EM}. 
+It is an iterative algorithm consisting of two steps performed in each iteration - E-step and M-step.
+Lets denote $l$ the number of iteration of the algorithm.
+The vector of hidden parameters $\mathbf{\hat{\lambda}}^{[l = 0]}$ is initialized to some starting value using back-projection of the compton cones.
+
 The purpose of the E-step is to determine the expectation of the likelihood function given the measurements $\mathbf{Y}$ and the estimation of hidden parameters $\mathbf{\hat{\lambda}}^{[l-1]}$ obtained from the previous iteration. 
-Then in the M-step, this expectation is maximized by setting its derivatives (with respect to $\mathbf{\hat{\lambda}}^{[l-1]}$) to $0$.
+Then in the M-step, this expectation is maximized by setting its derivatives w.r.t. $\mathbf{\hat{\lambda}}^{[l-1]}=0$.
 According to \cite{MLEM_Lange_Carlson_1984}, the final formula for iterative \ac{MLEM} algorithm with binned data is 
 \begin{equation}
   \hat{\lambda}_{j}^{[l]} = \frac{\hat{\lambda}_{j}^{[l-1]}}{\sum_{i}t_{ij}} \sum_{i \in I} \frac{t_{ij} y_{i}}{\sum_{k} t_{ik} \hat{\lambda}_{k}^{[l-1]}}.
@@ -142,28 +144,31 @@ According to \cite{MLEM_Lange_Carlson_1984}, the final formula for iterative \ac
 \end{equation}
 The term $\sum_{i}t_{ij}$ is called sensitivity of detection $s_{j}$ and presents a probability that particle emitted at position $j$ is detected by the sensor:
 \begin{equation}
-  s_{j} = P(\textrm{detected by the sensor}\ | \textrm{emitted from } j) =  \sum_{i}t_{ij}.
+  s_{j} = P(\textrm{detected by the sensor}\ | \textrm{emitted from } j) =  \sum_{i}t_{ij}
 \end{equation}
+
 \subsection{List-mode Maximum Likelihood Expectation Maximization}
-The list-mode extension of \ac{MLEM} for the Compton imaging was proposed in \cite{wilderman}.
-Each measurement bin $i$ in list-mode \ac{MLEM} consists of only one detected Compton event.
+The List-mode extension of \ac{MLEM} for \ac{CC} imaging was proposed in \cite{wilderman}.
+Each measurement bin in \ac{LM-MLEM} is consisting of only one detected Compton event.
 Therefore the number of detected events $y_{i}$ in data bin $i$ is either $y_{i} = 1$ for detected event or $y_{1} = 0$ when no event was recorded.
 This simplifies the formula \ref{eq:mlem_class} to
+
 \begin{equation}
   \hat{\lambda}_{j}^{[l]} = \frac{\hat{\lambda}_{j}^{[l-1]}}{s_{j}} \sum_{i \in \mathbf{I}}\frac{t_{ij} }{\sum_{k} t_{ik} \hat{\lambda}_{k}^{[l-1]}}.
   \label{eq:lmmlem}
 \end{equation}
+
 Since only recorded measurements are considered in the list-mode approach, it no longer holds that sensitivity of measurements can be expressed as $s_{j} = \sum_{i}t_{ij}$ (summation over all measurement bins $i$).
-The sensitivity of detection is a sum over all events \{$\mathbf{I} \cup \mathbf{\hat{I}}\}$, not only those that were measured, therefore 
+The sensitivity of detection is a sum over all events, not only those that were measured, therefore 
+
 \begin{equation}
 s_{j} = \sum_{\mathbf{I} \cup \mathbf{\hat{I}}} t_{ij} 
 \end{equation}
-for Compton imaging measurements.
-\subsection{MLEM in practical application}
+for \ac{LM-MLEM}.
+
+\subsection{LM-MLEM in practical application}
 The equation \ref{eq:lmmlem} presents the formulation of iterative algorithm maximizing the likelihood of measured data.
 The system matrix $\mathbf{T}$ and vector of sensitivity values $\mathbf{S} \in \mathbb{R}^{J}$ with elements $s_{j}$ depend on the particular geometry of the used sensor and need to be derived individually in each application.
-The proposed definition of system matrix $\mathbf{T}$ and sensitivity vector $\mathbf{S}$ is described in the following chapter. 
-We denote as \ac{MLEM} the list-mode \ac{MLEM} algorithm for Compton imaging in the rest of the thesis for simplicity.
 %Another design-choice is the initialization of the vector $\mathbf{\hat{\lambda}}^[l = 0]$.
 
 
