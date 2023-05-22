@@ -153,17 +153,19 @@ This simplifies the formula \ref{eq:mlem_class} to
   \hat{\lambda}_{j}^{[l]} = \frac{\hat{\lambda}_{j}^{[l-1]}}{s_{j}} \sum_{i \in \mathbf{I}}\frac{t_{ij} }{\sum_{k} t_{ik} \hat{\lambda}_{k}^{[l-1]}}.
   \label{eq:lmmlem}
 \end{equation}
+We denote as \ac{MLEM} the list-mode \ac{MLEM} algorithm for Compton imaging formulated in \ref{eq:lmmlem} in the rest of the thesis for simplicity.
 Since only recorded measurements are considered in the list-mode approach, it no longer holds that sensitivity of measurements can be expressed as $s_{j} = \sum_{i}t_{ij}$ (summation over all measurement bins $i$).
-The sensitivity of detection is a sum over all events \{$\mathbf{I} \cup \mathbf{\hat{I}}\}$, not only those that were measured, therefore 
-\begin{equation}
-s_{j} = \sum_{\mathbf{I} \cup \mathbf{\hat{I}}} t_{ij} 
-\end{equation}
-for Compton imaging measurements.
-\subsection{MLEM in practical application}
+The sensitivity of detection is then a sum over all events \{$\mathbf{I} \cup \mathbf{\hat{I}}\}$, not only those that were measured, therefore $s_{j} = \sum_{\mathbf{I} \cup \mathbf{\hat{I}}} t_{ij}$ for Compton imaging.
+\subsection{MLEM algorithm in practical application}
 The equation \ref{eq:lmmlem} presents the formulation of iterative algorithm maximizing the likelihood of measured data.
 The system matrix $\mathbf{T}$ and vector of sensitivity values $\mathbf{S} \in \mathbb{R}^{J}$ with elements $s_{j}$ depend on the particular geometry of the used sensor and need to be derived individually in each application.
 The proposed definition of system matrix $\mathbf{T}$ and sensitivity vector $\mathbf{S}$ is described in the following chapter. 
-We denote as \ac{MLEM} the list-mode \ac{MLEM} algorithm for Compton imaging in the rest of the thesis for simplicity.
+
+Several other design choices to be made in practical applications, one of them is the number of iterations of the \ac{MLEM} algorithm.
+The number of iterations in \ac{MLEM} represents a balance between contrast recovery (quality of reconstruction) and image noise amplification, as stated in \cite{handheld_mlem_reconstruction}.
+There is no general rule how to set the optimal number of iterations --- it depends on the particular application, level of noise etc.
+Therefore the number of iterations is set arbitrarily within this project based on the experiments with recorded real-world data.
+
 %Another design-choice is the initialization of the vector $\mathbf{\hat{\lambda}}^[l = 0]$.
 
 
