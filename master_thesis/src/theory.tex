@@ -28,7 +28,7 @@ However, for the purpose of this thesis, the term activity is used as the number
 
 \subsection{Inverse square law}% %%{
 The inverse square law is a fundamental principle that applies to diverse physical phenomena, including radiation.
-It describes how the intensity of radiation decreases with increasing distance from the source.
+The law describes how the intensity of radiation decreases with increasing distance from the source.
 The intensity of radiation is inversely proportional to the square distance from the source:
 \begin{equation}
   intensity \approx \frac{1}{distance^2}.
@@ -55,14 +55,14 @@ The limited range of alpha radiation makes it difficult to sense from a distance
 
 \subsection{Beta radiation}
 Beta particles are high-energy, high-speed electrons or positrons.
-Due to their smaller size and weaker electrical charge, they are generally more penetrating and less reactive than alpha particles and can reach further into materials.
-Several centimetres thick sheet of aluminium or plastic is typically sufficient to block the beta radiation.
+Due to their smaller mass and weaker electrical charge, they are generally more penetrating and less reactive than alpha particles and can reach further into materials.
+Several centimetres thick sheet of aluminium or plastic is typically sufficient to block weak beta radiation.
 In terms of travel through the air, beta particles have a range of a few meters.
 Although beta radiation is generally less dangerous than gamma, when particles come into contact with human skin, they can penetrate the outer layers and cause skin burns as the particles disrupt cellular processes.
 
 \subsection{Gamma radiation}
 Gamma particles are often produced alongside alpha or beta particles during radioactive decay. 
-Unlike them, gamma radiation of composed of high-energy photons. 
+Unlike the subatomic particles, gamma radiation of composed of high-energy photons. 
 $\gamma$ photons are extremely penetrating, can travel long distances in the air and get through most of materials or living tissues thanks to their high energy and lack of charge.
 Only a thick layer of concrete or lead might block this type of ionizing radiation.
 These features make gamma radiation significantly more dangerous than alpha and beta.
@@ -74,13 +74,13 @@ The long-range of gamma radiation, together with its negative effects on human h
       %\label{fig:islaw}
   \end{figure}
 
-\subsubsection{Cesium-137}
-Cesium-137 is a radioactive isotope of cesium and one of the most common bi-products of nuclear fission.
+\subsection{Cesium-137}
+Cesium-137 is a radioactive isotope of Cesium and one of the most common bi-products of nuclear fission.
 Cesium-137 is used in radiotherapy in medicine, for calibration of radiation detection equipment in the industry and 
-(most importantly) it is one of the most common fission products by the nuclear fission of uranium-235, which is used as a fuel in nuclear power plants and in nuclear weapons.
+(most importantly) it is one of the most common fission products by the nuclear fission of Uranium-235, which is used as a fuel in nuclear power plants and in nuclear weapons.
 Cesium-137 is also the main source of radioactive pollution caused by accidents in Chornobyl (1986) and Fukushima (2011).
-The half-life (defined as the interval of time required for one-half of the atomic nuclei of a radioactive sample to decay) of cesium-137 is $30.05$ years.
-Notably, cesium-137 itself is not a source of $\gamma$ radiation.
+The half-life (defined as the interval of time required for one-half of the atomic nuclei of a radioactive sample to decay) of Cesium-137 is $30.05$ years.
+Notably, Cesium-137 itself is not a source of $\gamma$ radiation.
 Cesium-137 decays by beta emission to metastable Barium-137, which decays almost immediately (with a half-life of about $2.5$ minutes) and emits $\gamma$ photons with initial energy $\SI{662}{\kilo\electronvolt}$.
 Cesium-137 (with its long half-life, negative health effects, wide usage and high penetrating power of $\SI{662}{\kilo\electronvolt}$ photons) is a good candidate for remote sensing. 
 The methods proposed in this thesis have been tested using Cesium-137 radioactive isotope as a source of radiation (during simulated and real-world experiments).
@@ -127,12 +127,12 @@ where $E_{0}$ is the initial energy of the incoming photon, $E_{2}$ is the energ
 \begin{figure}[!h]
     \centering
     \includegraphics[width=0.4\textwidth]{./fig/photos/compton_simple2.eps}
-    \caption{An illustration of the Compton scattering. The incident $\gamma$ photon with energy $E_{0}$ (blue) undergoes the Compton scattering. As a result of the interaction, the lower energetic photon (green) with energy $E_{2}$ is emitted under angle $\beta$. Part of the energy ($E_{1}$) is transferred to a bi-product of the interaction- the electron (grey).}
+    \caption{An illustration of the Compton scattering. The incident $\gamma$ photon with energy $E_{0}$ (blue) undergoes the Compton scattering. As a result of the interaction, the lower energetic photon (green) with energy $E_{2}$ is emitted under angle $\beta$. Part of the energy ($E_{1}$) is transferred to a bi-product of the interaction---the electron (grey).}
     \label{fig:scattering}
 \end{figure}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Measuring the gamma radiation}
-Ionizing radiation is unperceivable by human senses yet poses a significant health risk for human beings. 
+Ionizing radiation is mostly unperceivable by human senses yet poses a significant health risk for human beings. 
 Therefore, efficient methods for monitoring and detecting this type of radiation are essential. 
 %Various materials that interact with ionizing particles are used to construct sensors for ionizing radiation.
 The primary operating mode of most sensors of radioactivity is counting the number of particles detected,
@@ -174,10 +174,10 @@ The geometry is illustrated in figure \ref{fig:compton_camera_geometry}.
 % %%}
 
 \subsection{The MiniPIX TPX3 sensor} % %%{
-The MiniPIX TPX3 detector\footnote{produced by \textit{Advacam}, https://advacam.com/camera/minipix-tpx3} (in the rest of this thesis denoted as \ac{pix}) belongs to the class of semiconductor-based radiation sensors.
-The \ac{pix} is composed of a) miniature version Timepix3 pixel detector \cite{timepix3},
+The MiniPIX TPX3 detector\footnote{produced by \textit{Advacam}, https://advacam.com/camera/minipix-tpx3} (in the rest of this thesis denoted as \ac{pix} sensor of ionizing radiation) belongs to the class of semiconductor-based radiation sensors.
+The \ac{pix} is composed of a) Timepix3 pixel detector \cite{timepix3},
 b) the body of the sensor made of a compact block of \ac{CdTe} semiconductor material (with dimensions $14 \times 14 \times 2 \ \si{\milli\meter}$) 
-and c) necessary electronics.
+and c) the Minipix readout electronics.
 The whole \ac{pix} device is very compact and lightweight (the size of the whole \ac{pix} sensor is only $80 \times 21 \times 14 \ \si{\milli\meter}$ and it weights $\SI{44}{\gram}$), therefore it can be carried onboard a small \ac{UAV}.
 Unlike other devices, the \ac{pix} sensor can report the recorded $\gamma$ particles almost in real-time, which allows us to use it for an active strategy, where autonomous \ac{UAV}s react according to the measurements acquired during the flight.
 
@@ -212,11 +212,11 @@ More technical details related to the sensor operation are provided in \cite{bac
 
 \begin{figure}[!h]% %%{
   \centering
-  \subfloat[The real size of \ac{pix} sensor. Source: \cite{baca2021gamma} ] {
-    \includegraphics[width=0.35\textwidth]{./fig/photos/minipix_pen.jpg}
+  \subfloat[\centering The real size of \ac{pix} sensor.\newline Source: \cite{baca2021gamma} ] {
+    \includegraphics[width=0.4\textwidth]{./fig/photos/minipix_pen.jpg}
     \label{fig:minipix_pen}
   }
-  \subfloat[Pixel output of the Timepix3 detector with recorded pair of coinciding events and computed parameters of the Compton cone. Source: \cite{baca2021gamma}] {
+  \subfloat[\centering Pixel output of the Timepix3 detector with recorded pair of coinciding events and computed parameters of the Compton cone. Source: \cite{baca2021gamma}] {
 
     \begin{tikzpicture}
       \node[anchor=south west,inner sep=0] (a) at (0,0) {
@@ -262,7 +262,7 @@ More technical details related to the sensor operation are provided in \cite{bac
 
   }
   \label{fig:minipix_ilu}
-  \caption{The \ac{pix} sensor and it's real size (\ref{fig:minipix_pen}) and the illustration of output from Timepix3 pixel detector (\ref{fig:timepix_image}).} 
+  \caption{The \ac{pix} sensor and its real size (\ref{fig:minipix_pen}) and the illustration of output from Timepix3 pixel detector (\ref{fig:timepix_image}).} 
 
 \end{figure}% %%}
 
@@ -290,7 +290,7 @@ The \ac{ROS} \cite{ROS} is a middleware open-source software framework for robot
 \ac{ROS} supports for multiple programming languages, most notably \textit{Python} and \textit{C++}.
 Individual software modules (called \textit{nodes}) can exchange data through a standardized communication model.
 The registration of the individual \textit{nodes}, as well as communication between them, is maintained by a central authority called \ac{ROS} \textit{master}.
-The main advantage of \ac{ROS} is its flexibility - multiple \textit{nodes} might be executed independently without restarting the whole program.
+The main advantage of \ac{ROS} is its flexibility --- multiple \textit{nodes} might be executed independently without restarting the whole program.
 \ac{ROS} provides a variety of other useful tools.
 \textit{TF library} keeps track of multiple coordinate frames over time and provides transformations between them.
 \textit{Rosbag} is a tool for recording and playing back data collected during the experiments.
@@ -319,7 +319,7 @@ Such a communication scheme might be used, for example, for triggering some acti
     %\label{fig:minipix}
 \end{figure}
 
-\subsection{simulations}
+\subsection{Simulations}
 The simulations within this project were made using \textit{Gazebo}, an open-source 3D simulator for robotic research.
 Gazebo is fully compatible with \ac{ROS} and allows realistic simulations of robotic systems.
 The ionizing radiation was simulated using \textit{Rospix}\footnote{available at: \url{https://github.com/rospix}} simulation package.
