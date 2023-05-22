@@ -544,17 +544,20 @@ The real world measurements are affected by measurement noise, hence the reconst
 The measurement noise might be present in the measured energies $E_{1}$ and $E_{2}$ (that are affecting the Compton angle $\beta_{i}$ , see equation \ref{eq:compton_beta_formula}) 
 as well as in the positions of interactions inside the detector ($X_{1}$ and $X_{2}$) 
 that are affecting the cone axis $a_{i}$.
-The influence of noise in energy measurement (Compton angle $\beta$) is modelled using gaussian function with standard deviation $\sigma$:
+The influence of noise in energy measurement (Compton angle $\beta$) is modelled using Gaussian function with ``standard deviation'' $\sigma$:
 \begin{equation}
   h(\delta_{ij}|\sigma) = e^{-\frac{1}{2}(\frac{\delta_{ij}}{\sigma})^{2}}.
+  \label{eq:gau}
 \end{equation}
 If the angle difference is to big ( $\delta_{ij}<3\sigma$), then $h(\delta_{ij}|\sigma) = 0$.
-The important question is how to set the parameter $\sigma$, that is influencing the width of the gaussian function.
+The important question is how to set the parameter $\sigma$, that is influencing the width of the function \ref{eq:gau}.
 The datasheet\footnote{Available at: https://advacam.com/camera/minipix-tpx3}
-states that the energy resolution of used \ac{pix} sensor in \ac{ToT} mode is $4.5 - 9.9\ \mathrm{kEV}$. 
+states that the energy resolution of used \ac{pix} sensor is $4.5 - 9.9\ \mathrm{kEV}$. 
 Dependence of angular uncertainties on the energy resolution of two layer Compton cameras was studied in \cite{ordonez}.
-The exact estimation of angular uncertainty is beyond the scope of this thesis.
-Other sources of noise (such as positions of interaction inside the detector $X_{1}$, $X_{2}$, especially depth of interaction in the sensor block) are difficult to model as well.
+The measurement of the energies is not the only source of noise in the detection pipeline.
+The $h(\delta_{ij}|\sigma)$ function should disperse the conical back-projections in order to tackle other inaccuracies, such as noise in the sensor's position or wrongly estimated axis of the Compton cone. 
+The exact estimation of angular uncertainty (and other sources of noise) is beyond the scope of this thesis.
+i%Other sources of noise (such as positions of interaction inside the detector $X_{1}$, $X_{2}$, especially depth of interaction in the sensor block) are difficult to model as well.
 For "proof of concept" demonstration, the value $\sigma$ was set empirically based on recorded data from experiments with real \ac{pix} sensors.
 
 \subsubsection{Discretization error}
