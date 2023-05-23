@@ -69,15 +69,20 @@ where $l$ is the current iteration of the algorithm, $\lambda_{j}$ is the hidden
 As stated before, the \ac{MLEM} algorithm is typically used as an offline method that proceeds all the measurements at once after the end of the experiment.
 Medical applications with highly sensitive detectors together with short distance between the source and the detector produce large number of measurements (tens of thousands and more) and the algorithm typically reconstructs the 3D space with high resolution.
 The high number of Compton events results in the fact that the $\mathbf{T}\in \mathbb{R}^{I \times J}$ cannot be stored in the memory during the run of the algorithm and its individual elements $t_{ij}$ are recomputed in every step of the algorithm, which significantly prolongs the computing time.
-If the instance of the problem (size of the sampled space $J$ and number of measurements $I$) is reasonably small, the system matrix $\mathbf{T}$ can be computed only once for each measurement and stored in the memory for future computations, which speeds up the run of the algorithm.
-Furthermore, the iterations of the \ac{MLEM} algorithm can reformulated as matrix multiplication can be parallelized using \ac{GPU}.
+If the instance of the problem (size of the sampled space $J$ and number of measurements $I$) is reasonably small, the system matrix $\mathbf{T}$ can be computed only once for each measurement and stored in the memory for future computations, which speeds up the future runs of the \ac{MLEM} algorithm.
+Furthermore, the iterations of the \ac{MLEM} algorithm reformulated as matrix multiplication are parallelized using \ac{GPU}.
 
 The figure \ref{fig:online_mlem} depicts the workflow of \ac{MLEM} estimation during the experiment.
-Each drone samples its current position with predefined frequency ($\SI{5}{\hertz}$).
-Based on the newly sampled positions, the sensitivity of detection vector $\mathbf{s}\in \mathbb{R}^{J}$ is updated online during the experiment.
-Once a new cone is detected, a new vector $\mathbf{t}_{i_{new}} = [t_{i0}, \dots,t_{ij}, \dots, t_{iJ}]$ is appended to the system matrix.
-The iterative \ac{MLEM} algorithm is then repeatedly computed based o currently available sensitivity vector $\mathbf{s}$ and system matrix $\mathbf{T}$.
+As the drones fly through the environment, each of them samples its current position at $\SI{5}{\hertz}$.
+The sensitivity of detection vector $\mathbf{s}\in \mathbb{R}^{J}$ is updated online based on the newly sampled positions.
+Once the new measurement (Compton cone) $i$ is detected, the vector $\mathbf{t}_{i} = [t_{i0}, \dots,t_{ij}, \dots, t_{iJ}]$ is appended to the system matrix.
+The iterative \ac{MLEM} algorithm (\ref{eq:MLEM}) is then repeatedly computed (at $\SI{0.5}{\hertz}$) using currently available sensitivity vector $\mathbf{s}$,  system matrix $\mathbf{T}$ and initialized vector of hidden parameters $\bm{\lambda}$.
+The estimate of distribution of radioactive sources $\bm{\lambda}$ is therefore updated every $2$ seconds, which is technically speaking not in real-time, but the update frequency is sufficient for planning next actions of the \ac{UAV}s based on the measured data.
+%The vector $\bm{\lambda}^{[l=0]}$ is initialized with uniform distribution
 %Experiments showed that proposed approach is computationally tractable for scenarios with area of size $300 \times 300\ \si{\meter}$ and number 
+\mycomment{% %%{
+Experiments in simulation and also in real-world showed that the assumption of reasonably small instances holds in practice for the proposed application.
+The proposed method is 
 
 
 The sensitivity vector $\mathbf{s}$ can be iteratively updated during the experiment and with constant memory requirements, since the individual elements $s_{j}$ can be update in place.
@@ -90,91 +95,111 @@ The estimation of system matrix $\mathbf{T}$ is described in section \ref{sec:sy
 The iterative \ac{LM-MLEM} algorithm described in equation \ref{eq:MLEM} is processed regularly.
 The vector of hidden parameters $\mathbf{\Lambda}$ is initialized with cones back-projection.
 The \ac{LM-MLEM} estimate is recomputed every $2$ seconds.
-
-
-
+}% %%}
 % %%}
-
-
 %figure melm online%%{
 \begin{figure}[htb]
   \centering
-    \includegraphics[width=0.99\textwidth]{./fig/photos/online_estimation.eps}
-  \caption{Workflow of online \ac{MLEM} estimation.}
+    \includegraphics[width=0.99\textwidth]{./fig/photos/workflow.eps}
+  \caption{Workflow of the (almost) real-time \ac{MLEM} estimation. The positions of \ac{UAV}s are sampled at $\SI{5}{\hertz}$ and the sensitivity vector $s$ (green) is updated online based on newly sampled positions.
+  Once the new Compton cone $i$ is detected by the \ac{pix} Compton camera, 
+  the matrix $\mathbf{T}$ (blue) is extended by the new vector $\mathbf{t}_{i} = [t_{i0}, \dots,t_{ij}, \dots, t_{iJ}]$ (yellow).
+  The iterative \ac{MLEM} algorithm then computes the current estimate of emission intensity $\bm{\lambda}$ (red) every $2$ seconds.
+  }
     \label{fig:online_mlem}
 \end{figure}% %%}
 
+%Experiments showed that the proposed approach is computationally tractable for real-world scenarios 
+%(e.g. autonomous search for multiple compact sources of ionizing radiation of activity $\approx \SI{10}{\giga\becquerel}$ located somewhere in area of size $300 \times 300 \si{\meter}$ discretized with resolution $r = \SI{1}{\meter}$).
+%However, there might be scenarios 
+%The computational complexity of the \ac{MLEM} algorithm is $\mathcal{O}(I \ J)$, where $I$ is the number of measurements and $J$ is the number of map positions.
+%The memory requirements are $\mathcal{O}(I \times J)$
+%The scalability of the proposed solution depends on the number of measured Compton cones ($I$) and size of the area of interest ($J$).
+%The number of 
+%Experiments showed that the proposed approach is computationally tractable for real-world scenarios 
+%(e.g. autonomous search for multiple compact sources of ionizing radiation of activity $\approx \SI{10}{\giga\becquerel}$ located somewhere in area of size $300 \times 300 \si{\meter}$ with sampled with resolution $r = \SI{1}{\meter}$  
+%
+%The computational feasibility have been tested in simulations and in real-world experiment.
+
+%The sesnitivity of detection as well as the system matrix are defined in the following sections.
+%The assumption of reasonably small scenario holds for proposed application, 
+%where the number of recorded Compton cones $I$ is of the order of $10^{3}$ 
+%(given low sensitivity and small size of the \ac{pix} sensor) 
+%and size of the discretized mapped area $J$ of the order of $10^{5}$  (e.g. area of $300 \times 300 \si{\meter}$ with resolution $r = \SI{1}{\meter}$).
+
 \section{Sensitivity of detection}% %%{
 \label{sec:sensitivity}
-The probability of a photon emitted from a given position $j$ to be detected by the compton camera is called sensitivity of detection.
+The probability of a photon emitted from a given position $j$ to be detected by the Compton camera is called sensitivity of detection.
 It can be expressed using conditional probability as 
 \begin{equation}
   s_{j} =  P(\textrm{detected by the sensor}\ | \textrm{emitted from } j).
 \end{equation}
-
-A series of random occurrences should happen for a photon to be detected by the compton camera.
+A series of random occurrences should happen for a photon to be detected by the Compton camera.
 First of all, the photon must be emitted from position $j$ towards the sensor surface (emitted under the solid angle subtended by the visible camera surface at the position of the source), not being absorbed by the air along the way.
-Then the photon should interact with the matter of the sensor in form of compton scattering.
-The angle under which it scatters is described by the Klein-Nisnina cross section.
+Then the photon should interact with the matter of the sensor in form of Compton scattering.
+%The angle under which it scatters can described by the Klein-Nishina \cite{Klein-Nishina cross section.
 The scattered photon then must be absorbed by the camera in form of a photoelectric effect.
-This model is simplified, because other random occurrences might happen - for example the photon might undergo \ac{CS} twice in a row, the sensor might not detect the interations properly, etc.
-However, we will stick to the proposed simplified model with particles undergoing \ac{CS} and then \ac{PE} interactions consecutively.
+This model is simplified, because other random occurrences might happen --- for example the photon might undergo Compton scattering twice in a row, the incident photon might be immediately absorbed, etc.
+However, we will stick to the proposed simplified model with particles undergoing the Compton scattering and then photoelectric absorption consecutively.
 
-The literature describes several analytical models for computing sensitivity of the detection. 
-For example \cite{wilderman2001} proposed sensitivity model for multi-layer compton cameras in the close distance to the source.
-\cite{maxim2016} proposed simplified model for comptom-cameras with negligible size compared to the distance from the source.
-However, these models are not suitable for the problem tackled in this thesis.
-The multi-layer compton camera has different properties then single-layer sensor \ac{pix}.
-Multi-layer compton cameras are typically measuring only particles coming from certain directions (from the front side of the camera, perpendicular to its layers).
-On the other hand, the \ac{pix} sensor used in this project can potentially measure particles coming from all directions.
-The sensitivity of the sensor w.r.t. different directions of the incoming particle is unknown and present a scientific question, that needs to be answered to make the \ac{LM-MLEM} working. 
+The position of the Compton camera sensor is not static in this case. 
+The \ac{UAV}s carrying the Compton camera are dynamically moving through the environment, with varying speed, position and orientation.
+Therefore, the positions of the \ac{UAV}s are sampled in time from \ac{UAV}s trajectories and denoted as $v$, where $v \in \{0, \dots , V\}$ and $V$ is the total number of viewpoints generated by all \ac{UAV}s during the experiment.
+The sensitivity of detection is evaluated for each $(j,v)$ pair. % %%}
 
-Another option presented in literature is evaluation of sensitivity using the Monte-carlo simulation.
-This approach has multiple advantages: it is not necessary to describe all random occurrences inside the detector by a single expression (which might take non-negligible computation time when evaluating big number of map positions during the experiment).
-Monte-carlo simulation can be precomputed in advance and the data can be stored in some data structure that allows fast access to the data, shortening the computation time.
-
-In our case, the position of the detector is not static. 
-The \ac{UAV}s carrying the compton camera are dynamically moving through the environment, with varying speed, position and orientation.
-Therefore, the positions of the \ac{UAV}s are sampled in time from \ac{UAV}s trajectories and denoted as $v$, where $v \in (0, \dots , V)$ and $V$ is the total number of viewpoints generated by all \ac{UAV}s during the experiment.
-The sensitivity of detection is evaluated for each $jv$ pair. % %%}
-%figure sensitivity%%{
 \begin{figure}[!h]
   \centering
-    \includegraphics[width=0.6\textwidth]{./fig/photos/sen.eps}
+    \includegraphics[width=0.65\textwidth]{./fig/photos/sen.eps}
     \label{fig:sen_illustration}
-  \caption{An illustration of sensitivity computation. Sensitivity describes probability that particle emitted at given position is measured by the compton cameras onboard the \ac{UAV}s. In other words, it describes how well explored is given map position during the experiment. The trajectory of the \ac{UAV} is sampled into viewpoints denoted as $v$.}
+  \caption{An illustration of sensitivity computation. The sensitivity describes the probability that a particle emitted at given position is measured by the Compton cameras onboard the \ac{UAV}s. In other words, the sensitivity $s_{j}$ describes how well explored has been the map position $j$ during the experiment. The trajectory of the \ac{UAV} is sampled into viewpoints denoted as $v$.}
 \end{figure}% %%}
 
 \subsection{Probabilistic description}% %%{
-The series of random occurrences for a photon emitted at position $j$ leading to the detection by the compton camera at camera position $v$ can be described as follows:
+The series of random occurrences for a photon emitted at position $j$ leading to the detection by the Compton camera at camera position $v$ can be described as follows:
 \begin{equation}
   s_{jv} =  (p_{solid\ angle})(1-p_{air})(p_{compton})(p_{absorption}),
   \label{eq:sen_prob}
 \end{equation}
-where $p_{solid\ angle}$ is the probability that photon is emitted towards the solid angle of the surface of the detector visible from source position, 
+where $p_{solid\ angle}$ is the probability that the photon is emitted under the solid angle subtended by the visible camera surface (at position $j$), 
 $p_{air}$ is the probability that photon is absorbed by the air along the way from emission towards the sensor, 
 $p_{compton}$ is probability that Compton scattering occurs and $p_{absorption}$ denotes that scattered photon is absorbed by the detector and measured.
 
-It is difficult to describe  equation \ref{eq:sen_prob} for \ac{pix} Compton camera in analytical form since the probability $p_{compton}$ and $p_{absorption}$ depends on the length of corresponding intersection of the photon's trajectory with the matter of the detector.  
-However, it is possible to simulate high number of particles and approximate the terms $(p_{solid\ angle})$, $(p_{compton})$ and $(p_{absorption})$ using a Monte-carlo simulation.% %%}
+The literature describes several analytical models for computing sensitivity of the detection. 
+For example \cite{wilderman2001} proposed sensitivity model for multi-layer Compton cameras in the close distance to the source.
+Authors of \cite{maxim2016} proposed simplified model for Compton cameras with negligible size compared to the distance from the source.
+However, these models are not suitable for the problem tackled in this thesis, since the multi-layer Compton camera has different properties than single-layer sensor \ac{pix}.
+Multi-layer Compton cameras are typically measuring only particles coming from certain directions (from the front side of the camera, perpendicular to its layers).
+On the other hand, the \ac{pix} sensor used in this project can potentially measure particles coming from all directions.
+The sensitivity of the sensor w.r.t. different directions of the incoming particle is unknown and present a scientific question, that needs to be answered to make the \ac{MLEM} estimate accurate. 
+
+Another option presented in literature is evaluation of sensitivity using the Monte Carlo simulation.
+This approach has multiple advantages: it is not necessary to describe all random occurrences inside the detector analytically (which might be complicated and take non-negligible computation time when evaluating large number of map positions during the experiment).
+Monte Carlo simulation can be precomputed in advance and the data can be stored in some data structure that allows fast access to the data, shortening the computation time.
+Since it is difficult to describe  equation \ref{eq:sen_prob} for \ac{pix} Compton camera in analytical form 
+(because the probability $p_{compton}$ and $p_{absorption}$ depends on the length of corresponding intersection of the photon's trajectory with the matter of the detector),
+we approximate the terms $(p_{solid\ angle})$, $(p_{compton})$ and $(p_{absorption})$ using the Monte Carlo simulation.% %%}
+
+%figure sensitivity%%{
+
 
 \subsection{Monte Carlo simulation}% %%{
 The idea of Monte Carlo simulation is simple:
 instead of deriving analytical expression,
-which might be complicated given the nature of the \ac{pix} detector (where all interactions are happening in a single block of matter and probabilities of \ac{CS} or \ac{PE} depend on the length of the ray segment inside the sensor) and time-consuming for online computations during the experiment,
-we will place simulated sources at certain position and compute how many particles produced Compton cones in the simulated sensor.
+%which might be complicated given the nature of the \ac{pix} detector (where all interactions are happening in a single block of matter and probabilities of \ac{CS} or \ac{PE} depend on the length of the ray segment inside the sensor) and time-consuming for online computations during the experiment,
+we will approximate the probabilities by simulating sources of ionizing photons at certain positions and compute how many particles emitted there produced Compton cones in the simulated sensor.
 The realistic Compton camera simulator described \cite{baca2019timepix} was used as a template and adapted for this particular application.
-
 %Figure \ref{fig:polar} shows the polar coordinate system, where angles $\theta$ and $\phi$ determines the relative position of the source with respect to the compton camera.
-Position of each simulated source is parametrized by its polar coordinates (angles $\theta$ , $\phi$ and distance $d$), as shown in figure \ref{fig:polar}.
+
+The position of each simulated source is parametrized by its polar coordinates (angles $\theta$, $\phi$ and distance $d$), as shown in figure \ref{fig:polar}.
 Each simulated source emits $N$ particles (in all directions).
-Since the \ac{CdTe} sensor's block is a symmetrical object, only $\frac{1}{8}$ of the elementary sphere around the sensor needs to be simulated.
+Since the \ac{CdTe} semiconductor crystal inside the \ac{pix} sensor is a symmetrical object, only $\frac{1}{8}$ of the elementary sphere around the sensor needs to be simulated.
 Figure \ref{fig:sources_loc} shows the positions of simulated sources and figure \ref{fig:sampling} presents their positions in the angle space.
 We compute the probability of producing a Compton cone for particle emitted by a source at relative position given by polar coordinates ($\theta, \phi, d$) as
 \begin{equation}
   p(\mathrm{cone\ detection})_{(\theta, \phi, d)} = \frac{C_{(\theta, \phi, d)}}{N},
 \end{equation} 
-where $C_{(\theta, \phi, d)}$ is the number of particles that undergone \ac{CS} and \ac{PE} consecutively inside the Compton camera and passed the outlier detection (therefore can be detected).
+where $C_{(\theta, \phi, d)}$ is the number of photons that undergone the Compton scattering and were consecutively absorbed inside the \ac{pix} (the \ac{CdTe} block). 
+We also check if the produced interactions passed outlier detection. %and passed the outlier detection (therefore can be detected).
 The outlier detection consists of minimum pixel distance of the two recorded interactions on the Timepix chip and energy bounds for recorded electron with energy $E_{1}$ and photon $E_{2}$. 
 $N$ is the number of all particles emitted at source position $(\theta, \phi, d)$. 
 Number of emitted particles is set to $N = 10^{10}$, the distance $d$ is set to $d = \SI{1}\meter$.
@@ -183,8 +208,8 @@ The results of the simulation are stored in a lookup table:
 \begin{equation}
   \mathrm{lookup\_table}(\theta_{k}, \phi_{k}) = p(\mathrm{cone\ detection})_{(\theta_{k}, \phi_{k}, d = \SI{1}\meter)}. 
 \end{equation}
-It is a data structure that allows fast readout of the stored data.
-For arbitrary query ($\theta, \phi$) it finds the closest key pair ($\theta_{k}, \phi_{k}$) in the angle space and returns its value.% %%}
+Lookup table is a data structure that allows fast readout of the stored data.
+For arbitrary query ($\theta, \phi$)the lookup table finds the closest key pair ($\theta_{k}, \phi_{k}$) in the angle space and returns the value associated with the key pair.% %%}
 
 %multifigure montecarlo
 \begin{figure}[!h]% %%{
@@ -209,8 +234,10 @@ For arbitrary query ($\theta, \phi$) it finds the closest key pair ($\theta_{k},
 
 %%%%%%%%%%% ALGORITHM %%%%%%%%%%%%%%%%%% %%{
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{algorithm}[h!]
-\caption{Monte-carlo simulation}\label{alg:cap}
+
+%\begin{algorithm}[h!]
+%\caption{Monte-carlo simulation}\label{alg:cap}
+  \begin{figure}
 \begin{algorithmic}
 \Function {create\_lookup\_table}{$N$}
   \For {$\theta \in (0, \dots ,\frac{\pi}{2})$}
@@ -222,7 +249,7 @@ For arbitrary query ($\theta, \phi$) it finds the closest key pair ($\theta_{k},
 \Statex
 \Function {compute\_probability}{$\theta, \phi, N$}
 \State $C \gets 0$
-\State $A \gets N\frac{\Omega_{\theta, \phi}}{4 \pi}$ \Comment{how many of $N$ particles hits the sensor}
+\State $A \gets N\frac{\Omega_{\theta, \phi, d}}{4 \pi}$ \Comment{how many of $N$ particles hits the sensor}
 \State $a \gets 0$
 \While {$a<A$} 
   \If {\Call{is\_cone\_measured}{$\theta, \phi$}} \Comment{Compton cone measured}
@@ -252,34 +279,37 @@ For arbitrary query ($\theta, \phi$) it finds the closest key pair ($\theta_{k},
   \EndIf
 \EndFunction
 \end{algorithmic}
-  \label{alg:monte}
-  \caption{Monte-carlo simulation}
-\end{algorithm}
+\label{alg:monte}
+    \caption{The Monte Carlo simulation pseudocode. For each $\theta, \sigma$ pair, the Monte Carlo simulation first computes the number of particles emitted towards the visible surface of the detector ($A$). Then the function   }
+\end{figure}
+%  \label{alg:monte}
+%  \caption{Monte-carlo simulation}
+%\end{algorithm}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% %%}
-
-\subsection{Sensitivity vector definition}% %%{
+\newpage
+\subsection{Sensitivity of detection for \ac{pix} sensor}% %%{
 The sensitivity of detection by the sensor placed at sampled position $v$ for map position $j$ is computed as:
 \begin{equation}
-  s_{jv} = \underset{(1-p_{air})}{\underbrace{e^{-((\mu/\rho) d_{jv})} }} \underset{(p_{solid\ angle})\\(p_{compton})\\(p_{absorption})} {\underbrace{\frac{\mathrm{lookup\_table}(\phi_{jv}, \theta_{jv})}{d^{2}_{jv}}}},  
+  s_{jv} = \underset{(1-p_{air})}{\underbrace{e^{-(\mu d_{jv})} }} \underset{(p_{solid\ angle})\\(p_{compton})\\(p_{absorption})} {\underbrace{\frac{\mathrm{lookup\_table}(\phi_{jv}, \theta_{jv})}{d^{2}_{jv}}}},  
   \label{eq:sjv}
 \end{equation}
-where $d_{jv}$ is the euclidean distance between map position $j$ and sensor position $v$, ($\mu/\rho$) is the total attenuation coefficient for air (based on \cite{nist}), ($\phi_{jv}, \theta_{jv}$) are polar coordinates determining the relative position of $v$ and the sensor. 
+where $d_{jv}$ is the euclidean distance between map position $j$ and sensor position $v$, $\mu \approx \SI{0.01}{\meter^{-1}} $ is the linear attenuation coefficient for $\SI{622}{\kilo\electronvolt}$ photons in air, ($\phi_{jv}, \theta_{jv}$) are the polar coordinates determining the relative position of $v$ and the sensor. 
 The term $\frac{1}{d^{2}_{jv}}$ in \ref{eq:sjv} ensures that the $p_{solid\ angle}$ (already contained in the $\mathrm{lookup\_table}$ for $d = \SI{1}\meter$) approximately holds even for distances other than $d = \SI{1}\meter$.
 
-\subsection{Iterative formula}
+\subsubsection{Iterative formula}
 The equation \ref{eq:sjv} presents the sensitivity computation for one viewpoint $v$. 
-It is required to compute the sensitivity of detection online during the experiment for all the viewpoints from all \ac{UAV}s sampled so far. 
-Therefore it is iteratively updated with the new sampled viewpoints (\ac{UAV} positions).
-Let denote $\mathbf{S}^{[n]}$ the sensitivity matrix at update step $n$.
-The initial value of $\mathbf{S}^{[0]}$ is set to $0$ ($s_{j}^{[0]} = 0 ,\forall s_{j}^{[0]} \in \mathbf{S}^{[0]}$).
-Lets denote $V^{[n:n+1]}$ the set of viewpoints that were newly sampled after update step $n$ and needs to be processed. 
+However, we would like to compute the sensitivity of detection online during the experiment for all the viewpoints previously recorded. % while keeping the memory requirements constant. 
+Therefore the sensitivity vector is iteratively updated with the newly sampled viewpoints (\ac{UAV} positions).
+Let denote $\mathbf{s}^{[t]}$ the sensitivity vector at time $t$.
+The initial value of $\mathbf{s}^{[0]}$ is initialized with zeros. %$0$ ($s_{j}^{[0]} = 0 ,\forall s_{j}^{[0]} \in \mathbf{s}^{[0]}$).
+Lets denote $V^{[t:t+1]}$ the set of viewpoints that were newly sampled between time $t$ and $t+1$ and needs to be processed. 
 
-The sensitivity matrix $\mathbf{S}^{[n+1]}$ with elements $s_{j}^{[n+1]}$ is computed as follows:
+The sensitivity matrix $\mathbf{s}^{[t+1]}$ with elements $s_{j}^{[t+1]}$ is computed as follows:
 \begin{equation}
-  s_{j}^{[n+1]} = s_{j}^{[n]} + \sum_{v \in V^{[n:n+1]}} s_{jv} \Delta_{v}, 
+  s_{j}^{[t+1]} = s_{j}^{[t]} + \sum_{v \in V^{[t:t+1]}} s_{jv} \Delta_{v}, 
   \label{eq:sen_iter}
 \end{equation}
-where the sum $\sum_{v \in V^{[n:n+1]}}$ iterates over all newly processed viewpoints, 
+where the sum $\sum_{v \in V^{[t:t+1]}}$ iterates over all newly processed viewpoints, 
 the term $\Delta_{v} = t_{v} - t_{v-1}$ expresses the time difference between current viewpoint $v$ sampled at time $t_{v}$ and its predecessor (previous viewpoint generated from the trajectory of the same \ac{UAV}) sampled at time $t_{v-1}$. 
 
 This formulation of sensitivity has multiple advantages.
@@ -403,7 +433,7 @@ The influence of noise in energy measurement (Compton angle $\beta$) is modelled
   h(\delta_{ij}|\sigma) = e^{-\frac{1}{2}(\frac{\delta_{ij}}{\sigma})^{2}}.
   \label{eq:gau}
 \end{equation}
-If the angle difference is to big ( $\delta_{ij}<3\sigma$), then $h(\delta_{ij}|\sigma) = 0$.
+If the angle difference is large( $\delta_{ij}<3\sigma$), then $h(\delta_{ij}|\sigma) = 0$.
 The important question is how to set the parameter $\sigma$, that is influencing the width of the function \ref{eq:gau}.
 The datasheet\footnote{Available at: https://advacam.com/camera/minipix-tpx3}
 states that the energy resolution of used \ac{pix} sensor is $4.5 - 9.9\ \mathrm{kEV}$. 
