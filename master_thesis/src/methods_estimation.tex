@@ -1,203 +1,42 @@
 %!TEX root = ../main.tex
-
-\mycomment{% %%{
-  \chapter{Mlem Theory medicine}
-  \section{Inspiration in medicine}
-  The problem of reconstructing 3D positions of sources of ionizing radiation has been studied in depth in the field of medical imagining.
-  To give an example: one possible application of such methods is a cancer diagnostics.
-  A small amount of radioactive substance (called tracer) is injected into the patient's vein.
-  The tracer is absorbed by different parts of the body in varying amounts, which can show areas with abnormal metabolic activity, which is usually the case for cancer cells.
-  The detection of emitted particles and 3D reconstruction of their sources will allow the doctors to find the location of the tumor in the patient's body.
-
-  There are numerous methods used in medical imagining. 
-  Two main approaches are following: \ac{PET} and \ac{SPECT}.
-  \ac{PET} imagining typically use a gamma emitting radioisotope as a tracer.  
-  The method is based on positron emission. 
-  The emitted positron interacts with electron in the patients body and both particles vanish in a burst of energy. 
-  This energy comes in a form of two gamma rays, that goes into a opposite directions.
-  Detection of these two gamma rays (measured by the camera at the same time) allows us to reconstruct 3D image of the patient's body.
-  In \ac{SPECT}, single gamma ray is produced. 
-  The reconstructed image is computed from gamma rays detected by the camera.
-  Since only one gamma-ray is emmited (unlike in \ac{PET}), high number of measurements is needed for accute reconstruction.
-  Medical \ac{SPECT} imagining cameras typically use collimators to get some information about direction of incoming gamma ray.
-  Collimators restricts the set of possible directions from which the gamma ray may enter the detector (and be detected), therefore they can improve accuracy of the detection.
-
-  Another type of sensor (that can be used in \ac{SPECT} imagining) is a Compton camera.
-  The biggest benefit of compton camera is that it provides information about the direction of detected incoming gamma ray without the use of collimator.
-  The nuclear medicine reconstruction method for compton camera measurements that served as inspiration for for this thesis is called \ac{LM-MLEM}.
-
-  \section{Maximum likelihood expectation maximization}
-
-
-
-  \cite{1982_shepp_vardi_MLEM} \cite{EM} \cite{wilderman}
-
-  \subsection{Maximum likelihood estimation}
-  \ac{MLE} is a classical approach in machine learning.
-  It is used to estimate the parameters of a probability distribution based on observed data. 
-  The goal of \ac{MLE} is to find the parameter values that make the observed data most probable under the assumed probability distribution.
-  This is done by calculating the likelihood function, which is the probability of the observed data given a set of parameter values.
-  Likelihood can be defined as 
-  \begin{equation}
-    likelihood = p(\ \mathrm{observations } \  \boldsymbol{O} | \ \mathrm{hidden \ parameters\ } \Phi ).
-    \label{eq:likelihood}
-  \end{equation}
-  We want to maximize this expression with respect to the hidden parameters.
-  In other words, we want to find such parameters so that they fit our observations in the best possible way.
-
-  \section{Algorithm formulation}
-  Let's divide the area of possible sources of radiation into $J$ discrete bins (indexed with $j$, where $j = 1 \dotsc J$).
-  Each discrete bin is represented by its center position.
-  Suppose we have measurements divided into $I$ discrete bins indexed with $i$, $i = 1 \dotsc I$.
-  The vector $\mathbf{Y}$ with elements $y_{i}, i \in (1, \dots I)$ denotes the number of particles detected in the corresponding bin $i$.
-  Let's define matrix $\mathbf{T}$ ($\mathbf{T} \in \mathbb{R}^{I \times J}$), where each position in the matrix is defined as
-
-  \begin{equation}
-    t_{ij} =  P(\textrm{detected in } i | \textrm{emitted from } j).
-  \end{equation}
-
-  In other words, $t_{ij}$ represents a probability that we observe observation $i$ given the fact that the radioactive particle was emitted from position $j$.
-
-  Let's assume that the number of photons emitted from one position $j$ is a discrete random variable that follows a Poisson distribution with expected value $\lambda_{j}$.
-  Our goal is to estimate $\mathbf{\Lambda}$, which has elements $\lambda_{j}$, each corresponding to the expected number of photons emitted from the position $j$.
-
-  The likelihood of measuring $y_{i}$ particles in the measurement bin $i$ w.r.t. $\mathbf{\Lambda}$ can be expressed as (Poisson distribution):
-  \begin{equation}
-    p(y_{i} |\mu_{i} ) = e^{-\mu_{i}} \frac{\mu_{i}^{y_i}}{y_{i}!},
-  \end{equation}
-  where $\mu_{i} = \sum_{j} t_{ij}\lambda_{j}$ denotes the average number of events measured in bin $i$.
-
-  The likelihood of all the measurements is
-  \begin{equation}  
-    p(\mathbf{Y} | \mathbf{T\Lambda} ) = \prod_{i} e^{-\mu_{i}} \frac{\mu_{i}^{y_i}}{y_{i}!}.
-  \end{equation}
-
-  After taking its logarithm, we have the following:
-
-  \begin{equation}  
-    \mathrm{log}\ p(\mathbf{Y} | \mathbf{T\Lambda} ) = \sum_{i}\left ( -\sum_{j} t_{ij}\lambda_{j} + y_{i} \mathrm{log}(\sum_{j} t_{ij}\lambda_{j})  - \mathrm{log}(y_{i}!) \right ).
-    \label{eq:likelihood1}
-  \end{equation}
-  However, equation \ref{eq:likelihood1} doesn't give an answer to our question - how to determine $\mathbf{\Lambda}$. The solution is to use an iterative \ac{EM} algorithm.
-
-  The \ac{EM} algorithm was originally proposed by \cite{EM}. 
-
-  \section{differences}
-  Such medical application typically requires high resolution of the reconstructed image.
-  The distances between the source and detector are small (tens of centimeters), number of measured events is high (tens of thousands and more).
-  The reconstruction process is typically performed offline (all measurements are collected first and then the algorithms process the data), since there is no need for online estimation and the processing of measured data might take non-negligible time.
-  The domain of multirobotic radiation mapping has multiple differences compared to the medical field.
-  The distance between source and detector is much higher (tens of meters).
-  The \ac{UAV}s have limited payload (hence the detector carried on board must be light and compact).
-  It results in the fact that the number of measurements is much lower (hundreds-thousands detected compton events).
-  Moreover, we would like to reconstruct the sources of ionizing radiation in real time.
-  Despite all of these differences, the aim of this work is to adapt such algorithms to our problem.
-}% %%}
-
 \chapter{Compton imaging for a group of UAVs\label{chap:methods_estimation}}
-\alertsuccess{Somehow ok}
-This chapter describes the proposed method for data fusion of Compton measurements acquired by a group of \ac{UAV}s.
-The motivation for the proposed solution is described in section \ref{sec:prelim}.
-Section \ref{sec:setup} presents the adaptation of \ac{MLEM} to the given task.
-The estimation of sensitivity as well as system matrix is then described in section \ref{sec:sensitivity} and \ref{sec:system}.
-\mycomment{% %%{
-    \section{Preliminaries}
-    %Localization of multiple sources of ionizing radiation using a group of \ac{UAV}s equipped with Compton cameras \ac{pix} is a challenging task for several reasons.
-    The nature of radioactive emission (as well as the detection and reconstruction process) make the localization of sources of ionizing radiation a challenging task.
-    The following main problems were encountered during the work on this thesis:
-    \subsection{Observed challenges in localization of multiple radioactive sources}
-    \subsubsection{Measurement - position dependency}
-    As described previously, the sensing range of ionizing radiation detectors is limited due to the fact that the intensity of radiation decreases with distance (following the inverse square law).
-    The initial experiments with pre-recorded data from real experiments as well as method proposed in \cite{baca2021gamma} showed that it results into position-measurement dependency, where the quality of measurements heavily depends on the traversed trajectories of the \ac{UAV}s.
-
-    Imagine following scenario:
-    there are two sources of ionizing radiation $A$ and $B$.
-    Both have the same emission activity (average number of particles emitted per second).
-    The is an \ac{UAV} equipped with Compton camera, that is traversing the area.
-    It can either traverse the whole area following some predefined pattern (hence cover the space uniformly), which might be slow and inefficient.
-    The second option is to traverse the space using arbitrary trajectories, which might lead to faster execution time.
-    However, since the coverage of the area is not uniform, the drone could fly above the source $A$ more times than above the source $B$.
-    It means that it measured more $\gamma$ particles above source $A$, although both sources have the same emission activity.
-
-    This observed phenomena is generally not desired.
-    It would be nice to not only localize the sources, but also estimate their (absolute, or at least relative) emission activity.
-    In ideal world, the estimation method should be able to mitigate this effect.
-    The quality of estimate of sources distribution should be as independent on the \ac{UAV} trajectories as possible (given the recorded events).
-
-    \subsubsection{Nature of Compton measurements}
-    The detection and reconstruction process for Compton camera allows us to deduce set of possible sources of such particle.
-    The set is a surface of the Compton cone.
-    It poses a challenge when multiple sources of radiation are present:
-    it is impossible to deduce from which source the particle was emitted, since the source could be anywhere on the conical surface.
-    Therefore it is not known if the $\gamma$ photon originated from already localized source, or it was emitted elsewhere from some yet unobserved source.
-}% %%}
+The \ac{MLEM} algorithm for Compton imaging described in the previous chapter has been chosen as a suitable method for data fusion of Compton measurements acquired by a group of \ac{UAV}s.
+The motivation for the use of \ac{MLEM} method is described in section \ref{sec:prelim}.
+Section \ref{sec:setup} presents the adaptation of \ac{MLEM} to the task of online estimation performed by a group of \ac{UAV}s.
+The definition of sensitivity and system matrix is described in sections \ref{sec:sensitivity} and \ref{sec:system}.
 
 \section{The algorithm of choice}
 \label{sec:prelim}
 The algorithms for Compton imaging in nuclear medicine (described in the previous chapter) served as inspiration for the imaging method proposed in this thesis.
-The algorithm of choice is \ac{MLEM} (more precisely its list-mode variant for Compton imaging) for following reasons.
+The algorithm of choice is \acf{MLEM} (more precisely its list-mode variant for Compton imaging) for following reasons.
 
-Firstly, the maximum likelihood approach seems to be a good choice for the given problem.
-It allows us to model factors influencing the measurements (such as air attenuation, properties of the detector and random processes leading to the detection)
+Firstly, the maximum likelihood approach allows us to model factors influencing the measurements (such as air attenuation, distance between the source and the sensor of ionizing radiation,  properties of the sensor and random processes leading to the detection)
 as well as cope with the stochastic nature of radioactive emission and model both in the probabilistic way.
-It is also relatively easy to apply and time-proven method in the field of nuclear medicine.
+It is also relatively easy to apply and time-proven method in the field of nuclear medicine, which has been applied in robotic sensing of ionizing radiation.
 
-Secondly, the \ac{MLEM} can take into account not only "positive" measurements (the Compton events recorded by the sensor), but also "negative" measurements (in meaning of what was NOT measured by the sensor at given position in space).
-Although the radioactive emission as well as Compton event detection are stochastic processes, the fact that the \ac{UAV} flew over some position multiple times and did not measure any Compton event is a valuable information, that might help improving the estimate.
-The sensitivity of detection (that is computed during the steps of \ac{MLEM} algorithm) might serve as a map of coverage of the area of interest.
-In other words, it provides information about how well was which part of the area explored by the drones equipped with Compton cameras.
+Secondly, the \ac{MLEM} can take into account not only ``positive'' measurements (the Compton events recorded by the sensor), but also ``negative'' measurements (in meaning of what was NOT measured by the sensor at given position in space).
+Although the radioactive emission as well as Compton event detection are stochastic processes, the fact that an \ac{UAV} flew over some position multiple times and did not measure any Compton event is a valuable information, that might help improving the estimate.
+The sensitivity of detection (that is computed during the steps of \ac{MLEM} algorithm) might serve as a map of coverage of the monitored area.
+In other words, the sensitivity of detection provides information about how well was which part of the area explored by the drones equipped with the Compton cameras.
 
-Lastly, it can be easily applied in scenario with multiple \ac{UAV}s equipped with Compton cameras.
-It is also computationally tractable under some assumptions 
-(such as relatively low number of detected events (which holds for the given scenario) or restriction on the set of possible sources locations)
+Lastly, the algorithm can be easily applied in scenario with multiple \ac{UAV}s equipped with Compton cameras.
+The \ac{MLEM} method is also computationally tractable under some assumptions 
+(such as relatively low number of detected events (which holds for the given scenario and type of sensor) or restriction on the set of possible sources locations)
 and can be evaluated online.
 The almost real time estimation is important for active search strategy, where the \ac{UAV}s may adapt to the current situation and optimize the search strategy.
 
-
-\mycomment{% %%{
-    \section{Requirements}
-    \subsection{Multiple sources}
-    Main motivation for this thesis is to develop method that would be capable of localizing multiple compact sources of ionizing radiation.
-    The positions, number or emission activity emission activity of the sources is unknown.
-
-    negative measurements
-
-    multiple sources
-
-    iterative method
-
-
-    \section{The algorithm of choice}
-    The choice of reconstruction method for the given task (estimation of sources locations from \ac{CC} measurements acquired by a group of \ac{UAV} equipped with \ac{pix} detector) was made under following assumptions.
-    The iterative methods are more flexible and can handle noise in the measurements.
-    The distance between the source and \ac{CC} onboard the \ac{UAV}s is high and the number of measured events (represented using list-mode approach) is relatively low.
-    There is no prior knowledge about the distribution of radioactive sources.
-    The \ac{CC} data are represented using list-mode approach.
-    \section{The algorithm of choice}
-    The choice of reconstruction method for the given task (estimation of sources locations from \ac{CC} measurements acquired by a group of \ac{UAV} equipped with \ac{pix} detector) was made under following assumptions.
-    The iterative methods are more flexible and can handle noise in the measurements.
-    The distance between the source and \ac{CC} onboard the \ac{UAV}s is high and the number of measured events (represented using list-mode approach) is relatively low.
-    There is no prior knowledge about the distribution of radioactive sources.
-    The \ac{CC} data are represented using list-mode approach.
-
-    The \ac{MLEM} algorithm described previously serves as an inspiration for the mapping method described in this chapter.
-    Despite all the differences between the medical and multirobotic domain, the \ac{MLEM} algorithm was chosen for several reasons.
-    First of all, the nature of the measurements (compton cones) is the same as in the medical algorithms.
-    Secondly, the classical method of maximization of likelihood of measured data seems to be good choice for the given problem.
-    It can take into account factors influencing the measurements (such as air attenuation, properties of the detector and radioactive emission) in the probabilistic way.
-    Lastly, the estimation of sensitivity of detection (how likely the particles from given position were measured) can be beneficial, 
-    because it can provide information of how much the \ac{UAV}s already explored the area of interest and where to fly to possibly detect undetected sources.
-}% %%}
 \section{Online MLEM Compton imaging for group of \ac{UAV}s}
 \label{sec:setup}
 \subsection{Discretization and hidden parameters}
+As described in the chapter \ref{chap:mlem_theory}, the \ac{MLEM} algorithm belongs to the class of iterative algorithms that work with discretized space of possible source locations.
+We assume that the source of ionizing radiation is static and located somewhere on the ground.
+We further assume that the \ac{UAV}s are exploring a flat outdoor area without obstacles, therefore all the potential sources of ionizing radiation are located somewhere on the flat 2D ground plane.
 
-The area of interest (where possible sources of ionizing radiation might be located) is divided into $J$ discrete bins with bin size $l$, each of them is approximated by its center position and indexed as $j$.
-Figure \ref{fig:discretization} shows the discretization of the area of interest.
-Lets denote $\mathbf{I}$ the set of all collected measurements.
-The individual measurements (Compton cones) are indexed with $i$, $i \in (1, \dots , I)$, where $I$ is the total number of measurements collected during the experiment.
-Let's denote $\mathbf{\Lambda}$ ($\mathbf{\Lambda} = \begin{bmatrix}\lambda_{0} & \lambda_{1} & \dots & \lambda_{J}\end{bmatrix}$) as the vector of hidden parameters we would like to estimate.
-As described in the previous chapter, $\lambda_{j}$ represents the expected emission rate for the corresponding map position $j$.
+The area of interest (where possible sources of ionizing radiation might be located) is divided into $J$ discrete bins with resolution $r$, each of them is approximated by its center position and indexed with $j$, $j \in \{1, \dots , J\}$.
+The set of all collected measurements (the Compton cones) is denoted $\mathbf{I}$.
+The Compton cones are indexed with $i$, $i \in \{1, \dots, I\}$, where $I$ is the total number of cones recorded.
+The vector of hidden parameters $\bm{\lambda}\in \mathbb{R}^{J}$ is defined analogously as in the previous chapter, where each element $\lambda_{j}$ represents the expected value of the Poisson distribution, specifying the expected emission rate at position $j$.
+The discretization process is illustrated in figure \ref{fig:discretization}.
 
 %multifigure discretization%%{
 \begin{figure}[!h]
@@ -207,27 +46,42 @@ As described in the previous chapter, $\lambda_{j}$ represents the expected emis
     \includegraphics[width=0.32\textwidth]{./fig/photos/dis1.eps}
     \label{fig:dis1}
   }
-  \subfloat[discretization] {
+  \subfloat[area discretized with resolution $r$] {
     \includegraphics[width=0.32\textwidth]{./fig/photos/dis2.eps}
     \label{fig:dis2}
   }
-  \subfloat[hidden parameters $\Lambda$] {
+  \subfloat[hidden parameters $\bm{\lambda}$] {
     \includegraphics[width=0.32\textwidth]{./fig/photos/dis3.eps}
     \label{fig:dis3}
   }
-  \caption{An illustration of algorithm setting}
+  \caption{An illustration of the discretization of the space of possible source positions. The open area without obstacles (\ref{fig:dis1}) is discretized into $J$ discrete bins (\ref{fig:dis2}), each represented by its center position and associated with hidden parameter $\lambda_{j}$ (\ref{fig:dis3}).}
   \label{fig:discretization}
 \end{figure}% %%}
 
 \subsection{Online maximum likelihood estimation}% %%{
-The estimation process proceeds interatively using the \ac{LM-MLEM} algorithm:
+The estimation process proceeds interatively using the list-mode \ac{MLEM} algorithm:
 \begin{equation}
-  \hat{\lambda}_{j}^{[l]} = \frac{\hat{\lambda}_{j}^{[l-1]}}{s_{j}} \sum_{i \in I} \frac{t_{ij}}{\sum_{k} t_{ik} \hat{\lambda}_{k}^{[l-1]}},
+  \lambda_{j}^{[l]} = \frac{\lambda_{j}^{[l-1]}}{s_{j}} \sum_{i \in I} \frac{t_{ij}}{\sum_{k} t_{ik} \lambda_{k}^{[l-1]}},
   \label{eq:MLEM}
 \end{equation}
-where $l$ is the current iteration of the algorithm, $\lambda_{j}$ is the hidden parameter for each position $j$ we would like to estimate, $t_{ij}$ is the element of system matrix $\mathbf{T}$ and $s_{j}$ is the sensitivity of detection for the map position $j$.
+where $l$ is the current iteration of the algorithm, $\lambda_{j}$ is the hidden parameter for each position $j$ we would like to estimate, $t_{ij}$ is the element of system matrix $\mathbf{T}\in \mathbb{R}^{I \times J}$ and $s_{j}$ is the sensitivity of detection for the map position $j$.
 
-The figure \ref{fig:online_mlem} depicts the workflow of online \ac{LM-MLEM} estimation.
+As stated before, the \ac{MLEM} algorithm is typically used as an offline method that proceeds all the measurements at once after the end of the experiment.
+Medical applications with highly sensitive detectors together with short distance between the source and the detector produce large number of measurements (tens of thousands and more) and the algorithm typically reconstructs the 3D space with high resolution.
+The high number of Compton events results in the fact that the $\mathbf{T}\in \mathbb{R}^{I \times J}$ cannot be stored in the memory during the run of the algorithm and its individual elements $t_{ij}$ are recomputed in every step of the algorithm, which significantly prolongs the computing time.
+If the instance of the problem (size of the sampled space $J$ and number of measurements $I$) is reasonably small, the system matrix $\mathbf{T}$ can be computed only once for each measurement and stored in the memory for future computations, which speeds up the run of the algorithm.
+Furthermore, the iterations of the \ac{MLEM} algorithm can reformulated as matrix multiplication can be parallelized using \ac{GPU}.
+
+The figure \ref{fig:online_mlem} depicts the workflow of \ac{MLEM} estimation during the experiment.
+Each drone samples its current position with predefined frequency ($\SI{5}{\hertz}$).
+Based on the newly sampled positions, the sensitivity of detection vector $\mathbf{s}\in \mathbb{R}^{J}$ is updated online during the experiment.
+Once a new cone is detected, a new vector $\mathbf{t}_{i_{new}} = [t_{i0}, \dots,t_{ij}, \dots, t_{iJ}]$ is appended to the system matrix.
+The iterative \ac{MLEM} algorithm is then repeatedly computed based o currently available sensitivity vector $\mathbf{s}$ and system matrix $\mathbf{T}$.
+%Experiments showed that proposed approach is computationally tractable for scenarios with area of size $300 \times 300\ \si{\meter}$ and number 
+
+
+The sensitivity vector $\mathbf{s}$ can be iteratively updated during the experiment and with constant memory requirements, since the individual elements $s_{j}$ can be update in place.
+
 The sensitivity vector $S$ is iteratively updated using recorded drone positions, that are sampled from drone trajectories (with frequency $\SI{5}\hertz$).
 The details of sensitivity computation is provided in section \ref{sec:sensitivity}.
 The system matrix $\mathbf{T}$ is updated (a new row is added) every time a new Compton cone is detected.
@@ -593,3 +447,165 @@ where $\alpha_{ij}$ is the maximal angle difference caused by discretization err
 
 
 
+
+\mycomment{% %%{
+    \section{Preliminaries}
+    %Localization of multiple sources of ionizing radiation using a group of \ac{UAV}s equipped with Compton cameras \ac{pix} is a challenging task for several reasons.
+    The nature of radioactive emission (as well as the detection and reconstruction process) make the localization of sources of ionizing radiation a challenging task.
+    The following main problems were encountered during the work on this thesis:
+    \subsection{Observed challenges in localization of multiple radioactive sources}
+    \subsubsection{Measurement - position dependency}
+    As described previously, the sensing range of ionizing radiation detectors is limited due to the fact that the intensity of radiation decreases with distance (following the inverse square law).
+    The initial experiments with pre-recorded data from real experiments as well as method proposed in \cite{baca2021gamma} showed that it results into position-measurement dependency, where the quality of measurements heavily depends on the traversed trajectories of the \ac{UAV}s.
+
+    Imagine following scenario:
+    there are two sources of ionizing radiation $A$ and $B$.
+    Both have the same emission activity (average number of particles emitted per second).
+    The is an \ac{UAV} equipped with Compton camera, that is traversing the area.
+    It can either traverse the whole area following some predefined pattern (hence cover the space uniformly), which might be slow and inefficient.
+    The second option is to traverse the space using arbitrary trajectories, which might lead to faster execution time.
+    However, since the coverage of the area is not uniform, the drone could fly above the source $A$ more times than above the source $B$.
+    It means that it measured more $\gamma$ particles above source $A$, although both sources have the same emission activity.
+
+    This observed phenomena is generally not desired.
+    It would be nice to not only localize the sources, but also estimate their (absolute, or at least relative) emission activity.
+    In ideal world, the estimation method should be able to mitigate this effect.
+    The quality of estimate of sources distribution should be as independent on the \ac{UAV} trajectories as possible (given the recorded events).
+
+    \subsubsection{Nature of Compton measurements}
+    The detection and reconstruction process for Compton camera allows us to deduce set of possible sources of such particle.
+    The set is a surface of the Compton cone.
+    It poses a challenge when multiple sources of radiation are present:
+    it is impossible to deduce from which source the particle was emitted, since the source could be anywhere on the conical surface.
+    Therefore it is not known if the $\gamma$ photon originated from already localized source, or it was emitted elsewhere from some yet unobserved source.
+}% %%}
+
+
+\mycomment{% %%{
+  \chapter{Mlem Theory medicine}
+  \section{Inspiration in medicine}
+  The problem of reconstructing 3D positions of sources of ionizing radiation has been studied in depth in the field of medical imagining.
+  To give an example: one possible application of such methods is a cancer diagnostics.
+  A small amount of radioactive substance (called tracer) is injected into the patient's vein.
+  The tracer is absorbed by different parts of the body in varying amounts, which can show areas with abnormal metabolic activity, which is usually the case for cancer cells.
+  The detection of emitted particles and 3D reconstruction of their sources will allow the doctors to find the location of the tumor in the patient's body.
+
+  There are numerous methods used in medical imagining. 
+  Two main approaches are following: \ac{PET} and \ac{SPECT}.
+  \ac{PET} imagining typically use a gamma emitting radioisotope as a tracer.  
+  The method is based on positron emission. 
+  The emitted positron interacts with electron in the patients body and both particles vanish in a burst of energy. 
+  This energy comes in a form of two gamma rays, that goes into a opposite directions.
+  Detection of these two gamma rays (measured by the camera at the same time) allows us to reconstruct 3D image of the patient's body.
+  In \ac{SPECT}, single gamma ray is produced. 
+  The reconstructed image is computed from gamma rays detected by the camera.
+  Since only one gamma-ray is emmited (unlike in \ac{PET}), high number of measurements is needed for accute reconstruction.
+  Medical \ac{SPECT} imagining cameras typically use collimators to get some information about direction of incoming gamma ray.
+  Collimators restricts the set of possible directions from which the gamma ray may enter the detector (and be detected), therefore they can improve accuracy of the detection.
+
+  Another type of sensor (that can be used in \ac{SPECT} imagining) is a Compton camera.
+  The biggest benefit of compton camera is that it provides information about the direction of detected incoming gamma ray without the use of collimator.
+  The nuclear medicine reconstruction method for compton camera measurements that served as inspiration for for this thesis is called \ac{LM-MLEM}.
+
+  \section{Maximum likelihood expectation maximization}
+
+
+
+  \cite{1982_shepp_vardi_MLEM} \cite{EM} \cite{wilderman}
+
+  \subsection{Maximum likelihood estimation}
+  \ac{MLE} is a classical approach in machine learning.
+  It is used to estimate the parameters of a probability distribution based on observed data. 
+  The goal of \ac{MLE} is to find the parameter values that make the observed data most probable under the assumed probability distribution.
+  This is done by calculating the likelihood function, which is the probability of the observed data given a set of parameter values.
+  Likelihood can be defined as 
+  \begin{equation}
+    likelihood = p(\ \mathrm{observations } \  \boldsymbol{O} | \ \mathrm{hidden \ parameters\ } \Phi ).
+    \label{eq:likelihood}
+  \end{equation}
+  We want to maximize this expression with respect to the hidden parameters.
+  In other words, we want to find such parameters so that they fit our observations in the best possible way.
+
+  \section{Algorithm formulation}
+  Let's divide the area of possible sources of radiation into $J$ discrete bins (indexed with $j$, where $j = 1 \dotsc J$).
+  Each discrete bin is represented by its center position.
+  Suppose we have measurements divided into $I$ discrete bins indexed with $i$, $i = 1 \dotsc I$.
+  The vector $\mathbf{Y}$ with elements $y_{i}, i \in (1, \dots I)$ denotes the number of particles detected in the corresponding bin $i$.
+  Let's define matrix $\mathbf{T}$ ($\mathbf{T} \in \mathbb{R}^{I \times J}$), where each position in the matrix is defined as
+
+  \begin{equation}
+    t_{ij} =  P(\textrm{detected in } i | \textrm{emitted from } j).
+  \end{equation}
+
+  In other words, $t_{ij}$ represents a probability that we observe observation $i$ given the fact that the radioactive particle was emitted from position $j$.
+
+  Let's assume that the number of photons emitted from one position $j$ is a discrete random variable that follows a Poisson distribution with expected value $\lambda_{j}$.
+  Our goal is to estimate $\mathbf{\Lambda}$, which has elements $\lambda_{j}$, each corresponding to the expected number of photons emitted from the position $j$.
+
+  The likelihood of measuring $y_{i}$ particles in the measurement bin $i$ w.r.t. $\mathbf{\Lambda}$ can be expressed as (Poisson distribution):
+  \begin{equation}
+    p(y_{i} |\mu_{i} ) = e^{-\mu_{i}} \frac{\mu_{i}^{y_i}}{y_{i}!},
+  \end{equation}
+  where $\mu_{i} = \sum_{j} t_{ij}\lambda_{j}$ denotes the average number of events measured in bin $i$.
+
+  The likelihood of all the measurements is
+  \begin{equation}  
+    p(\mathbf{Y} | \mathbf{T\Lambda} ) = \prod_{i} e^{-\mu_{i}} \frac{\mu_{i}^{y_i}}{y_{i}!}.
+  \end{equation}
+
+  After taking its logarithm, we have the following:
+
+  \begin{equation}  
+    \mathrm{log}\ p(\mathbf{Y} | \mathbf{T\Lambda} ) = \sum_{i}\left ( -\sum_{j} t_{ij}\lambda_{j} + y_{i} \mathrm{log}(\sum_{j} t_{ij}\lambda_{j})  - \mathrm{log}(y_{i}!) \right ).
+    \label{eq:likelihood1}
+  \end{equation}
+  However, equation \ref{eq:likelihood1} doesn't give an answer to our question - how to determine $\mathbf{\Lambda}$. The solution is to use an iterative \ac{EM} algorithm.
+
+  The \ac{EM} algorithm was originally proposed by \cite{EM}. 
+
+  \section{differences}
+  Such medical application typically requires high resolution of the reconstructed image.
+  The distances between the source and detector are small (tens of centimeters), number of measured events is high (tens of thousands and more).
+  The reconstruction process is typically performed offline (all measurements are collected first and then the algorithms process the data), since there is no need for online estimation and the processing of measured data might take non-negligible time.
+  The domain of multirobotic radiation mapping has multiple differences compared to the medical field.
+  The distance between source and detector is much higher (tens of meters).
+  The \ac{UAV}s have limited payload (hence the detector carried on board must be light and compact).
+  It results in the fact that the number of measurements is much lower (hundreds-thousands detected compton events).
+  Moreover, we would like to reconstruct the sources of ionizing radiation in real time.
+  Despite all of these differences, the aim of this work is to adapt such algorithms to our problem.
+}% %%}
+
+\mycomment{% %%{
+    \section{Requirements}
+    \subsection{Multiple sources}
+    Main motivation for this thesis is to develop method that would be capable of localizing multiple compact sources of ionizing radiation.
+    The positions, number or emission activity emission activity of the sources is unknown.
+
+    negative measurements
+
+    multiple sources
+
+    iterative method
+
+
+    \section{The algorithm of choice}
+    The choice of reconstruction method for the given task (estimation of sources locations from \ac{CC} measurements acquired by a group of \ac{UAV} equipped with \ac{pix} detector) was made under following assumptions.
+    The iterative methods are more flexible and can handle noise in the measurements.
+    The distance between the source and \ac{CC} onboard the \ac{UAV}s is high and the number of measured events (represented using list-mode approach) is relatively low.
+    There is no prior knowledge about the distribution of radioactive sources.
+    The \ac{CC} data are represented using list-mode approach.
+    \section{The algorithm of choice}
+    The choice of reconstruction method for the given task (estimation of sources locations from \ac{CC} measurements acquired by a group of \ac{UAV} equipped with \ac{pix} detector) was made under following assumptions.
+    The iterative methods are more flexible and can handle noise in the measurements.
+    The distance between the source and \ac{CC} onboard the \ac{UAV}s is high and the number of measured events (represented using list-mode approach) is relatively low.
+    There is no prior knowledge about the distribution of radioactive sources.
+    The \ac{CC} data are represented using list-mode approach.
+
+    The \ac{MLEM} algorithm described previously serves as an inspiration for the mapping method described in this chapter.
+    Despite all the differences between the medical and multirobotic domain, the \ac{MLEM} algorithm was chosen for several reasons.
+    First of all, the nature of the measurements (compton cones) is the same as in the medical algorithms.
+    Secondly, the classical method of maximization of likelihood of measured data seems to be good choice for the given problem.
+    It can take into account factors influencing the measurements (such as air attenuation, properties of the detector and radioactive emission) in the probabilistic way.
+    Lastly, the estimation of sensitivity of detection (how likely the particles from given position were measured) can be beneficial, 
+    because it can provide information of how much the \ac{UAV}s already explored the area of interest and where to fly to possibly detect undetected sources.
+}% %%}

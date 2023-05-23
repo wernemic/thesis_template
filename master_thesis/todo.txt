@@ -28,3 +28,5 @@ p5ipsat zigzag n2kam
 
 ZDROJE
 opravit citace
+
+check r as resolutio parameter
