@@ -1,16 +1,16 @@
 %!TEX root = ../main.tex
 \chapter{Compton imaging for a group of UAVs\label{chap:methods_estimation}}
 The \ac{MLEM} algorithm for Compton imaging described in the previous chapter has been chosen as a suitable method for data fusion of Compton measurements acquired by a group of \ac{UAV}s.
-The motivation for the use of \ac{MLEM} method is described in section \ref{sec:prelim}.
-Section \ref{sec:setup} presents the adaptation of \ac{MLEM} to the task of online estimation performed by a group of \ac{UAV}s.
-The definition of sensitivity and system matrix is described in sections \ref{sec: sensitivity} and \ref{sec:system}.
+The motivation for the use of \ac{MLEM} method is described in section \autoref{sec:prelim}.
+Section \autoref{sec:setup} presents the adaptation of \ac{MLEM} to the task of online estimation performed by a group of \ac{UAV}s.
+The definition of sensitivity and system matrix is described in sections \autoref{sec: sensitivity} and \autoref{sec:system}.
 
 \section{The algorithm of choice}
 \label{sec:prelim}
 The algorithms for Compton imaging in nuclear medicine (described in the previous chapter) served as inspiration for the imaging method proposed in this thesis.
 The algorithm of choice is \acf{MLEM} (more precisely, its list-mode variant for Compton imaging) for the following reasons.
 
-Firstly, the maximum likelihood approach allows us to model factors influencing the measurements (such as air attenuation, the distance between the source and the sensor of ionizing radiation,  properties of the sensor and random processes leading to the detection)
+Firstly, the maximum likelihood approach allows us to deal with factors influencing the measurements (such as air attenuation, the distance between the source and the sensor of ionizing radiation,  properties of the sensor and random processes leading to the detection)
 as well as cope with the stochastic nature of radioactive emission and model both in a probabilistic way.
 It is also a relatively easy-to-apply and time-proven method in the field of nuclear medicine, which has been applied in the robotic sensing of ionizing radiation.
 
@@ -23,12 +23,12 @@ Lastly, the algorithm can be easily applied in a scenario with multiple \ac{UAV}
 The \ac{MLEM} method is also computationally tractable under some assumptions 
 (such as a relatively low number of detected events (which holds for the given scenario and type of sensor) or restriction on the set of possible sources locations)
 and can be evaluated online.
-The almost real-time estimation is important for active search strategy, where the \ac{UAV}s may adapt to the current situation and optimize the search strategy.
+The almost real-time estimation is important for active search strategy, where the \ac{UAV}s may adapt their future actions to the current situation.
 
 \section{Online MLEM Compton imaging for group of \ac{UAV}s}
 \label{sec:setup}
 \subsection{Discretization and hidden parameters}
-As described in the chapter \ref{chap:mlem_theory}, the \ac{MLEM} algorithm belongs to the class of iterative algorithms that work with discretized space of possible source locations.
+As described in the chapter \autoref{chap:mlem_theory}, the \ac{MLEM} algorithm belongs to the class of iterative algorithms that work with discretized space of possible source locations.
 We assume that the source of ionizing radiation is static and located somewhere on the ground.
 We further assume that the \ac{UAV}s are exploring a flat outdoor area without obstacles. Therefore all the potential sources of ionizing radiation are located somewhere on the flat 2D ground plane.
 
@@ -36,9 +36,9 @@ The area of interest (where possible sources of ionizing radiation might be loca
 The set of all collected measurements (the Compton cones) is denoted $\mathbf{I}$.
 The Compton cones are indexed with $i$, $i \in \{1, \dots, I\}$, where $I$ is the total number of cones recorded.
 The vector of hidden parameters $\bm{\lambda}\in \mathbb{R}^{J}$ is defined analogously as in the previous chapter, where each element $\lambda_{j}$ represents the expected value of the Poisson distribution, specifying the expected emission rate at position $j$.
-The discretization process is illustrated in figure \ref{fig:discretization}.
+The discretization process is illustrated in  \autoref{fig:discretization}.
 
-%multifigure discretization%%{
+%multi discretization%%{
 \begin{figure}[!h]
   \centering
 
@@ -54,7 +54,7 @@ The discretization process is illustrated in figure \ref{fig:discretization}.
     \includegraphics[width=0.32\textwidth]{./fig/photos/dis3.eps}
     \label{fig:dis3}
   }
-  \caption{Illustration of the discretization of the space of possible source positions. The open area without obstacles (\ref{fig:dis1}) is discretized into $J$ discrete bins (\ref{fig:dis2}), each represented by its centre position and associated with hidden parameter $\lambda_{j}$ (\ref{fig:dis3}).}
+  \caption{Illustration of the discretization of the space of possible source positions. The open area without obstacles \protect\subref{fig:dis1} is discretized into $J$ discrete bins \protect\subref{fig:dis2}, each represented by its centre position and associated with hidden parameter $\lambda_{j}$ \protect\subref{fig:dis3}.}
   \label{fig:discretization}
 \end{figure}% %%}
 
@@ -66,17 +66,18 @@ The estimation process proceeds iteratively using the list-mode \ac{MLEM} algori
 \end{equation}
 where $l$ is the current iteration of the algorithm, $\lambda_{j}$ is the hidden parameter for each position $j$ we would like to estimate, $t_{ij}$ is the element of system matrix $\mathbf{T}\in \mathbb{R}^{I \times J}$ and $s_{j}$ is the sensitivity of detection for the map position $j$.
 
+
 As stated before, the \ac{MLEM} algorithm is typically used as an offline method that proceeds all the measurements at once after the end of the experiment.
 Medical applications with highly sensitive detectors, together with the short distance between the source and the detector, produce a large number of measurements (tens of thousands and more), and the algorithm typically reconstructs the 3D space with high resolution.
 The high number of Compton events results in the fact that the $\mathbf{T}\in \mathbb{R}^{I \times J}$ cannot be stored in the memory during the run of the algorithm and its individual elements $t_{ij}$ are recomputed in every step of the algorithm, which significantly prolongs the computing time.
 If the instance of the problem (size of the sampled space $J$ and the number of measurements $I$) is reasonably small, the system matrix $\mathbf{T}$ can be computed only once for each measurement and stored in the memory for future computations, which speeds up the future runs of the \ac{MLEM} algorithm.
-Furthermore, the iterations of the \ac{MLEM} algorithm reformulated as matrix multiplication are parallelized using \ac{GPU}.
+Furthermore, the iterations of the \ac{MLEM} algorithm are formulated as matrix multiplication, which allows parallelization using \ac{GPU}.
 
-Figure \ref{fig:online_mlem} depicts the workflow of \ac{MLEM} estimation during the experiment.
-As the drones fly through the environment, each of them samples its current position at $\SI{5}{\hertz}$.
+ \autoref{fig:online_mlem} depicts the workflow of \ac{MLEM} estimation during the experiment.
+As the drones fly through the environment, each of the \ac{UAV}s sample its current position at $\SI{5}{\hertz}$.
 The sensitivity of detection vector $\mathbf{s}\in \mathbb{R}^{J}$ is updated online based on the newly sampled positions.
 Once the new measurement (Compton cone) $i$ is detected, the vector $\mathbf{t}_{i} = [t_{i0}, \dots,t_{ij}, \dots, t_{iJ}]$ is appended to the system matrix.
-The iterative \ac{MLEM} algorithm (\ref{eq:MLEM}) is then repeatedly computed (at $\SI{0.5}{\hertz}$) using currently available sensitivity vector $\mathbf{s}$,  system matrix $\mathbf{T}$ and initialized vector of hidden parameters $\bm{\lambda}$.
+The iterative \ac{MLEM} algorithm (\autoref{eq:MLEM}) is then repeatedly computed (at $\SI{0.5}{\hertz}$) using currently available sensitivity vector $\mathbf{s}$,  system matrix $\mathbf{T}$ and initialized vector of hidden parameters $\bm{\lambda}$.
 The estimate of the distribution of radioactive sources $\bm{\lambda}$ is therefore updated every $2$ seconds, which is technically speaking not in real-time, but the update frequency is sufficient for planning the next actions of the \ac{UAV}s based on the measured data.
 %The vector $\bm{\lambda}^{[l=0]}$ is initialized with uniform distribution
 %Experiments showed that the proposed approach is computationally tractable for scenarios with an area of size $300 \times 300\ \si{\meter}$ and number 
@@ -88,22 +89,22 @@ The proposed method is
 The sensitivity vector $\mathbf{s}$ can be iteratively updated during the experiment and with constant memory requirements since the individual elements $s_{j}$ can be updated in place.
 
 The sensitivity vector $S$ is iteratively updated using recorded drone positions that are sampled from drone trajectories (with frequency $\SI{5}\hertz$).
-The details of sensitivity computation is provided in section \ref{sec: sensitivity}.
+The details of sensitivity computation is provided in section \autoref{sec: sensitivity}.
 The system matrix $\mathbf{T}$ is updated (a new row is added) every time a new Compton cone is detected.
-The estimation of system matrix $\mathbf{T}$ is described in section \ref{sec:system}.
+The estimation of system matrix $\mathbf{T}$ is described in section \autoref{sec:system}.
 
-The iterative \ac{LM-MLEM} algorithm described in equation \ref{eq:MLEM} is processed regularly.
+The iterative \ac{LM-MLEM} algorithm described in equation \autoref{eq:MLEM} is processed regularly.
 The vector of hidden parameters $\mathbf{\Lambda}$ is initialized with cones back-projection.
 The \ac{LM-MLEM} estimate is recomputed every $2$ seconds.
 }% %%}
 % %%}
-%figure melm online%%{
+% melm online%%{
 \begin{figure}[htb]
   \centering
     \includegraphics[width=0.99\textwidth]{./fig/photos/workflow.eps}
-  \caption{Workflow of the (almost) real-time \ac{MLEM} estimation. The positions of \ac{UAV}s are sampled at $\SI{5}{\hertz}$ and the sensitivity vector $s$ (green) is updated online based on newly sampled positions.
+  \caption{Workflow of the (almost) real-time \ac{MLEM} estimation. The positions of \ac{UAV}s are sampled at $\SI{5}{\hertz}$ and the sensitivity vector $\mathbf{s}\in\mathbb{R}^{J}$ (green) is updated online based on newly sampled positions.
   Once the new Compton cone $i$ is detected by the \ac{pix} Compton camera, 
-  the matrix $\mathbf{T}$ (blue) is extended by the new vector $\mathbf{t}_{i} = [t_{i0}, \dots,t_{ij}, \dots, t_{iJ}]$ (yellow).
+  the matrix $\mathbf{T}\in\mathbb{R}^{I\times J}$ (blue) is extended by the new vector $\mathbf{t}_{i} = [t_{i0}, \dots,t_{ij}, \dots, t_{iJ}]$ (yellow).
   The iterative \ac{MLEM} algorithm then computes the current estimate of emission intensity $\bm{\lambda}$ (red) every $2$ seconds.
   }
     \label{fig:online_mlem}
@@ -130,7 +131,8 @@ The \ac{LM-MLEM} estimate is recomputed every $2$ seconds.
 \section{Sensitivity of detection}% %%{
 \label{sec:sensitivity}
 The probability of a photon emitted from a given position $j$ to be detected by the Compton camera is called the sensitivity of detection.
-It can be expressed using conditional probability as 
+In the proposed scenario, the sensitivity of the detection can be seen not only as the property of a single Compton camera, but as a sensitivity of the whole multi-robot system, where multiple Compton cameras (mounted on the \ac{UAV}s) are moving through the environment.
+The sensitivity can be expressed using conditional probability as 
 \begin{equation}
   s_{j} =  P(\textrm{detected by the sensor}\ | \textrm{emitted from } j).
 \end{equation}
@@ -149,9 +151,13 @@ The sensitivity of detection is evaluated for each $(j,v)$ pair. % %%}
 
 \begin{figure}[!h]
   \centering
-    \includegraphics[width=0.65\textwidth]{./fig/photos/sen.eps}
+    \includegraphics[width=0.6\textwidth]{./fig/photos/sen.eps}
     \label{fig:sen_illustration}
-  \caption{An illustration of sensitivity computation. The sensitivity describes the probability that a particle emitted at a given position is measured by the Compton cameras onboard the \ac{UAV}s. In other words, the sensitivity $s_{j}$ describes how well explored has been the map position $j$ during the experiment. The trajectory of the \ac{UAV} is sampled into viewpoints denoted as $v$.}
+  \caption{An illustration of sensitivity computation. 
+  The sensitivity describes the probability that a particle emitted at a given position is measured by the Compton cameras onboard the \ac{UAV}s. 
+  In other words, the sensitivity $s_{j}$ describes how well explored has been the map position $j$ during the experiment. 
+  The trajectory of the \ac{UAV} is sampled into viewpoints denoted as $v$.
+  The sensitivity vector $\mathbf{s}\in\mathbb{R}^{J}$ is illustrated as 2D object just for visualization purposes, although it is a one-dimensional vector.}
 \end{figure}% %%}
 
 \subsection{Probabilistic description}% %%{
@@ -175,11 +181,11 @@ The sensitivity of the sensor w.r.t. different directions of the incoming partic
 Another option presented in the literature is the evaluation of sensitivity using the Monte Carlo simulation.
 This approach has multiple advantages: it is not necessary to describe all random occurrences inside the detector analytically (which might be complicated and take non-negligible computation time when evaluating a large number of map positions during the experiment).
 Monte Carlo simulation can be precomputed in advance, and the data can be stored in some data structure that allows fast access to the data, shortening the computation time.
-Since it is difficult to describe  equation \ref{eq:sen_prob} for \ac{pix} Compton camera in analytical form 
+Since it is difficult to describe  equation \autoref{eq:sen_prob} for \ac{pix} Compton camera in analytical form 
 (because the probability $p_{compton}$ and $p_{absorption}$ depends on the length of the corresponding intersection of the photon's trajectory with the matter of the detector),
 we approximate the terms $(p_{solid\ angle})$, $(p_{compton})$ and $(p_{absorption})$ using the Monte Carlo simulation.% %%}
 
-%figure sensitivity%%{
+% sensitivity%%{
 
 
 \subsection{Monte Carlo simulation}% %%{
@@ -188,12 +194,12 @@ instead of deriving analytical expression,
 %which might be complicated given the nature of the \ac{pix} detector (where all interactions are happening in a single block of matter, and probabilities of \ac{CS} or \ac{PE} depend on the length of the ray segment inside the sensor) and time-consuming for online computations during the experiment,
 we will approximate the probabilities by simulating sources of ionizing photons at certain positions and compute how many particles emitted there produced Compton cones in the simulated sensor.
 The realistic Compton camera simulator described \cite{baca2019timepix} was used as a template and adapted for this particular application.
-%Figure \ref{fig:polar} shows the polar coordinate system, where angles $\theta$ and $\phi$ determine the relative position of the source with respect to the Compton camera.
+% \autoref{fig:polar} shows the polar coordinate system, where angles $\theta$ and $\phi$ determine the relative position of the source with respect to the Compton camera.
 
-The position of each simulated source is parametrized by its polar coordinates (angles $\theta$, $\phi$ and distance $d$), as shown in figure \ref{fig:polar}.
+The position of each simulated source is parametrized by its polar coordinates (angles $\theta$, $\phi$ and distance $d$), as shown in  \autoref{fig:polar}.
 Each simulated source emits $N$ particles (in all directions).
 Since the \ac{CdTe} semiconductor crystal inside the \ac{pix} sensor is a symmetrical object, only $\frac{1}{8}$ of the elementary sphere around the sensor needs to be simulated.
-Figure \ref{fig:sources_loc} shows the positions of simulated sources, and figure \ref{fig:sampling} presents their positions in the angle space.
+ \autoref{fig:sources_loc} shows the positions of simulated sources, and  \autoref{fig:sampling} presents their positions in the angle space.
 We compute the probability of producing a Compton cone for a particle emitted by a source at the relative position given by polar coordinates ($\theta, \phi, d$) as
 \begin{equation}
   p(\mathrm{cone\ detection})_{(\theta, \phi, d)} = \frac{C_{(\theta, \phi, d)}}{N},
@@ -202,8 +208,8 @@ where $C_{(\theta, \phi, d)}$ is the number of photons that have undergone the C
 We also check if the produced interactions passed outlier detection. %and passed the outlier detection (therefore, can be detected).
 The outlier detection consists of the minimum pixel distance of the two recorded interactions on the Timepix chip and energy bounds for a recorded electron with energy $E_{1}$ and photon $E_{2}$. 
 $N$ is the number of all particles emitted at source position $(\theta, \phi, d)$. 
-Number of emitted particles is set to $N = 10^{10}$, the distance $d$ is set to $d = \SI{1}\meter$.
-The simulation process is described in algorithm \ref{alg:monte}. 
+Number of emitted particles is set to $N = 10^{10}$, the distance $d$ is set to $d = \SI{1}\meter$ for simplicity.
+The simulation process is described in algorithm ref{alg:monte}. 
 The results of the simulation are stored in a lookup table:
 \begin{equation}
   \mathrm{lookup\_table}(\theta_{k}, \phi_{k}) = p(\mathrm{cone\ detection})_{(\theta_{k}, \phi_{k}, d = \SI{1}\meter)}. 
@@ -211,7 +217,7 @@ The results of the simulation are stored in a lookup table:
 The lookup table is a data structure that allows a fast readout of the stored data.
 For arbitrary query ($\theta, \phi$), the lookup table finds the closest key pair ($\theta_{k}, \phi_{k}$) in the angle space and returns the value associated with the key pair.% %%}
 
-%multifigure montecarlo
+%multi montecarlo
 \begin{figure}[!h]% %%{
 \centering
   \subfloat[\centering Sampling of the $\frac{1}{8}$ of the unit sphere in the angle space] {
@@ -233,9 +239,9 @@ For arbitrary query ($\theta, \phi$), the lookup table finds the closest key pai
     \includegraphics[width=0.25\textwidth]{./fig/photos/solid_angle_2.eps}
     \label{fig:sa}
   }
-  \caption{Sampling of $\frac{1}{8}$ of the unit sphere for the Monte Carlo simulation is illustrated in \ref{fig:sampling} (angle space) and \ref{fig:sources_loc} (xyz coordinate system). 
-  The polar coordinates determining the direction of incoming particle are presented in \ref{fig:polar}. 
-  Finally, the solid angle definition $\Omega = \frac{B}{r^{2}}$, where $r$ is the sphere radius and $B$ is the spherical surface area, is shown in \ref{fig:sa}. }
+  \caption{Sampling of $\frac{1}{8}$ of the unit sphere for the Monte Carlo simulation is illustrated in \protect\subref{fig:sampling} (angle space) and \protect\subref{fig:sources_loc} (xyz coordinate system). 
+  The polar coordinates determining the direction of incoming particle are presented in \protect\subref{fig:polar}. 
+  Finally, the solid angle definition $\Omega = \frac{B}{r^{2}}$, where $r$ is the sphere radius and $B$ is the spherical surface area, is shown in \protect\subref{fig:sa}. }
   \label{fig:mc_multi}
 \end{figure}% %%}
 
@@ -307,10 +313,10 @@ The sensitivity of detection by the sensor placed at sampled position $v$ for ma
   \label{eq:sjv}
 \end{equation}
 where $d_{jv}$ is the Euclidean distance between map position $j$ and sensor position $v$, $\mu \approx \SI{0.01}{\meter^{-1}} $ is the linear attenuation coefficient for $\SI{622}{\kilo\electronvolt}$ photons in air, ($\phi_{jv}, \theta_{jv}$) are the polar coordinates determining the relative position of $v$ and the sensor. 
-The term $\frac{1}{d^{2}_{jv}}$ in \ref{eq:sjv} ensures that the $p_{solid\ angle}$ (already contained in the $\mathrm{lookup\_table}$ for $d = \SI{1}\meter$) approximately holds even for distances other than $d = \SI{1}\meter$.
+The term $\frac{1}{d^{2}_{jv}}$ in \autoref{eq:sjv} ensures that the $p_{solid\ angle}$ (already contained in the $\mathrm{lookup\_table}$ for $d = \SI{1}\meter$) approximately holds even for distances other than $d = \SI{1}\meter$.
 
 \subsubsection{Iterative formula}
-The equation \ref{eq:sjv} presents the sensitivity computation for one viewpoint $v$. 
+The equation \autoref{eq:sjv} presents the sensitivity computation for one viewpoint $v$. 
 However, we would like to compute the sensitivity of detection online during the experiment for all the viewpoints previously recorded. % while keeping the memory requirements constant. 
 Therefore the sensitivity vector is iteratively updated with the newly sampled viewpoints (\ac{UAV} positions).
 Let denote $\mathbf{s}^{[t]}$ the sensitivity vector at time $t$.
@@ -340,11 +346,11 @@ The system matrix $\mathbf{T} \in \mathbb{R}^{I \times J}$ is defined as
 t_{ij} =  P(\textrm{detected in } i | \textrm{emitted from } j).
 \end{equation}
 In other words, it says how likely the photon causing measurement $i$ came from the map position $j$.
-The illustration of the system matrix is depicted in figure \ref{fig:sys_ilustration}, where the blue colour represents $t_{ij}$ values of the individual cells. 
+The illustration of the system matrix is depicted in  \autoref{fig:sys_ilustration}, where the blue colour represents $t_{ij}$ values of the individual cells. 
 \begin{figure}[!h]
   \centering
     \includegraphics[width=0.48\textwidth]{./fig/photos/systemmmm.eps}
-  \caption{System matrix $\mathbf{T}$. The blue colour represents the value of $t_{ij}$ in each cell.}
+  \caption{System matrix $\mathbf{T}$. The blue colour represents the value of $t_{ij}$ in each cell. The system matrix is visualized as 3D matrix just to highlight the relation with newly measured cone $i$, although it is a two-dimensional matrix of size $I \times J$, where $I$ is the number of recorded Compton cones and $J$ is the size of the map. }
     \label{fig:sys_ilustration}
 \end{figure}
 
@@ -366,7 +372,7 @@ where:
 \end{itemize}
 %The first interaction (electron produced as a side product of \ac{CS}) at position ${X_{1}}$ with measured energy $E_{1}$) 
 %and the second interaction (absorbed electron at position $X_{2}$ inside the sensor with measured energy $E_{2}$).
-%The Compton cone $i$ with scattering angle $\beta_{i}$ is then reconstructed from these measurements using equation \ref{eq:theta}.
+%The Compton cone $i$ with scattering angle $\beta_{i}$ is then reconstructed from these measurements using equation \autoref{eq:theta}.
 %The position of the sensor at the time when the Compton effect was measured is denoted $v_{i}$ (and is composed of position and orientation in the world coordinates).
 
 \subsection{Probabilistic description}
@@ -421,11 +427,11 @@ where:
 \item $h(\delta_{ij}|\sigma_{j})$ is a Gaussian kernel (the ``blurring factor'') representing the uncertainty in angle measurement,
 \item $\delta_{ij}$ is angle difference $|\beta_{i}-\beta_{j}|$, where $\beta_{j}$ is the angle between cone axis vector $a_{i}$ and vector $|j-v_{i}|$, 
 \item $\sigma$ is standard deviation and $\alpha$ is the minimal angle difference due to discretization noise,
-\item $\mathrm{lookup\_table}(\phi_{jv}, \theta_{jv})$ is the lookup table defined in section \ref{sec:sensitivity}.
+\item $\mathrm{lookup\_table}(\phi_{jv}, \theta_{jv})$ is the lookup table defined in section \autoref{sec:sensitivity}.
 \end{itemize}
 
-The angular difference $\delta_{ij}$ in equation \ref{eq:system_matrix_full} comprise the measured Compton cone.
-If the reconstructed Compton cone (with origin $v_{i}$, axis vector $a_{i}$ and Compton angle $\beta_{i}$) would perfectly intersect the map position $j$, then the angular difference would be $\delta_{ij} = 0$, as illustrated in figure \ref{fig:system_comp}.
+The angular difference $\delta_{ij}$ in equation \autoref{eq:system_matrix_full} comprise the measured Compton cone.
+If the reconstructed Compton cone (with origin $v_{i}$, axis vector $a_{i}$ and Compton angle $\beta_{i}$) would perfectly intersect the map position $j$, then the angular difference would be $\delta_{ij} = 0$, as illustrated in  \autoref{fig:system_comp}.
 However, this holds only for a perfect world without noise.
 
 \begin{figure}[!h]
@@ -436,7 +442,7 @@ However, this holds only for a perfect world without noise.
 \end{figure}
 \subsubsection{Measurement noise}
 The real-world measurements are affected by measurement noise. Hence the reconstructed cone might not intersect the real position of emission.
-The measurement noise might be present in the measured energies $E_{1}$ and $E_{2}$ (that are affecting the Compton angle $\beta_{i}$ , see equation \ref{eq:compton_beta_formula}) 
+The measurement noise might be present in the measured energies $E_{1}$ and $E_{2}$ (that are affecting the Compton angle $\beta_{i}$ , see equation \autoref{eq:compton_beta_formula}) 
 as well as in the positions of interactions inside the detector ($X_{1}$ and $X_{2}$) 
 that are affecting the cone axis $a_{i}$.
 The influence of noise in energy measurement (Compton angle $\beta$) is modelled using Gaussian function with ``standard deviation'' $\sigma$:
@@ -445,7 +451,7 @@ The influence of noise in energy measurement (Compton angle $\beta$) is modelled
   \label{eq:gau}
 \end{equation}
 If the angle difference is large ($\delta_{ij}<3\sigma$), then we set $h(\delta_{ij}|\sigma) = 0$.
-The important question is how to set the parameter $\sigma$, that is influencing the width of the function \ref{eq:gau}.
+The important question is how to set the parameter $\sigma$, that is influencing the width of the function \autoref{eq:gau}.
 The datasheet\footnote{Available at: https://advacam.com/camera/minipix-tpx3}
 states that the energy resolution of used Timepix3 pixel detector is $4.5$--$9.9\ \mathrm{kEV}$. 
 The dependence of angular uncertainties on the energy resolution of two-layer Compton cameras was studied in \cite{ordonez}.
@@ -464,7 +470,7 @@ Let us define maximal error for measurement $i$ and position $j$ caused by discr
   \label{eq:alpha}
 \end{equation}
 where $d_{jv_{i}}$ is the distance between cone origin at position $v_{i}$ and map position $j$ and $x$ is the maximal allowed distance between projected cone and discrete position $j$, $x = l$.
-The situation is illustrated in figure \ref{fig:discret}.
+The situation is illustrated in  \autoref{fig:discret}.
 \begin{figure}
   \centering
 \includegraphics[width=0.4\textwidth]{./fig/photos/discret.eps}
@@ -472,7 +478,7 @@ The situation is illustrated in figure \ref{fig:discret}.
 Illustration of discretization error. The maximal angle difference caused by discretization error $\alpha_{ij}$ is computed for each map position $j$.}
   \label{fig:discret}
 \end{figure}
-Taking into account the discretization as well as measurement noise, the term $h(\delta_{ij}|\sigma, \alpha_{ij})$ in equation \ref{eq:system_matrix_full} which is projecting the cone to the map positions is defined as
+Taking into account the discretization as well as measurement noise, the term $h(\delta_{ij}|\sigma, \alpha_{ij})$ in equation \autoref{eq:system_matrix_full} which is projecting the cone to the map positions is defined as
 \begin{equation}
 h(\delta_{ij}|\sigma) =
 \begin{cases}
@@ -481,7 +487,7 @@ e^{- \frac{1}{2}(\frac{\delta_{ij}}{\sigma})^{2}} & \text{if $\delta_{ij} > \alp
 0 & \text{otherwise}
 \end{cases}, 
 \end{equation}
-where $\alpha_{ij}$ is the maximal angle difference caused by discretization error defined in equation \ref{eq:alpha}.
+where $\alpha_{ij}$ is the maximal angle difference caused by discretization error defined in equation \autoref{eq:alpha}.
 
 
 

@@ -17,7 +17,7 @@ Compton imaging in medical applications typically requires a high resolution of 
 The distances between source and detector are small (tens of centimetres), number of measured events is high (tens of thousands and more).
 The reconstruction process is typically performed offline (all measurements are collected first, and then the algorithms process the data) since there is no need for online estimation, and the processing of measured data might take non-negligible time.
 The domain of multi-robot radiation mapping has multiple differences compared to the medical field.
-The distance between the source and detector is much larger (from meters to tens of meters).
+The distance between the source and detector is much larger (from meters to hundreds of meters).
 The \ac{UAV}s have limited payload (hence the detector carried on board must be light and compact).
 It results in the fact that the number of measurements is much lower (hundreds-thousands detected Compton events).
 Moreover, we would like to reconstruct the sources of ionizing radiation in real-time.
@@ -35,7 +35,7 @@ Another example of a simple direct reconstruction method is called back-projecti
 Back-projection is one of the simplest reconstruction methods. 
 The Compton cones are projected to the (discretized) space of possible source locations, and each bin records the number of cones intersecting its position. 
 The bins with more intersections are considered as possible source positions.
-The back-projection for 2D image reconstruction is illustrated in figure \ref{fig:bppp}.
+The back-projection for 2D image reconstruction is illustrated in  \autoref{fig:bppp}.
 The advantage of back-projection method is its simplicity and the fact that it can be easily parametrized when processing a large number of measurements.
 On the other hand, the back-projection requires a significant number of data in order to make the reconstruction accurate and does not take into account the properties of the detector.
   \begin{figure}[!h]
@@ -120,13 +120,13 @@ The probability of measuring $y_{i}$ particles in the measurement bin $i$ with r
 \end{equation}
 The likelihood of all the measurements (assuming the events to be independent) is
 \begin{equation}  
-  \mathcal{L}(\mathbf{Y} | \mathbf{\lambda}) = \prod_{i}p(y_{i} |\mu_{i} ) = \prod_{i} e^{-\mu_{i}} \frac{\mu_{i}^{y_i}}{y_{i}!}.
+  \mathcal{L}(\mathbf{Y} | \bm{\lambda}) = \prod_{i}p(y_{i} |\mu_{i} ) = \prod_{i} e^{-\mu_{i}} \frac{\mu_{i}^{y_i}}{y_{i}!}.
   \label{eq:prod}
 \end{equation}
 We want to maximize the likelihood by finding the best possible values of $\bm{\lambda}$. 
 The maximum likelihood solution is:
 \begin{equation}
-  \mathbf{\lambda}_{best} = \underset{\mathbf{\lambda}}{\mathrm{argmax}}( \mathrm{log}\ \mathcal{L}(\mathbf{Y} | \mathbf{\lambda})).
+  \bm{\lambda}_{best} = \underset{\bm{\lambda}}{\mathrm{argmax}}( \mathrm{log}\ \mathcal{L}(\mathbf{Y} | \bm{\lambda})).
 \end{equation}
 Instead of maximizing the product in equation \ref{eq:prod}, it is common to maximize its logarithm since the logarithm is a monotonically increasing function.
 After taking the logarithm of \ref{eq:prod} and substitution $\mu_{i} = \sum_{j} t_{ij}\lambda_{j}$, we have the following:
@@ -167,8 +167,8 @@ The sensitivity of detection is then a sum over all events \{$\mathbf{I} \cup \m
 %The computational complexity of the \ac{MLEM} algorithm is $\mathcal{O}(I J)$
 \subsection{MLEM algorithm in practical application}
 The equation \ref{eq:lmmlem} presents the formulation of the iterative \ac{MLEM} algorithm maximizing the likelihood of measured data.
-The system matrix $\mathbf{T}$ and vector of sensitivity values $\mathbf{S} \in \mathbb{R}^{J}$ with elements $s_{j}$ depend on the particular geometry of the used sensor and need to be derived individually in each application.
-The proposed definition of system matrix $\mathbf{T}$ and sensitivity vector $\mathbf{S}$ is described in the following chapter. 
+The system matrix $\mathbf{T}$ and vector of sensitivity values $\mathbf{s} \in \mathbb{R}^{J}$ with elements $s_{j}$ depend on the particular geometry of the used sensor and need to be derived individually in each application.
+The description of system matrix $\mathbf{T}$ and sensitivity vector $\mathbf{s}$ adapted to the presented task is described in Chapter \ref{chap:methods_robotics}. 
 
 Several other design choices are to be made in practical applications, such as setting the number of iterations of the \ac{MLEM} algorithm.
 The number of iterations in \ac{MLEM} represents a balance between contrast recovery (quality of reconstruction) and image noise amplification, as stated in \cite{handheld_mlem_reconstruction}.

@@ -57,6 +57,12 @@
 \usepackage{amsmath} 
 \usepackage{alertmessage}
 \usepackage{hyperref}
+\usepackage{subfig}
+%\usepackage{varioref}
+%\labelformat{figure}{#1}
+%\labelformat{subfloat}{Fig. #1}
+
+
 % print version has different margins to accommodate the spine of the book
 % do not move this around, or it stops working
 \ifdefined\printversion
@@ -194,13 +200,16 @@
 \newcommand{\plus}{\scalebox{0.8}[0.8]{$+$}}
 \newcommand{\figvspace}{\vspace{-1em}}
 
+
 % referencing
-\newcommand{\reffig}[1]{Fig.~\ref{#1}}
+\newcommand{\reffig}[1]{Figure~\ref{#1}}
 \newcommand{\reflst}[1]{Lst.~\ref{#1}}
 \newcommand{\refalg}[1]{Alg.~\ref{#1}}
-\newcommand{\refsec}[1]{Sec.~\ref{#1}}
+\newcommand{\refsec}[1]{Section~\ref{#1}}
 \newcommand{\reftab}[1]{Table~\ref{#1}}
 \newcommand{\refeq}[1]{\eqref{#1}}
+
+%\renewcommand{\figureautorefname}{foo}
 
 %% | ----------------- listings - showing code ---------------- |
 
@@ -278,6 +287,9 @@
   % page header
   \fancyhead[LE,RO]{\thepage}
 }
+
+
+
 
 %% | -------------- Adjust style of chapter names ------------- |
 

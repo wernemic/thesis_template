@@ -15,7 +15,6 @@ During the Compton scattering, an ionizing photon interacts with an electron and
 This principle allows the Compton camera to not only detect the presence of ionizing particles (as common in intensity-based sensors, such as widely known dosimeters), but also reconstruct a set of possible directions from where the photon arrived to the sensor.
 Thanks to innovations in the field of sensory equipment, Compton camera \ac{pix} became small and lightweight enough to be carried by a small \ac{UAV} onboard.
 
-
 \begin{figure}[!h]
     \centering
   \includegraphics[width=0.6\textwidth]{./fig/photos/uav.jpg}
@@ -23,10 +22,10 @@ Thanks to innovations in the field of sensory equipment, Compton camera \ac{pix}
     \label{fig:uavvv}
 \end{figure}
 
-This thesis aims to present a method that performs the fusion of sensory data from multiple \ac{UAV}s (equipped with Compton camera sensor) in order to localize multiple sources of ionizing radiation.
+This thesis aims to present a method that performs fusion of sensory data from multiple \ac{UAV}s (equipped with the Compton camera sensor) in order to localize multiple sources of ionizing radiation.
 The estimation method is based on the \ac{MLEM} algorithm that estimates distribution of sources of ionizing radiation while maximizing likelihood of measured data.
 The localization of radioactive sources is performed online during the flight.
-Thanks to the online estimation, the group of \ac{UAV}s autonomously adapts its actions accordingly  in order to increase the precision of the estimate and minimize the search time.
+Thanks to the online estimation, the group of \ac{UAV}s autonomously adapts its actions accordingly in order to increase the precision of the estimate and minimize the search time.
 The presented data fusion method, as well as the high-level search strategy, are tested in simulations and on prerecorded data from real-world experiments.
 
 \section{Related work}
@@ -60,7 +59,7 @@ These directions vectors acquired at different positions were fused using \ac{LK
 However, this method is not designed for the localization of multiple sources of radiation.
 
 This thesis focuses on the direction-based sensor --- the Compton camera.
-Radiation mapping around \ac{FDNPP} using an \ac{UAV} equipped with a Compton camera is presented in \cite{Jiang2015}, \cite{Mochizuki_2017}, \cite{sato_drone_compton_camera_2018}.
+Radiation mapping around \ac{FDNPP} using an \ac{UAV} equipped with a Compton camera is presented in \cite{Jiang2015, Mochizuki_2017, sato_drone_compton_camera_2018}.
 In all cases, the platforms were hovering for a certain time above the predefined positions and the radiation images were reconstructed offline after the flight.
 Work presented in \cite{fuku_compton} shows a radioactive hotspot localization inside the \ac{FDNPP} by one \ac{UGV} equipped with a Compton camera.
 However, this work focused only on 2D image reconstruction, and the robot was moving only in one direction during the experiment.
@@ -71,7 +70,7 @@ The reconstruction method is based on the iterative \ac{MLEM} algorithm, the sam
 However, the authors of the paper do not specify the details of the proposed \ac{MLEM} reconstruction method (the system matrix is not further described).
 
 The \ac{MLEM} reconstruction method was originally developed for nuclear medicine imaging, as described in one of the following chapters.
-Except few applications in robotic ionizing radiation sensing (\cite{fuku_compton}, \cite{3D_compton_mobile_robot_2017}), authors of \cite{handheld_mlem_reconstruction}
+Except few applications in robotic ionizing radiation sensing (\cite{fuku_compton, 3D_compton_mobile_robot_2017}), authors of \cite{handheld_mlem_reconstruction}
 present a handheld device for the localization of radioactive sources. 
 The presented device is composed of an omnidirectional imaging system (capable of acquiring Compton measurements) as well as a \ac{LiDAR} sensor.
 %The reconstruction method is also based on \ac{MLEM} algorithm.
@@ -116,12 +115,12 @@ secondly,
 design high-level planning approach that would control a group of \ac{UAV}s in order to autonomously explore the whole area and maximize the chance that all sources of ionizing radiation would be detected while estimating their relative emission activity.
 
 \section{Thesis organization}
-The chapter \ref{chap:preliminaries} describes basic properties of ionizing radiation and its interactions with matter, the working principle of the Compton camera and \ac{pix} sensor.
-The theoretical background of \ac{MLEM} estimation method is provided in the chapter \ref{chap:mlem_theory}.
-The chapter \ref{chap:methods_estimation} presents the proposed radiation mapping method for a group of \ac{UAV}s equipped with a \ac{pix} Compton camera sensor.
-The chapter \ref{chap:methods_robotics} describes the search strategy that controls the \ac{UAV}s in order to improve the precision of radiation mapping, acquire more measurements and explore the area of interest. 
+Chapter \ref{chap:preliminaries} describes basic properties of ionizing radiation and its interactions with matter, the working principle of the Compton camera and \ac{pix} sensor.
+The theoretical background of \ac{MLEM} estimation method is provided in Chapter \ref{chap:mlem_theory}.
+Chapter \ref{chap:methods_estimation} presents the proposed radiation mapping method for a group of \ac{UAV}s equipped with a \ac{pix} Compton camera sensor.
+Chapter \ref{chap:methods_robotics} describes the search strategy that controls the \ac{UAV}s in order to improve the precision of radiation mapping, acquire more measurements and explore the area of interest. 
 Finally, the proposed methods were tested both in simulation and on real-world data. 
-The results are presented in the chapter \ref{chap:results}.
+The results are presented in Chapter \ref{chap:results}.
 
 
 \mycomment{\section{TRASH}% %%{
