@@ -30,3 +30,134 @@ ZDROJE
 opravit citace
 
 check r as resolutio parameter
+
+BLAHA
+- razeni citaci
+- figure
+- chapter
+- gramarly projet
+
+uvod
+rict proc to delam
+
+rict ze navazuju na mrs clanek
+v uvodu rict ze hledam na na rovne plose, jednoduse rict co delam a proc
+
+zanořit všechny sekce pod radioactivitu
+prohodit 2.2 a 2.3
+
+unlike the subatomic particles, pozor, gamma jsou taky subatomic particles
+
+jak se paruji interakce v senzoru popsat lip
+
+side effect misto by-product
+
+2.6 nějakou uvidni vetu - neco jako another requirerement for detection of ionizing radiation is deployment of autnomous vehicles
+2.7 mrs uav system - buď líp nebo vůbec
+
+differences - tens of meters nahradit hudreds
+rovnice 3.5 3.6 ud2lat lambdy tucne
+
+
+3.4.5 s male
+the proposed definiton nahradit specifikace T a s pro konretni model je popsana v dalsi kapitole
+
+vyndat list mode z ostatnich kapitol
+
+aby algorithm of choice znel spis jako komentar, ne jako motivace
+Firstly, the maximum likelihood approach allows us to DEAL with
+
+
+
+data space a zm2na definic
+
+zduraznit ze T a S se meni v case a proc
+respektive s se nemeni, 
+
+u rovnice 4.5 pridat poznamku proc d = 1
+
+pripsat u obrazku 4.6 ze se to rozbali
+rovnice 4.6 a tucne, \tucne{v}_{i}
+
+i nedavat full u rovnice 4.6 a nechat to jenom jako tuple
+
+4.4.3 vysv2tlit proc to tak je, ze p air a p solid angle zavisi na vzdalenosti, zatimco co se deje v senzoru je irelevatni
+
+
+4.4.3 The po dvojtecce.
+rovnice 4.10 nedavat i = 
+
+
+4.12
+then we set h(
+
+pridat normalizacni faktor
+
+4.14 pridat normalizacni faktor
+
+5.6 tecka za nulou
+
+5.1.2 male S
+
+
+posuneme se od jedne kamery k modelovani vice dronu a kamer zaroven a 
+
+sensitivita je schopnost celeho systemu
+
+cones chodi vlastsni zptavoui
+All the UAVs send its current position and
+future position in 2 s as a custom ROS message (with frequency 2 Hz), together with all newly
+measured Compton cones
+5.1 assignment m9sto clustering
+5.2
+5.5 vsude nedavat clustering
+
+obrazek 5.2 (a) detected local maxima of MLEM
+estimated map
+
+5.8 A* planner
+
+6.2.2 recalculated misto updated
+
+rescaled to 01 range
+
+
+experimenty
+misto conclusion dat results discussion
+summary
+
+
+rozepsat jak probihala ta simulace
+rozepsat proc neslo sehnat zdroje
+
+
+limitace metody - dva to relativni informaci, nikoliv absolutni
+
+zaver
+dopsat nejake limitace 
+a vysledky prace
+limity metody
+
+- estimace je jenom relativni
+- ma velkej problem se slabejma zdrojema
+- mereni je malo
+- systme nedela globalni planovani
+- je tam malo dat
+- exploration explotation se neresi
+- potencialne nemusi fungovat pro hodne silne zdroje
+- neni mozne stanovit hranici pro detekci
+- nejde rict ze to neco naslo (v zadnem okamziku urcit, ze tohle je opravdu ono)
+- neumi to resit pohyblive zdroje
+- neumi to resit 3D zdroje
+- poradny prozkoumani vsech parametru
+- simulace trva dlouho a potreboval bych jich hodne, to jsem nezvladl v ramci prace
+
+sila UAV je v tom, ze urci potencialni mista a tam nekdo prijde a zmeri si to
+
+future work
+
+
+
+
+jake zdroje stoji za to detekovat?
+

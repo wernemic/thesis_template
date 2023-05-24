@@ -86,7 +86,7 @@ The goal of \ac{MLE} is to find the parameter values that make the observed data
 This is done by calculating the likelihood function, which is the probability of the observed data given a set of parameter values.
 The likelihood is defined as 
 \begin{equation}
-  \mathcal{L}(\boldsymbol{O}| \Phi) = p(\ \mathrm{observing\ measurements} \  \boldsymbol{O} \ \mathrm{given\ parameters\ } \Phi ).
+  \mathcal{L}(\boldsymbol{O}| \Phi) = P( \mathrm{observing\ measurements} \  \boldsymbol{O} \ \mathrm{given\ parameters\ } \Phi ).
   \label{eq:likelihood}
 \end{equation}
 We want to maximize this expression with respect to the hidden parameters.
@@ -97,7 +97,7 @@ Let us divide the area of possible sources of radiation into $J$ discrete bins (
 %Each discrete bin is often represented by its centre position.
 Suppose the binned data space of all measured events is $\mathbf{I}$, divided in $I$ discrete bins indexed with $i$, $i = 1 \dotsc I$.
 The unobservable data space of all not measured events is denoted $\mathbf{\hat{I}}$.
-Let us define the vector of measurements $\mathbf{Y}$ with elements $y_{i}$ ($i \in \{1, \dots I\}$)representing the number of particles detected in the corresponding bin $i$.
+Let us define the vector of measurements $\mathbf{Y}$ with elements $y_{i}$ ($i \in \{1, \dots I\}$) representing the number of particles detected in the corresponding bin $i$.
 Let us define matrix $\mathbf{T}$ ($\mathbf{T} \in \mathbb{R}^{I \times J}$), where each position in the matrix is defined as
 \begin{equation}
   t_{ij} =  P(\textrm{detected in } i | \textrm{emitted from } j).

@@ -96,7 +96,7 @@ In decentralized system, each robot operates independently, making decisions bas
 \end{figure}
 
 The centralized multirobot architecture is used in this project.
-The visualization of the system can be seen in figure \ref{fig:pipeline}.
+The visualization of the system can be seen in  \autoref{fig:pipeline}.
 The \ac{UAV}s are communicating via wireless \ac{Wifi} network.
 The amount of information shareable via such network is limited.
 Therefore all the \ac{MLEM} computations and running on a ground station and the \ac{UAV}s and ground station share the minimal amount of information possible.
@@ -128,7 +128,7 @@ std_msgs/String status
 
 \section{Search and planning strategy description}
 The central node responsible for search and planning strategy is composed of multiple parts.
-The main steps are depicted in figure \ref{fig:sysarch}.
+The main steps are depicted in  \autoref{fig:sysarch}.
 
 % FIGURES STEPS of PIPELINE
 \begin{figure}[!htb]% %%{
@@ -163,12 +163,12 @@ The main steps are depicted in figure \ref{fig:sysarch}.
   \label{fig:pipeline}
 \end{figure}% %%}
 
-In the beginning, the exploitation waypoints are generated from the current \ac{MLEM} estimate (figure \ref{fig:pip1}).
-Each waypoint is assigned a weight and only subset of waypoints with highest weights are processed to the next step (figure \ref{fig:pip2}).
-The waypoints are assigned to the \ac{UAV}s using clustering method (figure \ref{fig:pip3}).
-The recently visited exploitation waypoints are removed in the next step (figure \ref{fig:pip4}).
-All points are connected into an optimal sequence (starting at the future position of the drone) using TSP (figure \ref{fig:pip5}).
-Finally, non-colliding paths are planned for all \ac{UAV}s (figure \ref{fig:pip6}).
+In the beginning, the exploitation waypoints are generated from the current \ac{MLEM} estimate ( \autoref{fig:pip1}).
+Each waypoint is assigned a weight and only subset of waypoints with highest weights are processed to the next step ( \autoref{fig:pip2}).
+The waypoints are assigned to the \ac{UAV}s using clustering method ( \autoref{fig:pip3}).
+The recently visited exploitation waypoints are removed in the next step ( \autoref{fig:pip4}).
+All points are connected into an optimal sequence (starting at the future position of the drone) using TSP ( \autoref{fig:pip5}).
+Finally, non-colliding paths are planned for all \ac{UAV}s ( \autoref{fig:pip6}).
 The more detailed description of each individual step follows in the next sections.
 
 
@@ -210,9 +210,9 @@ The current estimate of ionizing radiation sources positions serves as an input 
 The map estimated by the \ac{MLEM} method is processed and local maxima of the map are detected.
 Local maximum is a cell in the discretized map that has the highest value among all cells in its neighborhood. 
 The size of the sliding window determining the neighborhood of each cell is a parameter that can be set.
-The local maxima filter is illustrated in figure \ref{fig:filter}.
+The local maxima filter is illustrated in  \autoref{fig:filter}.
 
-%figure filter%%{
+% filter%%{
 \begin{figure}[!htb]
   \centering
   \subfloat[\centering input of the filter] {
@@ -245,12 +245,12 @@ The aim of filtering step is to remove the local maxima that were caused by nois
 
 \subsection{Exploration}
 The task is to explore the map positions that have low sensitivity values (the probability that particle emitted from such position to be detected is low).
-The process of generating waypoints for exploration is illustrated in figure \ref{fig:downsampling}.
+The process of generating waypoints for exploration is illustrated in  \autoref{fig:downsampling}.
 The sensitivity vector $\mathbf{S}$ is downsampled by a mean filter with the stride equal to the filter window size.
 The positions in the downsampled map are then sorted based on the mean sensitivity value.
-Arbitrary percentage $p$ of the map poses with lowest sensitivity values is taken and exploration waypoints are generated in the centers of such downsampled map positions, as shown in figure \ref{fig:down3} for $p = 25\%$.
+Arbitrary percentage $p$ of the map poses with lowest sensitivity values is taken and exploration waypoints are generated in the centers of such downsampled map positions, as shown in  \autoref{fig:down3} for $p = 25\%$.
 
-%figure downsampling%%{
+% downsampling%%{
 \begin{figure}[!htb]
   \centering
   \subfloat[\centering input vector $\mathbf{S}$ in 2D] {
@@ -314,7 +314,7 @@ The following assumption is made:
 to acquire more measurements from different sides and localize the sources more precisely, it is better to keep the \ac{UAV}s in motion rather then statically hover at certain position for longer time.
 No waypoint should be left unexplored for longer time.
 Therefore are prioritized the waypoints that were not recently explored by any of the \ac{UAV}s (meaning that no \ac{UAV} was in a close proximity of the sensor in past seconds).
-For that purpose, we define short-term sensitivity vector $\mathbf{\hat{S}}$, which is independent of the sensitivity vector $\mathbf{S}$ defined in equation \ref{eq:sen_iter}, 
+For that purpose, we define short-term sensitivity vector $\mathbf{\hat{S}}$, which is independent of the sensitivity vector $\mathbf{S}$ defined in equation \autoref{eq:sen_iter}, 
 although it is computed analogically.
 
 Same as before, the matrix $\mathbf{\hat{S}}^{[n = 0]}$ is initialized with zeros.
@@ -324,7 +324,7 @@ The short-term sensitivity matrix $\mathbf{\hat{S}}^{[n+1]}$ with elements $\hat
   \hat{s}_{j}^{[n+1]} = \alpha \hat{s}_{j}^{[n]} + \sum_{v \in V^{[n:n+1]}} s_{jv} \Delta_{v}. 
   \label{eq:sen_iter_shortterm}
 \end{equation}
-We may notice that the only difference between short-term sensitivity equation \ref{eq:sen_iter_shortterm} and sensitivity equation \ref{eq:sen_iter} is the scaling parameter $\alpha \in [0, 1)$.
+We may notice that the only difference between short-term sensitivity equation \autoref{eq:sen_iter_shortterm} and sensitivity equation \autoref{eq:sen_iter} is the scaling parameter $\alpha \in [0, 1)$.
 The forgetting factor $\alpha$ scales past $\hat{s}_{j}$ values with some non-negative $<1$ number, making newly sampled and processed viewpoints more important.
 The $\alpha$ is a custom parameter to be set, the default value is $\alpha = 0.95$ (assuming the short-term sensitivity is updated every $2$ seconds).% %%}
 
@@ -395,7 +395,7 @@ The resulting modified distance matrix is
 \end{pmatrix}
 \end{equation}
 
-The picture \ref{fig:tsp} illustrates the situation for 3 waypoints.
+The picture \autoref{fig:tsp} illustrates the situation for 3 waypoints.
 The weights of the edges are painted in color.
 The back color represents the euklidean dstance between the point.
 The blue color represent edges whose value is set to $0$.
@@ -419,7 +419,7 @@ Once the sequence of waypoints for each \ac{UAV} is determined, the last step is
 The paths should be collision-free, the minimal distance between each pair of \ac{UAV}s should be at least $\SI{4}\meter$).
 The planning method is based on astar planner implemented in the mrs uav system \cite{mrs_system}.
 Each \ac{UAV} is assigned a certain priority.
-The planning method is described in algorithm \ref{alg:planning}.
+The planning method is described in algorithm \autoref{alg:planning}.
 The paths are planned sequentially for each drone based on its priority.
 Once a path for a drone is generated, the inflated (by the safety distance radius $r = \SI{4}\meter$) points of the path are considered as obstacles for all drones with the lower priority.
 If any of the waypoints is not reachable (for example some drone with higher priority planned path in close distance to it), the waypoint is skipped.

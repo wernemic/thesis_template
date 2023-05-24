@@ -300,7 +300,7 @@ For arbitrary query ($\theta, \phi$), the lookup table finds the closest key pai
 %\end{algorithm}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% %%}
 \newpage
-\subsection{sensitivity of detection for robotic radiation mapping}% %%{
+\subsection{Sensitivity computation}% %%{
 The sensitivity of detection by the sensor placed at sampled position $v$ for map position $j$ is computed as:
 \begin{equation}
   s_{jv} = \underset{(1-p_{air})}{\underbrace{e^{-(\mu d_{jv})} }} \underset{(p_{solid\ angle})\\(p_{compton})\\(p_{absorption})} {\underbrace{\frac{\mathrm{lookup\_table}(\phi_{jv}, \theta_{jv})}{d^{2}_{jv}}}},  
@@ -405,7 +405,7 @@ the Compton camera detector is approximated as a single point with position and 
 However, the probability of detecting the Compton effect produced by particles incoming from some direction is not uniform for all directions (given the non-uniform shape of the sensor).
 The lookup table from the previous section (representing the chance that a particle incoming from a specific direction cause any detectable Compton effect, not just the one measured in $i$) is used to approximate the direction sensitivity of the detector.
 
-\subsection{System matrix for robotic radiation mapping}
+\subsection{System matrix computation}
 The elements $t_{ij}$ of system matrix $\mathbf{T}$ are computed as:
 \begin{equation}
   t_{ij} = \underset{(1-p_{air})}{\underbrace{e^{-(\mu d_{jv_{i}})}}}\ 
@@ -444,10 +444,10 @@ The influence of noise in energy measurement (Compton angle $\beta$) is modelled
   h(\delta_{ij}|\sigma) = e^{-\frac{1}{2}(\frac{\delta_{ij}}{\sigma})^{2}}.
   \label{eq:gau}
 \end{equation}
-If the angle difference is large ($\delta_{ij}<3\sigma$), then $h(\delta_{ij}|\sigma) = 0$.
+If the angle difference is large ($\delta_{ij}<3\sigma$), then we set $h(\delta_{ij}|\sigma) = 0$.
 The important question is how to set the parameter $\sigma$, that is influencing the width of the function \ref{eq:gau}.
 The datasheet\footnote{Available at: https://advacam.com/camera/minipix-tpx3}
-states that the energy resolution of used TIimepix3 pixel detector is $4.5--9.9\ \mathrm{kEV}$. 
+states that the energy resolution of used Timepix3 pixel detector is $4.5$--$9.9\ \mathrm{kEV}$. 
 The dependence of angular uncertainties on the energy resolution of two-layer Compton cameras was studied in \cite{ordonez}.
 The measurement of the energies is not the only source of noise in the detection pipeline.
 The $h(\delta_{ij}|\sigma)$ function should disperse the conical back-projections in order to tackle other inaccuracies, such as noise in the sensor's position or wrongly estimated axis of the Compton cone. 
