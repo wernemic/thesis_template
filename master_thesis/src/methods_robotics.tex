@@ -1,19 +1,21 @@
 %!TEX root = ../main.tex
 
 \chapter{Multirobot search strategy\label{chap:methods_robotics}}
-
-\alertsuccess{Somehow ok}
-This chapter presents a multirobot search strategy for a group of \ac{UAV}s equipped with Compton camera for online estimation of sources of ionizing radiation, which is based on the \ac{MLEM} method described in the previous chapter.
-First part describes the objectives and requirements for such method.
-The whole system is described in the next section, as well as individual components of the system.
-\section{Objectives}
+This chapter presents a multirobot search strategy for a group of \ac{UAV}s equipped with the Compton camera for online estimation of sources of ionizing radiation, 
+which is based on the \ac{MLEM} method described in the previous chapter.
+The search method takes a) the current \ac{MLEM} estimate of radiation intensity and b) the sensitivity of detection of the whole multi-robot system and compute future actions of the \ac{UAV}s.
+We assume that the search mission is performed in open area without obstacles.
+Objectives and requirements for the proposed search method and as well as its individual parts are presented in this chapter.
+%Section \ref{sec:obj} describes the objectives and requirements for such method.
+%The whole system is described in the next section, as well as individual components of the system.
+\section{Objectives\label{sec:obj}}
 %The \ac{MLEM} method proposed in the previous chapter provides the maximum likelihood estimate of the measured data.
 %When the number of detected Compton events is low, the maximum likelihood estimation method might suffer of inaccurate 
 
 \subsection{Measure as much data as possible}
 As stated before, the emission of $\gamma$ particles as well as the detection of Compton events are stochastic processes.
 The intensity of radioactive emission follows the inverse square law, which means that it decreases as the distance from the source increases.
-Due to the small size of the detector, large distances between \ac{UAV}s and sources of ionizing radiation, and the fact that only $2\%$ of $\gamma$ particles reaching the detector are detected by the Compton camera (on average), the number of detected events is limited.
+Due to the small size of the detector, large distances between \ac{UAV}s and sources of ionizing radiation, and the fact that only $\approx 2\%$ of $\gamma$ particles reaching the detector are detected by the Compton camera (on average), the number of detected events is limited.
 The accuracy of the \ac{MLE} method depends on the number of detected Compton events.
 If the number of detected cones is low, the \ac{MLE} method might converge to false detections since the particle could originate from any position on the surface of the Compton cone.
 To accurately localize the sources of ionizing radiation, the \ac{UAV}s should collect as many measurements as possible.
@@ -31,12 +33,17 @@ It is also desired that the drones stay in motion (instead of hovering above the
 }% %%}
 
 \subsection{Search for unobserved sources of ionizing radiation}
-The sensitivity vector $\mathbf{S}$ described in the previous chapter provides information about coverage of each discrete point $j$ in the area of interest.
+The sensitivity vector $\mathbf{s}$ described in the previous chapter specifies the probability that a particle emitted at certain position is detected.
+The sensitivity of detection can be therefore seen as
+\begin{equation}
+  s_{j} = P(\mathrm{detected\ by\ the\ UAV\ system} | \mathrm{emitted\ from} \ j),
+\end{equation}
+which can be interpreted as a coverage of the area of interest, specifying how much has been point $j$ explored.
 The autonomous \ac{UAV}s should control their motion in the way that the whole area is covered.
 In another words, the minimum value of sensitivity $\mathrm{min}(s_{j})$ among all positions in the search space should be as high as possible to increase the chance of observing sources that were not yet detected.
 
 \subsection{Active search strategy}
-There are two general strategies how an area of interest can be explored by a group of autonomous \ac{UAV}s in order to measure data and estimate sources of ionizing radiation - offline and online.
+Two general strategies for exploring an area of interest by a group of autonomous \ac{UAV}s and for measuring data and estimating sources of ionizing radiation are considered --- offline and online.
 In offline search, the \ac{UAV}s typically follow predefined paths and collect measurements, that are processed all at once after the flight. 
 In online search, the estimation process is performed online and the \ac{UAV}s may react accordingly to the current output of the radiation mapping method.
 Incorporating the output of the mapping method into the feedback control loop 
@@ -68,13 +75,13 @@ Neco o tom yze i negativni mereni jsou dulezity
 
 \section{System design description}
 \subsection{Task specification}
-The proposed search strategy is based on the objectives described above - the group of \ac{UAV}s should autonomously explore the area of interest with no previous knowledge about number, activity or position of sources of ionizing radiation and localize such sources as fast as possible.
+The proposed search strategy is based on the objectives described above --- the group of \ac{UAV}s should autonomously explore the area of interest with no previous knowledge about number, activity or position of sources of ionizing radiation and localize such sources as fast as possible.
 The operation of the \ac{UAV}s is divided into two main tasks:
 \begin{itemize}
-  \item \textbf{exploration} - the drones should explore the area of interest and increase the chance that none of the sources of $\gamma$ particles would be unobserved,
-  \item \textbf{exploitation} - the drones should exploit positions where \ac{MLEM} mapping method estimated some emission activity to either confirm the hypothesis and collect more measurements or disprove it (=increase accuracy of the estimation).
+  \item \textbf{exploration}: the drones should explore the area of interest and increase the chance that none of the sources of $\gamma$ particles would be unobserved,
+  \item \textbf{exploitation}: the drones should exploit positions where \ac{MLEM} mapping method estimated some emission activity to either confirm the hypothesis and collect more measurements or disprove it (in general, increase accuracy of the estimation).
 \end{itemize}
-
+The exploration-exploitation dilemma is solved by dedicating each \ac{UAV} to either exploration of exploitation task.
 %\subsection{Assumptions}
 %It is assumed that 
 %a) a communication via wireless network is provided, 
@@ -88,47 +95,46 @@ This centralized system can provide global information to each robot, enabling t
 %On the other hand, it is vulnerable to single points of failure and it requires reliable communication between each agent and the central unit.
 In decentralized system, each robot operates independently, making decisions based on local information and communication with other robots in the network. 
 
+
+The centralized multirobot architecture is used in this project.
+The visualization of the system architecture is presented in \autoref{fig:sysarch}.
+The \ac{UAV}s are communicating via wireless \textbf{Wifi} network.
+The amount of information shareable via such network is limited.
+Therefore all the \ac{MLEM} computations and running on a ground station and the \ac{UAV}s and ground station share the minimal amount of information possible.
+All the \ac{UAV}s send its current position and future position as a custom \ac{ROS} message (with frequency $\SI{5}\hertz$) and newly detected Compton cones.
+The ground station processes the measurements and command the \ac{UAV}s by sending non-colliding path for each of them via the wireless network.
+The centralized approach have several advantages in this scenario:
+the \ac{MLEM} estimate is computed at once, not requiring to share or merge the map with other \ac{UAV}s via the wireless network or run the estimation onboard each drone separately.
+The centralized task allocation and path planning is much more straightforward compared to the decentralized approach, where the agents would need to negotiate between each other.
 \begin{figure}[!htb]
     \centering
-    \includegraphics[width=0.99\textwidth]{./fig/photos/system_new.eps}
-    \caption{\centering The system architecture diagram. The search and planning method is composed of \ac{MLEM} radiation mapping node, waypoint generation, clustering, waypoint filtering, optimal sequence deduction using TSP and path planning. The exploration (green) and exploitation (yellow) waypoints are processed separately.}
+    \includegraphics[width=0.99\textwidth]{./fig/photos/sysarch_new.eps}
+    \caption{\centering The system architecture diagram. The search and planning method is composed of \ac{MLEM} radiation mapping node, waypoint generation, task assignment, waypoint filtering, optimal sequence deduction using \ac{TSP} and path planning. The exploration (green) and exploitation (yellow) waypoints are processed separately.}
     \label{fig:sysarch}
 \end{figure}
 
-The centralized multirobot architecture is used in this project.
-The visualization of the system can be seen in  \autoref{fig:pipeline}.
-The \ac{UAV}s are communicating via wireless \ac{Wifi} network.
-The amount of information shareable via such network is limited.
-Therefore all the \ac{MLEM} computations and running on a ground station and the \ac{UAV}s and ground station share the minimal amount of information possible.
-All the \ac{UAV}s send its current position and future position in $\SI{2}\second$ as a custom \ac{ROS} message (with frequency $\SI{2}\hertz$), 
-together with all newly measured Compton cones.
-The ground station processes the measurements and command the \ac{UAV}s by sending non-colliding path for each of them via the wireless network.
-The centralized approach have several advantages in this scenario:
-The \ac{MLEM} estimate is computed at once, not requiring to share or merge the map with other \ac{UAV}s via the wireless network or run the estimation onboard each drone separately.
-The centralized task allocation and path planning is much more straightforward compared to the decentralized approach, where the agents would need to negotiate between each other..
-This design choice of course have some disadvantages as well.
-The centralized system is vulnerable to single point of failure and the communication between the ground station and all \ac{UAV}s must provided. 
-
-\subsection{Custom data message}
-A custom \ac{ROS} message was developed to transfer necessary data from \ac{UAV} to the ground station.
-The message consists of the \ac{ROS} header containing the coordinate frame (all drones share the same coordinate system given their gps origin),
-timestamp specifying the time when it was created,
-pose of the drone and its Compton camera 
-and predicted point representing the future position of the \ac{UAV} in time horizon of $2$ seconds (which is generated by the \verb|mpc tracker| that is part of the mrs uav system \cite{mrs_system}).
-The structure of the message is shown here:
-
-\begin{lstlisting}[caption={DroneDataMsg.msg (caption)}, title={Custom message for data sharing between \ac{UAV} and central unit.}, label={code1}]
-Header header
-geometry_msgs/Pose pose
-geometry_msgs/Pose sensor_pose
-geometry_msgs/PointStamped predicted_point
-std_msgs/String status
-\end{lstlisting}
-
-
 \section{Search and planning strategy description}
-The central node responsible for search and planning strategy is composed of multiple parts.
-The main steps are depicted in  \autoref{fig:sysarch}.
+%The system pipeline is composed of multiple components, as illustrated in \autoref{fig:sysarch}.
+The central method responsible for search and planning strategy is composed of multiple components: 
+\textbf{MLEM mapping}, \textbf{waypoints generation}, \textbf{task assignment}, \textbf{waypoint filtering}, optimal sequence of waypoints deduction using \textbf{\acf{TSP}} and \textbf{path planning}.
+Each step of the system design is visualized in \autoref{fig:pipeline}.
+
+The MLEM mapping node produces the current estimate of source intensities $\bm{\lambda}$ and current estimate of sensitivity $\mathbf{s}$, 
+which are taken as input of the waypoint generation node (\ref{fig:pip1}).
+The waypoint generation node assigns weights to the waypoints (\ref{fig:pip2}).
+The filtered waypoints are then assigned to individual \ac{UAV}s (\ref{fig:pip3}).
+To avoid revisiting the same point multiple times while ignoring others, the recently visited waypoints are filtered out in the next step (\ref{fig:pip4}).
+All points assigned to one \ac{UAV} are connected into an optimal sequence (starting at the future position of the drone) using \ac{TSP} (\ref{fig:pip5}).
+Finally, non-colliding paths are planned for all \ac{UAV}s (\ref{fig:pip6}).
+The more detailed description of each individual step follows in the next sections.
+%This design choice of course have some disadvantages as well.
+%The centralized system is vulnerable to single point of failure and the communication between the ground station and all \ac{UAV}s must provided. 
+
+
+
+
+
+
 
 % FIGURES STEPS of PIPELINE
 \begin{figure}[!htb]% %%{
@@ -142,7 +148,7 @@ The main steps are depicted in  \autoref{fig:sysarch}.
     \includegraphics[width=0.3\textwidth]{./fig/photos/pip2.eps}
     \label{fig:pip2}
   }
-  \subfloat[\centering \textbf{clustering} - assigning waypoints to \ac{UAV}s] {
+  \subfloat[\centering \textbf{task assignment} - assigning waypoints to \ac{UAV}s] {
     \includegraphics[width=0.3\textwidth]{./fig/photos/pip3.eps}
     \label{fig:pip3}
   }
@@ -159,17 +165,17 @@ The main steps are depicted in  \autoref{fig:sysarch}.
     \includegraphics[width=0.3\textwidth]{./fig/photos/pip6.eps}
     \label{fig:pip6}
   }
-  \caption{Individual steps of the system architecture.}
+  \caption{Individual steps of the system architecture. Waypoints are generated based on the current \ac{MLEM} estimate \protect\subref{fig:pip1}.
+  The weighted and filtered waypoints \protect\subref{fig:pip2} are then assigned to individual \ac{UAV}s \protect\subref{fig:pip3}.
+  The system prioritizes waypoints that were not recently visited \protect\subref{fig:pip4}.
+  Finally, an optimal sequence of waypoints for each \ac{UAV} is determined using \ac{TSP} \protect\subref{fig:pip5} and the sequence of waypoints is passed to the planning node, that finds non-colliding paths for all \ac{UAV}s \protect\subref{fig:pip6}.}
   \label{fig:pipeline}
 \end{figure}% %%}
 
-In the beginning, the exploitation waypoints are generated from the current \ac{MLEM} estimate ( \autoref{fig:pip1}).
-Each waypoint is assigned a weight and only subset of waypoints with highest weights are processed to the next step ( \autoref{fig:pip2}).
-The waypoints are assigned to the \ac{UAV}s using clustering method ( \autoref{fig:pip3}).
-The recently visited exploitation waypoints are removed in the next step ( \autoref{fig:pip4}).
-All points are connected into an optimal sequence (starting at the future position of the drone) using TSP ( \autoref{fig:pip5}).
-Finally, non-colliding paths are planned for all \ac{UAV}s ( \autoref{fig:pip6}).
-The more detailed description of each individual step follows in the next sections.
+%In the beginning, the exploitation waypoints are generated from the current \ac{MLEM} estimate ( \autoref{fig:pip1}).
+%Each waypoint is assigned a weight and only subset of waypoints with highest weights are processed to the next step ( \autoref{fig:pip2}).
+%The waypoints are assigned to the \ac{UAV}s using clustering method ( \autoref{fig:pip3}).
+%The recently visited exploitation waypoints are removed in the next step ( \autoref{fig:pip4}).
 
 
 \mycomment{% %%{
@@ -194,7 +200,7 @@ The more detailed description of each individual step follows in the next sectio
 %\end{itemize}
 }% %%}
 
-
+\newpage
 
 
 
@@ -314,7 +320,7 @@ The following assumption is made:
 to acquire more measurements from different sides and localize the sources more precisely, it is better to keep the \ac{UAV}s in motion rather then statically hover at certain position for longer time.
 No waypoint should be left unexplored for longer time.
 Therefore are prioritized the waypoints that were not recently explored by any of the \ac{UAV}s (meaning that no \ac{UAV} was in a close proximity of the sensor in past seconds).
-For that purpose, we define short-term sensitivity vector $\mathbf{\hat{S}}$, which is independent of the sensitivity vector $\mathbf{S}$ defined in equation \autoref{eq:sen_iter}, 
+For that purpose, we define short-term sensitivity vector $\mathbf{\hat{S}}$, which is independent of the sensitivity vector $\mathbf{S}$ defined in equation \ref{eq:sen_iter}, 
 although it is computed analogically.
 
 Same as before, the matrix $\mathbf{\hat{S}}^{[n = 0]}$ is initialized with zeros.
@@ -324,7 +330,7 @@ The short-term sensitivity matrix $\mathbf{\hat{S}}^{[n+1]}$ with elements $\hat
   \hat{s}_{j}^{[n+1]} = \alpha \hat{s}_{j}^{[n]} + \sum_{v \in V^{[n:n+1]}} s_{jv} \Delta_{v}. 
   \label{eq:sen_iter_shortterm}
 \end{equation}
-We may notice that the only difference between short-term sensitivity equation \autoref{eq:sen_iter_shortterm} and sensitivity equation \autoref{eq:sen_iter} is the scaling parameter $\alpha \in [0, 1)$.
+We may notice that the only difference between short-term sensitivity equation \ref{eq:sen_iter_shortterm} and sensitivity equation \ref{eq:sen_iter} is the scaling parameter $\alpha \in [0, 1)$.
 The forgetting factor $\alpha$ scales past $\hat{s}_{j}$ values with some non-negative $<1$ number, making newly sampled and processed viewpoints more important.
 The $\alpha$ is a custom parameter to be set, the default value is $\alpha = 0.95$ (assuming the short-term sensitivity is updated every $2$ seconds).% %%}
 
@@ -463,6 +469,21 @@ The path is then smoothed by the mrs uav system \cite{mrs_system} onboard the dr
   \end{algorithm}% %%}
 
 
+\subsection{Custom data message}
+A custom \ac{ROS} message was developed to transfer necessary data from \ac{UAV} to the ground station.
+The message consists of the \ac{ROS} header containing the coordinate frame (all drones share the same coordinate system given their gps origin),
+timestamp specifying the time when it was created,
+pose of the drone and its Compton camera 
+and predicted point representing the future position of the \ac{UAV} in time horizon of $2$ seconds (which is generated by the \verb|mpc tracker| that is part of the mrs uav system \cite{mrs_system}).
+The structure of the message is shown here:
+
+\begin{lstlisting}[caption={DroneDataMsg.msg (caption)}, title={Custom message for data sharing between \ac{UAV} and central unit.}, label={code1}]
+Header header
+geometry_msgs/Pose pose
+geometry_msgs/Pose sensor_pose
+geometry_msgs/PointStamped predicted_point
+std_msgs/String status
+\end{lstlisting}
 
 
 \mycomment{% %%{

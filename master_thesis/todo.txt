@@ -7,7 +7,7 @@ přidat obrázek RVIZu z real=wrld experimentů
 natočit video a dát ho na web
 
 
-projít tomášovy opravy
+OK projít tomášovy opravy
 
 
 CONCLUSIONS
@@ -18,12 +18,14 @@ opravit obrázek TSP
 připsat něco o TSP
 i
 
-backprojection image
+OK backprojection image
 
-p5ipsat zigzag n2kam
+OK p5ipsat zigzag n2kam
 
 
-
+TODO pozdeji 
+XXXX vysvetlit dva kuzele
+predelat obrazek 4.7
 
 
 ZDROJE
@@ -67,8 +69,6 @@ vyndat list mode z ostatnich kapitol
 aby algorithm of choice znel spis jako komentar, ne jako motivace
 Firstly, the maximum likelihood approach allows us to DEAL with
 
-
-
 data space a zm2na definic
 
 zduraznit ze T a S se meni v case a proc
@@ -88,12 +88,6 @@ i nedavat full u rovnice 4.6 a nechat to jenom jako tuple
 rovnice 4.10 nedavat i = 
 
 
-4.12
-then we set h(
-
-pridat normalizacni faktor
-
-4.14 pridat normalizacni faktor
 
 5.6 tecka za nulou
 

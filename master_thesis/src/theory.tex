@@ -34,7 +34,7 @@ The intensity of radiation is inversely proportional to the square distance from
   intensity \approx \frac{1}{distance^2}.
 \end{equation}
 For example, doubling the distance to the source means that the intensity decreases to $\frac{1}{4}$.
-As illustrated in figure \ref{fig:islaw}, this principle comes from the fact that the radiation spreads out over a larger area when the observer is further away from the source.
+As illustrated in \autoref{fig:islaw}, this principle comes from the fact that the radiation spreads out over a larger area when the observer is further away from the source.
 This rapid decrease makes the search for sources of ionizing radiation challenging since it limits the sensing range of the sensors.
 
   \begin{figure}[!h]
@@ -94,7 +94,7 @@ Several interactions might occur when a high energetic photon travels through ma
 %epending on the energy of the incoming photon as well as on the properties of material.
 %Three main types of interactions are: a photoelectric effect, Compton scattering and pair production.
 The three primary types of interactions include the photoelectric effect, Compton scattering, and electron-positron pair production.
-Figure \ref{fig:dominant} describes the dominant type of interactions depending on the energy of the incoming photon and the atomic number of the material.
+\autoref{fig:dominant} describes the dominant type of interactions depending on the energy of the incoming photon and the atomic number of the material.
 
 \subsection{Photoelectric effect and pair production}
 In \ac{PE}, alternatively referred to as photoelectric absorption, the $\gamma$ photon interacts with an orbital electron of the absorbing atom.
@@ -117,7 +117,7 @@ In this process, the $\gamma$ photon interacts with an electron that is loosely 
 The photon (with its initial energy $E_{0}$) transfers a portion of its energy to the electron.
 As a result of the interaction, the lower energetic photon with energy $E_{2}$ is scattered and emitted in a direction changed by angle $\beta$. 
 The energy difference $E_{1} = E_{0} - E_{2}$ is transferred to a by-product of the interaction --- an electron.
-The situation is illustrated in figure \ref{fig:scattering}.
+The situation is illustrated in \autoref{fig:scattering}.
 According to Compton \cite{compton}, the relation of particle energies and scattering angle $\beta$ can be expressed as:
 \begin{equation}
 E_{2} = \frac{E_{0}}{  1 + (E_{0} / m_{e}c^{2}) (1 - \mathrm{cos} \beta)},
@@ -151,7 +151,7 @@ As a result of the interaction, a lower energetic photon with energy $E_{2}$ is 
 The scattered photon then interacts in the form of \ac{PE} with the absorber.
 The absorbed energy $E_{2}$ and the position of the interaction $X_{2}$ are measured and recorded.
 
-The scattering angle $\beta$ can be reconstructed (following \cite{baca2021gamma}) from equation \ref{eq:compton_energies} as:
+The scattering angle $\beta$ can be reconstructed (following \cite{baca2021gamma}) from equation \autoref{eq:compton_energies} as:
 \begin{equation}
   %\beta = \mathrm{arccos} \left (  1-\frac{m_{e}c^{2}E_{2}}{E_{0} (E_{0} - E_{2})} \right )
   \beta = \mathrm{cos}^{-1} 
@@ -163,7 +163,7 @@ The scattering angle $\beta$ can be reconstructed (following \cite{baca2021gamma
 assuming that $0<B<1$.
 Since Compton scattering is a symmetrical phenomenon,  the set of possible directions of incoming particles forms a surface of a cone.
 Such conical surface (denoted as Compton cone) is parametrized by the cone axis $\mathbf{a}$ (which is a straight line connecting the positions of intersections $X_{1}$ and $X_{2}$), Compton scattering angle $\beta$ and origin of the cone $X_{1}$.
-The geometry is illustrated in figure \ref{fig:compton_camera_geometry}.
+The geometry is illustrated in \autoref{fig:compton_camera_geometry}.
 
 \begin{figure}[!h]
   \centering
@@ -188,8 +188,8 @@ The resolution of pixel detector is $256 \times 256\ \mathrm{px}$, each pixel be
 The pixel detector can estimate the energy of the absorbed particle and record the time when it was taken with high resolution.
 Given the measured times of arrival, the coinciding products of Compton scattering might be paired together (assuming that both Compton scattering as well as follow-up photon absorption happened at the same time).
 
-Figure \ref{fig:minipix} depicts the geometry of the \ac{pix} sensor and the detection process.
-The x-axis and y-axis coordinates (see figure \ref{fig:minipix}) of the interaction are determined by the position of corresponding pixels.
+\autoref{fig:minipix} depicts the geometry of the \ac{pix} sensor and the detection process.
+The x-axis and y-axis coordinates (see \autoref{fig:minipix}) of the interaction are determined by the position of corresponding pixels.
 The z-axis coordinate (the depth of interaction in the \ac{CdTe} block) is unknown.
 However, the relative z-axis distance of the two coinciding events might be deduced from the times of arrival of the two interactions captured by the pixel detector (given the known speed of electrons in the \ac{CdTe} material).
 The absolute z-axis coordinate is not needed since the size of the \ac{CdTe} block is negligible in the context of the detection task.
@@ -262,7 +262,7 @@ More technical details related to the sensor operation are provided in \cite{bac
 
   }
   \label{fig:minipix_ilu}
-  \caption{The \ac{pix} sensor and its real size (\ref{fig:minipix_pen}) and the illustration of output from Timepix3 pixel detector (\ref{fig:timepix_image}).} 
+  \caption{The \ac{pix} sensor and its real size (\autoref{fig:minipix_pen}) and the illustration of output from Timepix3 pixel detector (\autoref{fig:timepix_image}).} 
 
 \end{figure}% %%}
 
@@ -395,7 +395,7 @@ The direction of incoming $\gamma$ photons might be deduced using the Compton ca
 
   Most of these sensors function by counting the number of particles detected, thus estimating the intensity of the particle flux at the sensor's location. 
   However, this does not provide information about the direction from which the particles are coming. 
-  Following \cite{baca2019timepix}, the direction of incoming particles can be deduced by different detector configurations illustrated in figure \ref{fig:sensor_overview}.
+  Following \cite{baca2019timepix}, the direction of incoming particles can be deduced by different detector configurations illustrated in \autoref{fig:sensor_overview}.
   \textbf{Pinhole camera aperture} (which is based on same principles as pinhole camera in classical optics) consists of a small hole in shielding material (e.g. lead), blocking all rays in other directions.
   This approach significantly reduces the field of view of the camera. 
   \textbf{Colimators} (frequently used in medical imaging) also restrict the set of possible directions.
@@ -517,7 +517,7 @@ The direction of incoming $\gamma$ photons might be deduced using the Compton ca
       %\label{eq:compton_beta_formula}
   \end{equation}
 
-  Given the measurements on the scatterer and absorber and computed scattering angle $\beta$ using the equation \ref{eq:theta} (using known energy of the incoming photon $E_{\lambda}$), we can reconstruct a set of possible directions from where the original photon arrived. Since the Compton effect is symmetrical, the set of possible directions towards the source of ionizing radiation forms a surface of a cone.
+  Given the measurements on the scatterer and absorber and computed scattering angle $\beta$ using the equation \autoref{eq:theta} (using known energy of the incoming photon $E_{\lambda}$), we can reconstruct a set of possible directions from where the original photon arrived. Since the Compton effect is symmetrical, the set of possible directions towards the source of ionizing radiation forms a surface of a cone.
 
 
 
