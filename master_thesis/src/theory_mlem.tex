@@ -3,7 +3,7 @@
 The 3D reconstruction of sources of ionizing radiation poses a challenging problem.
 The difficulty of this task lies in the fact that the detected $\gamma$ particle could originate anywhere on the surface of the reconstructed Compton cone.
 Several methods for Compton imagining have been investigated in the past.
-This chapter provides a brief overview of such methods and describes the theoretical background of the \ac{MLEM} method.
+This chapter provides a brief overview of such methods and describes the theoretical background of the \ac{MLEM} algorithm.
 
 \section{Compton imagining in nuclear medicine}
 The problem of reconstructing 3D positions of sources of ionizing radiation has been studied in depth in the field of medical imaging, where it is used as a non-invasive method for diagnostics.
@@ -49,7 +49,7 @@ On the other hand, the back-projection requires a significant number of data in 
 The iterative reconstruction methods approximate the positions of sources by iteratively adapting the reconstruction to the measured projections.
 Each iteration improves the current estimate based on the recorded measurements (the Compton cones), starting from some initial estimate or prior belief of sources distribution. 
 The iterative approach does not provide an exact and unique solution. On the other hand, it is more flexible, can handle noise in the measurements (if it is properly modelled) and is widely used in practice.
-The literature describes three main iterative reconstruction methods: \acf{MLEM}, \acf{MAP} and \acf{SOE}.
+The iterature \cite{frandes2016} describes three main iterative reconstruction methods: \acf{MLEM}, \acf{MAP} and \acf{SOE}.
 \ac{MLEM} \cite{MLEM_Shepp_1982}, \cite{MLEM_Lange_Carlson_1984}, \cite{MLEM_Wilderman_2000} is an iterative algorithm that is based on the maximum likelihood approach.
 Another approach called \ac{MAP} \cite{MLEM_Lange_Carlson_1984} is based on the Bayesian approach.
 It is an extension of \ac{MLEM} that allows to the incorporation of some prior knowledge about the source distribution or features of the data.

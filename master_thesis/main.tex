@@ -1,7 +1,7 @@
 % enable this to activate the version for PRINT
 % disable this to make the pdf symmetric and without white pages
 % => asymmetric alternating left/right margins
-\newcommand*{\printversion}{}%
+%\newcommand*{\printversion}{}%
 
 %% | ---------------- document meta information --------------- |
 
@@ -150,9 +150,14 @@
 
 %\chapter{Appendix A}
 \chapter{List of attachments}
+%The source codes for proposed radiation mapping method, active search strategy and Monte Carlo simulation are attached to the electronic version of this thesis in the KOS system.
+%The source codes of the proposed radiation mapping method, active search strategy and Monte Carlo simulation are attached to the electronic version of this thesis in the KOS system.
+The \verb|zip| file attached to the electronic version of this thesis in the KOS system contains source codes for proposed software methods organized into following subfolders:
 \begin{itemize}
-  \item TODO
-  \item TODO
-  \item TODO
+  \item \verb|mlem_radiation_mapping| --- \ac{ROS} node for mapping of ionizing radiation and planning future movement of the \acp{UAV}
+  \item \verb|monte_carlo| --- code for simulation of the properties of the \ac{pix} sensor
+  \item \verb|drone_data_sender| -- \ac{ROS} node for communication between the \acp{UAV} and the ground station
+  \item \verb|aster_multiplaner| --- \ac{ROS} node for non-collision path planning
+  \item and other helper functions.
 \end{itemize}
 \end{document}
