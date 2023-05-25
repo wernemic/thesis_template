@@ -37,11 +37,10 @@ However, we can conclude that the proposed method is suitable for the detection 
 
 Another limitation is that the output of the proposed \ac{MLEM} method does not provide any absolute information about the emission activity of the source.
 Although the optimized hidden parameters $\bm{\lambda}$ have meaning of expected emission rate, 
-it turned out that the number of measured Compton cones ($\approx 10^{2}-10^{3}$) during recorded real-world experiments was not sufficient to accurately model the absolute emission activity of the source
+it turned out that the number of measured Compton cones ($\approx 10^3$) during recorded real-world experiments was not sufficient to accurately model the absolute emission activity of the source
 and the output of the \ac{MLEM} method can serve only as information about the relative emission activity of the sources present in the area.
 Another problem is that the \ac{MLEM} method does not provide any bounds on the quality of the estimate, meaning that it is impossible to decide whether the current estimate is correct or not.
 Therefore the method can be used for fast and inaccurate detection of possible hot spots in unknown areas (and the estimated source location needs to be further verified by other types of sensors that can accurately estimate the activity of the detected source).
-
 
 Unlike the solution described in \cite{baca2021gamma} for single-source localization using \ac{LKF}, the proposed method can't localize the moving source of ionizing radiation.
 The solution proposed in \cite{baca2021gamma} based on \ac{LKF} is better suited for scenarios with single source and very low number of measurements ($\approx 10$).
