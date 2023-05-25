@@ -390,7 +390,7 @@ Unlike in sensitivity computation (where $s_{j}$ describes the probability that 
 
 
 \subsection{Inspiration from literature}
-The nuclear medicine literature provides multiple models for the system matrix, such as \cite{wilderman}. 
+The nuclear medicine literature provides multiple models for the system matrix, such as \cite{wilderman} or other models summarized in \cite{yuemeng_feng}. 
 However, the model is designed for two-layer Compton camera and for scenarios where the detector size is relatively large compared to the distance to the source. Therefore, the geometry of the Compton camera must be considered.
 Work presented in \cite{maxim2016} described a simplified model for the Compton camera, which size is negligible compared to the distance to the source of radiation (for two-layer Compton camera).
 The energy measurement uncertainties are approximated using Gaussian distribution.
@@ -423,7 +423,7 @@ The elements $t_{ij}$ of system matrix $\mathbf{T}$ are computed as:
 where:
 \begin{itemize}
  \item $d_{jv_{i}}$ is the Euclidean distance between the map position $j$ and sensor position $\mathbf{v}_{i}$, 
-\item $\mu \approx \SI{0.01}{\meter^{-1}} $ is the linear attenuation coefficient for $\SI{622}{\kilo\electronvolt}$ photons in air\item $K(\beta_{i}, E_{0})$ is the Klein-Nishina formula representing the probability of Compton scattering under estimated angle $\beta_{i}$ for an incoming particle with energy $E_{0}$,
+ \item $\mu \approx \SI{0.01}{\meter^{-1}} $ is the linear attenuation coefficient for $\SI{622}{\kilo\electronvolt}$ photons in air\item $K(\beta_{i}, E_{0})$ is the Klein-Nishina formula Compton scattering differential cross-section) representing the probability of Compton scattering under estimated angle $\beta_{i}$ for an incoming particle with energy $E_{0}$ \cite{yuemeng_feng},
 \item $h(\delta_{ij}|\sigma_{j})$ is a Gaussian function (the ``blurring factor'') representing the uncertainty in angle measurement,
 \item $\delta_{ij}$ is angle difference $|\beta_{i}-\beta_{j}|$, where $\beta_{j}$ is the angle between cone axis vector $\mathbf{a}_{i}$ and vector $|j-\mathbf{v}_{i}|$, 
 \item $\sigma$ is standard deviation and $\alpha$ is the minimal angle difference due to discretization noise,

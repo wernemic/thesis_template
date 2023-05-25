@@ -1,12 +1,14 @@
 %!TEX root = ../main.tex
 
 \chapter{Results\label{chap:results}}
-This chapter demonstrates the functionality of the proposed method for the localization of sources of ionizing radiation and its individual components.
+This chapter demonstrates the functionality of the proposed method\footnote{Videos from the experiments are available here: \url{http://mrs.felk.cvut.cz/theses/werner2023thesis}} for the localization of sources of ionizing radiation and its individual components.
 Unfortunately, it was not possible to test the proposed methods using real sources of ionizing radiation for organizational reasons, since the use of radioactive materials is strictly regulated and requires coordination with state authorities (National Institute for Nuclear, Chemical and Biological Protection) and manufacturer of the \ac{pix}.
 %That results in the fact that most of recorded data from real world experiments cant be used because the drones simply did not come close enough to other sources and 
 Another problem is the absence of methods for comparison, that would be a) available, b) capable of localization of multiple sources using the Compton camera measurements.
-Therefore we use the back-projection reconstruction method (described in Chapter \ref{chap:mlem_theory}) as the baseline method.
-This chapter presents results of the Monte Carlo simulation (Section \ref{chap:mcr}), performance of the system on recorded real-world data (Section \ref{chap:exp1}), in simulation (Section \ref{chap:exp2}) and in real-world experiments with simulated data (Section \ref{chap:exp3}). 
+Therefore we use the back-projection reconstruction method (described in Chapter \ref{chap:mlem_theory}) as a baseline.
+This chapter presents results of the Monte Carlo simulation (Section \ref{chap:mcr}), 
+performance of the system on recorded real-world data (Section \ref{chap:exp1}), 
+in simulation (Section \ref{chap:exp2}) and in real-world experiment with simulated data (Section \ref{chap:exp3}). 
 %The directional sensitivity of the \ac{pix} sensor, modelled via Monte Carlo simulation, is presented in \autoref{chap:mcr}.
 %The evaluation of the \ac{MLEM} estimation approach, carried out on previously gathered data from experiments with real radioactive sources, is shown in \autoref{chap:exp1}.
 %The functionality of the whole system (estimation method together with the proposed search strategy) in simulation is presented in \autoref{chap:exp2}.
@@ -43,7 +45,7 @@ For example, other interactions might occur (the incident photon might be immedi
 \begin{figure}[!htb]% %%{
   \subfloat[$p(\mathrm{cone\ detected})$] {
     \centering
-    \includegraphics[width=0.45\textwidth,trim={1cm 1cm 2.5cm 1cm},clip]{./fig/photos/monte_carlo_final_prob.eps}
+    \includegraphics[width=0.42\textwidth,trim={1cm 1cm 2.5cm 1cm},clip]{./fig/photos/monte_carlo_final_prob.eps}
     \label{fig:monte_finalll}
   }
 	\centering
@@ -57,11 +59,11 @@ For example, other interactions might occur (the incident photon might be immedi
   \noindent
 
   \subfloat[$p(\mathrm{reaching\ the\ sensor})$] {
-    \includegraphics[width=0.45\textwidth,trim={1cm 1cm 1cm 1cm},clip]{./fig/photos/monte_carlo_total_activity.eps}
+    \includegraphics[width=0.42\textwidth,trim={1cm 1cm 1cm 1cm},clip]{./fig/photos/monte_carlo_total_activity.eps}
     \label{fig:monte_reaching}
   }
   \subfloat[$p(\mathrm{cone\ detected}\ |\ \mathrm{reaching\ the\ sensor})$] {
-    \includegraphics[width=0.45\textwidth,trim={1cm 1cm 1cm 1cm},clip]{./fig/photos/monte_carlo_fraction.eps}
+    \includegraphics[width=0.42\textwidth,trim={1cm 1cm 1cm 1cm},clip]{./fig/photos/monte_carlo_fraction.eps}
     \label{fig:monte_cone_from_hitting}
   }
   \caption{Direction sensitivity of the \ac{pix} sensor (geometry of the sensor depicted in \protect\subref{fig:monte_axes}). 
