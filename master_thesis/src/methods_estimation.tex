@@ -28,7 +28,7 @@ The almost real-time estimation is important for active search strategy, where t
 \section{Online MLEM Compton imaging for group of \ac{UAV}s}
 \label{sec:setup}
 \subsection{Discretization and hidden parameters}
-As described in the chapter \autoref{chap:mlem_theory}, the \ac{MLEM} algorithm belongs to the class of iterative algorithms that work with discretized space of possible source locations.
+As described in Chapter \ref{chap:mlem_theory}, the \ac{MLEM} algorithm belongs to the class of iterative algorithms that work with discretized space of possible source locations.
 We assume that the source of ionizing radiation is static and located somewhere on the ground.
 We further assume that the \ac{UAV}s are exploring a flat outdoor area without obstacles. Therefore all the potential sources of ionizing radiation are located somewhere on the flat 2D ground plane.
 
@@ -332,7 +332,7 @@ where the sum $\sum_{v \in V^{[t:t+1]}}$ iterates over all newly processed viewp
 the term $\Delta_{v} = t_{v} - t_{v-1}$ expresses the time difference between current viewpoint $v$ sampled at time $t_{v}$ and its predecessor (previous viewpoint generated from the trajectory of the same \ac{UAV}) sampled at time $t_{v-1}$. 
 
 This formulation of sensitivity has multiple advantages.
-Firstly, the memory requirements for storing the vector $\mathbf{S}$ remain the same during the whole experiment. The values $s_{j}$ are updated in place.
+Firstly, the memory requirements for storing the vector $\mathbf{s}$ remain the same during the whole experiment. The values $s_{j}$ are updated in place.
 Secondly, the sensitivity is updated online as new sampled trajectories of the \ac{UAV} arrive. Therefore the computation time scales well with the increasing duration of the experiment.
 Lastly, it takes into account the time difference between sampled viewpoints $\Delta_{v}$.% %%}
 

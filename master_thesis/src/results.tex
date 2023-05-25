@@ -1,26 +1,30 @@
 %!TEX root = ../main.tex
-
 \chapter{Results\label{chap:results}}
 This chapter demonstrates the functionality of the proposed method for the localization of sources of ionizing radiation and its individual components.
-The directional sensitivity of the \ac{pix} sensor, modelled via Monte Carlo simulation, is presented in \autoref{chap:mcr}.
-The evaluation of the \ac{MLEM} estimation approach, carried out on previously gathered data from experiments with real radioactive sources, is shown in \autoref{chap:exp1}.
-The functionality of the whole system (estimation method together with the proposed search strategy) in simulation is presented in \autoref{chap:exp2}.
-Finally, the whole system was also tested on real hardware with simulated radioactive sources, as shown in \autoref{chap:exp3}.
+Unfortunately, it was not possible to test the proposed methods using real sources of ionizing radiation for organizational reasons, since the use of radioactive materials is strictly regulated and requires coordination with state authorities (National Institute for Nuclear, Chemical and Biological Protection) and manufacturer of the \ac{pix}.
+%That results in the fact that most of recorded data from real world experiments cant be used because the drones simply did not come close enough to other sources and 
+Another problem is the absence of methods for comparison, that would be a) available, b) capable of localization of multiple sources using the Compton camera measurements.
+Therefore we use the back-projection reconstruction method (described in Chapter \ref{chap:mlem_theory}) as the baseline method.
+This chapter presents results of the Monte Carlo simulation (Section \ref{chap:mcr}), performance of the system on recorded real-world data (Section \ref{chap:exp1}), in simulation (Section \ref{chap:exp2}) and in real-world experiments with simulated data (Section \ref{chap:exp3}). 
+%The directional sensitivity of the \ac{pix} sensor, modelled via Monte Carlo simulation, is presented in \autoref{chap:mcr}.
+%The evaluation of the \ac{MLEM} estimation approach, carried out on previously gathered data from experiments with real radioactive sources, is shown in \autoref{chap:exp1}.
+%The functionality of the whole system (estimation method together with the proposed search strategy) in simulation is presented in \autoref{chap:exp2}.
+%Finally, the whole system was also tested on real hardware with simulated radioactive sources, as shown in \autoref{chap:exp3}.
 
 \section{Monte Carlo simulation of the sensor's sensitivity\label{chap:mcr}}
-The assessment of the directional sensitivity of the \ac{pix} sensor was carried out using the Monte Carlo simulation described in chapter \autoref{chap:methods_estimation}.
+The assessment of the directional sensitivity of the \ac{pix} sensor was carried out using the Monte Carlo simulation described in Chapter \ref{chap:methods_estimation}.
 Each omnidirectional simulated source (located $\SI{1}{\meter}$ from the sensor) emitted $10^{10}$ $\SI{662}{\kilo\electronvolt}$ photons from each position.
 Shortly speaking, the simulator recorded the number of photons that a) reached the sensor's surface (more precisely, the \ac{CdTe} block, where the ionizing particles interact with \ac{CdTe} material) and b) undergone the interactions (Compton scattering, photoelectric absorption) leading to the Compton cone detection.  
 Results of the Monte Carlo simulations are shown in \autoref{fig:monte_clar}.
-The corresponding geometry of the \ac{CdTe} block is shown in \autoref{fig:monte_axes}.
+The corresponding geometry of the \ac{CdTe} block is shown in \ref{fig:monte_axes}.
 
-The \ac{pix} sensor's directional sensitivity is depicted in \autoref{fig:monte_finalll}.
+The \ac{pix} sensor's directional sensitivity is depicted in \ref{fig:monte_finalll}.
 It can be observed that the probability of a particle being detected as a Compton event is nearly the same from all directions (more precisely, it varies from $3.79 \times 10^{-8}$ to $5.15\times 10^{-8}$).
-The probability of reaching the sensor's surface (given the solid angle of the sensor from different positions) is shown in \autoref{fig:monte_reaching}.
+The probability of reaching the sensor's surface (given the solid angle of the sensor from different positions) is shown in \ref{fig:monte_reaching}.
 A particle emitted in front of the sensor (along the x-axis) is more likely to hit the \ac{CdTe} block than another one emitted from the side (y-axis and z-axis), where the visible surface of the \ac{CdTe} block is the smallest.
 On the other hand, the probability of Compton scattering as well as photoelectric absorption (that together lead to the detection of a Compton cone) depend on the trajectory of the incident and scattered photon.
 The longer the intersection of an ionizing particle and the \ac{CdTe} block is, the more likely the interactions happen.
-Therefore a photon reaching the sensor's surface from the side more likely causes the Compton measurement, as can be seen in \autoref{fig:monte_cone_from_hitting}.
+Therefore a photon reaching the sensor's surface from the side more likely causes the Compton measurement, as can be seen in \ref{fig:monte_cone_from_hitting}.
 In summary, both effects (probability of reaching the \ac{CdTe} block and probability of necessary interactions) neglect each other and lead to the almost uniform directional sensitivity of the \ac{pix} sensor.
 %on the length of the intersection of the photon trajectory with the sensor \ac{CdTe} block.
 
@@ -69,7 +73,10 @@ For example, other interactions might occur (the incident photon might be immedi
 \newpage
 \section{Evaluation of MLEM method based on real-world data\label{chap:exp1}}
 The proposed \ac{MLEM} method for radiation mapping has been tested using data from real-world experiments that were carried out in September 2022 (before the work on this thesis started).
-The back-projection of measured Compton cones serves as a baseline method for comparison.
+Although the pre-recorded real-world data were collected in realistic conditions with real sensors and sources of ionizing radiation, the prerecorded data do not allow to fully test capabilities of the proposed system.
+The reason is the strong dependency between drones trajectories during the experiment and recorded measurements (caused by properties of the ionizing radiation, such as the inverse square law, that is significantly reducing distance from which a radioactive source might be perceived). 
+Therefore the outcome of reconstruction strongly depends on in which areas the drones flew during the recorded experiments.
+
 \subsection{Setup and course of the experiment (data collection)}
 The area of interest of size $\approx 40 \times 30\ \si{\meter}$ was scanned by a group of four \ac{UAV}s equipped with \ac{pix} sensor.
 The \ac{UAV}s were localized using \ac{GPS}.
@@ -88,8 +95,8 @@ The results of the proposed \ac{MLEM} estimation method are presented in \autore
 The area of interest was discretized with $\SI{1}{\meter}$ resolution, and the number of iterations of the \ac{MLEM} method was set to 10.
 The viewpoints (positions of the drones) were sampled with $\SI{5}{\hertz}$, and the \ac{MLEM} estimate was updated every $\SI{2}{\second}$.
 The uncertainty of the cone angle  
-The final estimate of the emission intensity $\bm{\lambda}$ (based on all data acquired during the experiment) is presented in \autoref{e1:lam}. 
-The sensitivity of detection (\autoref{e1:sen}) confirms what was stated before - the drones were mostly encircling the $\SI{500}{\mega\becquerel}$ source at position $(-2, -10)$, which was also correctly localized.
+The final estimate of the emission intensity $\bm{\lambda}$ (based on all data acquired during the experiment) is presented in \ref{e1:lam}. 
+The sensitivity of detection (\ref{e1:sen}) confirms what was stated before - the drones were mostly encircling the $\SI{500}{\mega\becquerel}$ source at position $(-2, -10)$, which was also correctly localized.
 The area in the vicinity of the $\SI{1900}{\mega\becquerel}$ source at position $(16, 0)$ was much less explored by the \ac{UAV}s (and therefore fewer Compton cones originating there were recorded).
 Despite the much lower sensitivity in that area, the \ac{MLEM} method estimated some local maxima in the neighbourhood of the true position of the strongest source.
 The two weakest sources of radiation are indistinguishable from the noise.
@@ -119,7 +126,7 @@ We can see in \autoref{e1:mse} that the decrease of the $MSE$ stopped after a fe
 
 \begin{figure}[!htb]% %%{
   \centering
-  \subfloat[estimate of ionizing radiation intensity $\bm{\lambda}$ (normalized)] {
+  \subfloat[estimate of ionizing radiation intensity $\bm{\lambda}$ (rescaled)] {
     \includegraphics[width=0.5\textwidth,trim={0 0.5cm 2cm 1cm},clip]{./fig/photos/auto_lam.eps}
     \label{e1:lam}
   }
@@ -141,7 +148,7 @@ We can see in \autoref{e1:mse} that the decrease of the $MSE$ stopped after a fe
   \label{fig:e1_all}
 \end{figure}% %%}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Conclusion}
+\subsection{Summary}
 The results of the \ac{MLEM} reconstruction are heavily affected by a noise in measurements.
 First of all, the \ac{UAV}s were localized using \ac{GPS} method that might be effected by a position error of several meters.
 The position error propagates to the uncertainty of the Compton cone origins.
@@ -151,7 +158,7 @@ This might be a limiting factor for the localization of multiple sources of ioni
 The single-layer Compton camera is able to estimate the direction of incoming ionizing photons only if the number of interactions detected by the Timepix3 pixel detector inside the \ac{pix} sensor is relatively low and corresponding interactions can be paired together correctly.
 However, the presence of multiple sources in close vicinity increases the particle flux and may potentially increase the number of outliers.
 
-In summary, the comparison of \ac{MLEM} estimate (\autoref{e1:lam}) and back-projection (\autoref{e1:bp}) show that the \ac{MLEM} significantly improved the reconstruction quality.
+In summary, the comparison of \ac{MLEM} estimate (\ref{e1:lam}) and back-projection (\ref{e1:bp}) show that the \ac{MLEM} significantly improved the reconstruction quality.
 The $\SI{1900}{\mega\becquerel}$ source was localized (despite the low number of recorded photons originating there) 
 thanks to the weighting of the estimate with the sensitivity of detection in the \ac{MLEM} algorithm.
 Better results might be achieved by using an active search strategy, where the drones are controlled in order to improve the quality of the current \ac{MLEM} estimate.
@@ -175,7 +182,7 @@ The results were compared with the back-projection method, that served as a base
 \begin{figure}[!htb]
   \centering
     \includegraphics[width=0.9\textwidth]{./fig/photos/simu_search.png}
-  \caption{Experiments in \textit{Gazebo} simulator. The \ac{UAV}s are autonomously mapping sources of ionizing radiation. 
+  \caption{Experiments in \textit{Gazebo} simulator. The \ac{UAV}s are autonomously mapping sources of ionizing radiation place in the area $40 \times 40\ \si{\meter}$ (resolution $r = \SI{1}{\meter}$). 
   The current \ac{MLEM} estimate is visualized using blue-red-green distribution and black numbers denoting the relative activity of local maxima at the given position. 
   The drones follow the trajectories (red arrows) to visit waypoints (depicted as transparent spheres). Two drones are designated for exploitation (red and green waypoints) and one for exploration (blue waypoints).}
   \label{fig:simu_search}
@@ -193,14 +200,14 @@ The inaccuracy in the drone position (resulting in the shifted origin of the Com
 The noise in energy measurements of the simulated \ac{pix} sensor was modeled the Normal distribution $\mathcal{N}(\mu_{energy}, \sigma_{energy})$ with zero mean $\mu_{energy} = 0$ and standard deviation $\sigma_{energy} = \SI{7}{\kilo\electronvolt}$.
 
 \subsection{Results}
-The results of the \ac{MLEM} reconstruction are presented in \autoref{fig:e2}.
-The progress of radiation mapping is illustrated in \autoref{e2:lam1} (time $t = \SI{25}{\second}$) and \autoref{e2:lam2} ($t = \SI{100}{\second}$), corresponding sensitivity of detection is presented in \autoref{e2:sen1}, \autoref{e2:sen2}.
+The results of the \ac{MLEM} reconstruction are presented in \ref{fig:e2}.
+The progress of radiation mapping is illustrated in \ref{e2:lam1} (time $t = \SI{25}{\second}$) and \ref{e2:lam2} ($t = \SI{100}{\second}$), corresponding sensitivity of detection is presented in \ref{e2:sen1}, \ref{e2:sen2}.
 The active search strategy controlled the drones in order to acquire more measurements, which significantly improved the initial inaccurate estimate (based on a smaller number of Compton cones).
 We may notice that after $\SI{100}{\second}$ of flight the \ac{UAV}s correctly localized the $\SI{1900}{\mega\becquerel}$ , $\SI{500}{\mega\becquerel}$ and $\SI{280}{\mega\becquerel}$ sources of simulated ionizing radiation.
 The $\SI{50}{\mega\becquerel}$ source was not recognized due to its low emission activity or because it was filtered out during the later iterations of the \ac{MLEM} algorithm.
-The \ac{MLEM} method significantly improved the solution compared to the back-projection illustrated in \autoref{e2:bp}.
+The \ac{MLEM} method significantly improved the solution compared to the back-projection illustrated in \ref{e2:bp}.
 
-\subsection{Conclusion}
+\subsection{Summary}
 Three sources with the highest emission activity were correctly localized in less than $\SI{100}{\second}$.
 The proposed \ac{MLEM} estimation method, together with the autonomous search strategy, worked as intended.
 Although the \ac{MLEM} method does not estimate the positions of sources perfectly for a small number of measurements, the active search strategy guides the \ac{UAV}s in order to acquire more measurements, which further improves the estimate's quality.
@@ -217,7 +224,7 @@ Improving the simulator in order to process interactions caused by different sou
 
 \begin{figure}[!htb]% %%{
   \centering
-  \subfloat[($t = \SI{25}{\second}$) source intensities $\bm{\lambda}$ (normalized) ] {
+  \subfloat[($t = \SI{25}{\second}$) source intensities $\bm{\lambda}$ (rescaled) ] {
     \includegraphics[width=0.5\textwidth,trim={0 0.5cm 2cm 1cm},clip]{./fig/photos/auto_simulation_lam_1.eps}
     \label{e2:lam1}
   }
@@ -227,7 +234,7 @@ Improving the simulator in order to process interactions caused by different sou
   }
   \newline
   \noindent
-  \subfloat[($t = \SI{100}{\second}$) source intensities $\bm{\lambda}$ (normalized) ] {
+  \subfloat[($t = \SI{100}{\second}$) source intensities $\bm{\lambda}$ (rescaled) ] {
     \includegraphics[width=0.5\textwidth,trim={0 0.5cm 2cm 1cm},clip]{./fig/photos/auto_simulation_lam_2.eps}
     \label{e2:lam2}
   }
@@ -257,7 +264,7 @@ Improving the simulator in order to process interactions caused by different sou
 \mycomment{
 \begin{figure}[!htb]% %%{
   \centering
-  \subfloat[($t = \SI{25}{\second}$) source intensities $\bm{\lambda}$ (normalized) ] {
+  \subfloat[($t = \SI{25}{\second}$) source intensities $\bm{\lambda}$ (rescaled) ] {
     \includegraphics[width=0.5\textwidth,trim={0 0.5cm 2cm 1cm},clip]{./fig/photos/auto_simulation_lam_1.eps}
     \label{e2:lam1}
   }
@@ -267,7 +274,7 @@ Improving the simulator in order to process interactions caused by different sou
   }
   \newline
   \noindent
-  \subfloat[($t = \SI{100}{\second}$) source intensities $\bm{\lambda}$ (normalized) ] {
+  \subfloat[($t = \SI{100}{\second}$) source intensities $\bm{\lambda}$ (rescaled) ] {
     \includegraphics[width=0.5\textwidth,trim={0 0.5cm 2cm 1cm},clip]{./fig/photos/auto_simulation_lam_2.eps}
     \label{e2:lam2}
   }
@@ -290,8 +297,49 @@ Improving the simulator in order to process interactions caused by different sou
 \end{figure}% %%}
 }
 
+\subsection{Simulated experiment 2}
+The ability to map multiple sources of ionizing radiation is demonstrated on the follwing simulated scenario:
+\subsubsection{Experiment setup}
+the size of the area,number of drones and their starting position, noise in measurements, locations of sources and other parameters remain the same as in the previous experiment.
+The only difference is that all the simulated sources have the same emission activity of either $100, 500, 2000$ or $10000\ \si{\mega\becquerel}$.
+Since the radiation emission is a stochastic process, the same instance was repeated multiple times.
 
 
+
+\begin{figure}[!htb]% %%{
+  \centering
+  \subfloat[($t = \SI{25}{\second}$) source intensities $\bm{\lambda}$ (rescaled) ] {
+    \includegraphics[width=0.5\textwidth,trim={0 0.5cm 2cm 1cm},clip]{./fig/photos/auto_simulation_lam_1.eps}
+    \label{e5:}
+  }
+  \subfloat[($t = \SI{25}{\second}$) sensitivity of detection $\mathbf{s}$ ] {
+    \includegraphics[width=0.5\textwidth,trim={0 0.5cm 2cm 1cm},clip]{./fig/photos/auto_simulation_sen_1.eps}
+    \label{e5:}
+  }
+  \newline
+  \noindent
+  \subfloat[($t = \SI{100}{\second}$) source intensities $\bm{\lambda}$ (rescaled) ] {
+    \includegraphics[width=0.5\textwidth,trim={0 0.5cm 2cm 1cm},clip]{./fig/photos/auto_simulation_lam_2.eps}
+    \label{e5:}
+  }
+  \subfloat[($t = \SI{100}{\second}$) sensitivity of detection $\mathbf{s}$ ] {
+    \includegraphics[width=0.5\textwidth,trim={0 0.5cm 2cm 1cm},clip]{./fig/photos/auto_simulation_sen_2.eps}
+    \label{e5:}
+  }
+  \newline
+  \noindent
+  \subfloat[($t = \SI{100}{\second}$) back projection (number of cones)] {
+    \includegraphics[width=0.5\textwidth,trim={0 0.5cm 2cm 1cm},clip]{./fig/photos/auto_simulation_lam.eps}
+    \label{e5:}
+  }
+  \subfloat[ground truth positions of sources ($\si{\mega\becquerel}$)] {
+    \includegraphics[width=0.5\textwidth,trim={0 0.5cm 2cm 1cm},clip]{./fig/photos/auto_simulation_sen.eps}
+    \label{e5:}
+  }
+  \caption{Lorem ipsum}
+  \label{fig:e5}
+\end{figure}% %%}
+}
 
 
 
@@ -315,7 +363,7 @@ The main purpose of the experiment was to test the search strategy with real har
     \includegraphics[width=0.5\textwidth]{./fig/photos/pole3.png}
     \label{fig:d2}
   }
-  \caption{Field experiments with real hardware. The drones \protect\subref{fig:d1} were mapping the simulated radioactive sources located somewhere in the open field \protect\subref{fig:d2}}
+  \caption{Field experiments with real hardware. The drones \protect\subref{fig:d1} were mapping the simulated radioactive sources located somewhere in the open field \protect\subref{fig:d2}.}
   \label{fig:}
 \end{figure}
 \subsection{Experiment setup}
@@ -324,18 +372,18 @@ The simulator of ionizing radiation was running onboard each \ac{UAV}, simulatin
 The \ac{UAV}s were localized using \ac{GPS}.
 However, the noise in \ac{GPS} position measurement did not affect the simulated radiation data since the drones used their belief (not the real position) when simulating incoming ionizing photons.
 The viewpoints (positions of the drones) were sampled with $\SI{5}{\hertz}$, and the \ac{MLEM} estimate was updated every $\SI{2}{\second}$.
-Four simulated sources of $\SI{662}{\kilo\electronvolt}$ photons with activity $2000, 1000, 1000, 500\ \si{\mega\becquerel}$ were located at positions shown in  \autoref{e3:gt}.
+Four simulated sources of $\SI{662}{\kilo\electronvolt}$ photons with activity $2000, 1000, 1000, 500\ \si{\mega\becquerel}$ were located at positions shown in  \ref{e3:gt}.
 
 %The communication between the base station (notebook with \textit{Intel i5-1240P} processor, $\SI{16}{\giga\byte}$ RAM, $\SI{4}{\giga\byte}$ GPU) and the \ac{UAV}s was established via \ac{wifi} network. 
 
 \subsection{Results}
-In the initial phase (from time $t = \SI{0}{\minute}$ to time $t = \SI{2}{\minute}$), the drones flew over the area once in a ``zig-zag'' pattern following the predefined trajectory (covering the area uniformly, as can be seen in \autoref{e3:senzig}) and measured first $17$ Compton cones.
+In the initial phase (from time $t = \SI{0}{\minute}$ to time $t = \SI{2}{\minute}$), the drones flew over the area once in a ``zig-zag'' pattern following the predefined trajectory (covering the area uniformly, as can be seen in \ref{e3:senzig}) and measured first $17$ Compton cones.
 The ``zig-zag'' trajectory was precomputed using the MRS UAV System \cite{mrs_system}.
-The \ac{MLEM} estimate and sensitivity of detection after the initial phase is shown in \autoref{e3:lamzig} and \autoref{e3:senzig}.
-Then (at the time $t = \SI{2}{\minute}$), the proposed search strategy took control - two drones were designated for exploitation, one for exploration.
-The trajectories of the \ac{UAV}s during the search phase (\autoref{e3:paths}) show that the two ``exploitation`` drones focused on acquiring more measurements while the third drone was exploring the unexplored area.
-The final estimate of radiation sources intensities (at the end of the experiment $t = \SI{10}{\minute}$) is shown in \autoref{e3:lam}.
-Three of four sources of simulated ionizing radiation were correctly localized (together with their relative emission activity, which is shown in table \autoref{tab:temenight_results}).
+The \ac{MLEM} estimate and sensitivity of detection after the initial phase is shown in \ref{e3:lamzig} and \ref{e3:senzig}.
+Then (at the time $t = \SI{2}{\minute}$), the proposed search strategy took control---two drones were designated for exploitation, one for exploration.
+The trajectories of the \ac{UAV}s during the search phase (\ref{e3:paths}) show that the two ``exploitation`` drones focused on acquiring more measurements while the third drone was exploring the unexplored area.
+The final estimate of radiation sources intensities (at the end of the experiment $t = \SI{10}{\minute}$) is shown in \ref{e3:lam}.
+Three of four sources of simulated ionizing radiation were correctly localized (together with their relative emission activity, which is shown in table \ref{tab:temenight_results}).
 The weakest $\SI{500}{\mega\becquerel}$ source at position ($75, 75$) was not discovered despite the fact that the exploration drone flew around it multiple times (see blue path in \autoref{e3:paths}).
 The minimum distance between the \ac{UAV}s was not below the safety threshold ($\SI{4}{\meter}$) during the whole flight, therefore all the planned trajectories were non-colliding.
 267 Compton events were recorded during the whole experiment.
@@ -358,7 +406,7 @@ The minimum distance between the \ac{UAV}s was not below the safety threshold ($
 \end{center}
 \end{table}
 
-\subsection{Conclusion}
+\subsection{Summary}
 The experiment proved that the whole system be used for fast radiation mapping in large open areas and perform all the computations in real-time.
 The proposed search strategy, together with the \ac{MLEM} mapping method, worked as intended.
 The initial estimate of source positions was significantly improved during the search phase.
@@ -372,7 +420,6 @@ Therefore the results of \ac{MLEM} reconstruction results are more accurate comp
 % Answer: [trim={left bottom right top},clip]
 % Ex. 1: trim from left edge
 %\includegraphics[width=0.5\textwidth,trim={0 0 2cm 2cm},clip]{./fig/photos/auto_temesvar_drone_paths.eps}
-
 
 \begin{figure}[ht!]% %%{
   \centering
@@ -551,7 +598,7 @@ Resolution of the map was $0.5$ m.
 
 \begin{figure}[!htb]% %%{
   \centering
-  \subfloat[estimate of sources locations $\bm{\lambda}$ (normalized)] {
+  \subfloat[estimate of sources locations $\bm{\lambda}$ (rescaled)] {
     \includegraphics[width=0.5\textwidth,trim={0 0.5cm 2cm 1cm},clip]{./fig/photos/auto_simulation_lam.eps}
     \label{fig:}
   }

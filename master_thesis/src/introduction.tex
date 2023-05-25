@@ -6,7 +6,7 @@ Such systems can be more efficient than human workers and can replace them in en
 One possible application for autonomous robots is the mapping and monitoring of ionizing radiation. 
 Radioactive materials are part of our world, and there are several situations when such a need might occur, for example, a disaster in a nuclear power plant or misuse of materials for radiotherapy in medicine. 
 To ensure public safety, we need a method for fast and efficient localization of radioactive sources without the presence of human workers.
-An \ac{UAV} (frequently referred as a drone) equipped with appropriate sensors is a promising solution to this problem.
+\acp{UAV} (frequently referred as drones) equipped with appropriate sensors presents a promising solution to this problem.
 A group of highly mobile \ac{UAV}s can quickly and autonomously explore large areas and perform measurements needed for precise localization of radioactive sources.
 
 Sensing of ionizing radiation is possible thanks to the variety of sensors, one of which is called the Compton camera.
@@ -17,7 +17,7 @@ Thanks to innovations in the field of sensory equipment, Compton camera \ac{pix}
 
 \begin{figure}[!h]
     \centering
-  \includegraphics[width=0.6\textwidth]{./fig/photos/uav.jpg}
+  \includegraphics[width=0.7\textwidth]{./fig/photos/uav.jpg}
     \caption{A small T650 multi-rotor UAV equipped with the \ac{pix} sensor. Source: \cite{baca2021gamma}.}
     \label{fig:uavvv}
 \end{figure}
@@ -108,16 +108,17 @@ Once the drones detect one source of radioactive particles, they start encirclin
 To the author's best knowledge, there are no related works that solve the task of online autonomous multi-robot mapping of multiple sources of ionizing radiation with the use of a lightweight Compton camera sensor (e.g. \ac{pix}).
 
 \section{Contributions}
-The main contribution of this thesis is a novel approach to the localization of multiple compact radioactive sources based on Compton imaging.
+The main contribution of this thesis is a novel approach to the localization of multiple compact radioactive sources using measurements from miniature single-layer Compton camera sensors carried onboard \acp{UAV}.
 The main purpose of this thesis is to improve the solution presented in \cite{baca2021gamma} in the following ways: 
 firstly, introduce a new method that could localize multiple sources of ionizing radiation based on the measured Compton cones and, 
 secondly, 
 design high-level planning approach that would control a group of \ac{UAV}s in order to autonomously explore the whole area and maximize the chance that all sources of ionizing radiation would be detected while estimating their relative emission activity.
 
 \section{Thesis organization}
+This thesis is organized as follows.
 Chapter \ref{chap:preliminaries} describes basic properties of ionizing radiation and its interactions with matter, the working principle of the Compton camera and \ac{pix} sensor.
 The theoretical background of \ac{MLEM} estimation method is provided in Chapter \ref{chap:mlem_theory}.
-Chapter \ref{chap:methods_estimation} presents the proposed radiation mapping method for a group of \ac{UAV}s equipped with a \ac{pix} Compton camera sensor.
+Chapter \ref{chap:methods_estimation} presents the proposed radiation mapping method for a group of \ac{UAV}s equipped with a \ac{pix} Compton camera sensor and evaluates properties of the sensor using Monte Carlo simulation.
 Chapter \ref{chap:methods_robotics} describes the search strategy that controls the \ac{UAV}s in order to improve the precision of radiation mapping, acquire more measurements and explore the area of interest. 
 Finally, the proposed methods were tested both in simulation and on real-world data. 
 The results are presented in Chapter \ref{chap:results}.

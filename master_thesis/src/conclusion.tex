@@ -1,37 +1,74 @@
 %!TEX root = ../main.tex
+
 \chapter{Conclusion\label{chap:conclusion}}
 The goal of this thesis was to research, design, and implement an algorithm and software method for collaborative sensor fusion of
 measured ionizing radiation data from a group of \ac{UAV}s.
 The presented solution based on the \ac{MLEM} algorithm is able to localize multiple sources of ionizing radiation based on data acquired by a group of drones equipped with a miniature Compton camera. All the subtasks in the thesis assignment were fulfilled:
 \begin{itemize}
-  \item The author of the thesis familiarized himself with MRS UAV System and the principles of the Compton camera detector. 
-The use of MRS UAV System was demonstrated during simulated and real-world experiments described in chapter \ref{chap:results}. 
-An overview of principles of the Compton camera is presented in chapter \ref{chap:preliminaries}.
+  \item The author of the thesis familiarized himself with the MRS UAV System and the principles of the Compton camera detector. 
+The use of MRS UAV System was demonstrated during simulated and real-world experiments described in Chapter \ref{chap:results}. 
+An overview of the principles of the Compton camera is presented in Chapter \ref{chap:preliminaries}.
   \item A method for the localization of multiple sources of ionizing radiation using the Compton camera measurements was implemented. 
 The online estimation method is based on the \ac{MLEM} algorithm, which was adapted to the proposed application.
-Directional sensitivity of the \ac{pix} sensor was studied using Monte Carlo simulation.
-    The proposed method takes into account the sensitivity of detection (how likely a potential source at certain position have been detected by the \ac{UAV}s during the flight), which improves the quality of estimate in scenarios with multiple sources of radiation with different emission activity.
-The proposed localization method is presented in chapter \ref{chap:methods_estimation}.
-  \item The proposed active search strategy for a small group of \ac{UAV} is presented in chapter \ref{chap:methods_robotics}.
-    The centralized search strategy takes the current estimate of radioactive sources as an input and generates waypoints for the \ac{UAV}s in order to acquire more measurements and explored less explored parts of the area.         
-    The generated waypoints are assigned to the individual drones and a non-colliding path connecting the waypoints is computed for each drone.
-  \item The proposed estimation method and the search strategy was evaluated on recorded real-world data and in simulation, as presented in chapter \ref{chap:results}.
-    %Experiments with recorded real data showed that the proposed method is abl
-    The functionality of the whole system was demonstrated during outdoor experiments with real hardware and simulated sources of radiation 
+The directional sensitivity of the \ac{pix} sensor was studied using Monte Carlo simulation.
+    The proposed method takes into account the sensitivity of detection (how likely a potential source at a certain position has been detected by the \ac{UAV}s during the flight), which improves the quality of estimate in scenarios with multiple sources of radiation with different emission activity.
+The proposed localization method is presented in Chapter \ref{chap:methods_estimation}.
+  \item The proposed active search strategy for a small group of \ac{UAV} is presented in Chapter \ref{chap:methods_robotics}.
+    The centralized search strategy takes the current estimate of radioactive sources as an input and generates waypoints for the \ac{UAV}s in order to acquire more measurements and explore less explored parts of the area.         
+    The generated waypoints are assigned to the individual drones, and a non-colliding path connecting the waypoints is computed for each drone.
+  \item The proposed estimation method and the search strategy were evaluated on recorded real-world data and in simulation, as presented in Chapter \ref{chap:results}.
+    %Experiments with recorded real data showed that the proposed method is able
+    The functionality of the whole system was also demonstrated during outdoor experiments with real hardware and simulated sources of radiation 
     (in addition to the scope of the thesis assignment). 
 \end{itemize}
 
+\section{Discussion}
+In summary, the proposed method for radiation mapping, in combination with the active search strategy, proved to be applicable for the task of localization of multiple sources of ionizing radiation.
+Let us summarize the properties of the proposed solution and its limitations.
+
+Many limiting factors originate in the nature of the \ac{pix} sensor, Compton measurements and properties of ionizing radiation.
+The biggest issue is the limited number of data that is given by the relatively low sensitivity of the \ac{pix} sensor (which is given by the fact that the sensor is very small and that only less than $\approx 1\%$ of gamma photons (based on the Monte Carlo simulation) reaching the semiconductor\ac{CdTe} detection block cause the Compton event).
+Therefore less active sources (with emission activity of hundreds of $\si{\mega\becquerel}$ and less) might not be easily detected by the proposed multi-robot system.
+The working principle of the single-layer Compton camera (where the corresponding interactions are paired together based on their times of arrival) 
+also limits the sensitivity of the \ac{pix} sensor (working as the Compton camera) in scenarios with high emission activity of radioactive sources.
+If the number of interactions inside the \ac{CdTe} semiconductor block is too high, the sensor can no longer correctly deduce which interactions should be paired together, and the number of outliers increases (this is more a speculation based on the author's understanding of the sensors working principle, since the recorded data did not contain scenarios of sources with activity higher than $\SI{2}{\giga\becquerel}$ and the simulator cannot properly model this effect).
+The effect of very active sources on the detection capability of the \ac{pix} sensor needs to be investigated.
+However, we can conclude that the proposed method is suitable for the detection of sources with mid-level emission activity but cannot detect sources with very low or high activity).
+
+Another limitation is that the output of the proposed \ac{MLEM} method does not provide any absolute information about the emission activity of the source.
+Although the optimized hidden parameters $\bm{\lambda}$ have meaning of expected emission rate, 
+it turned out that the number of measured Compton cones ($\approx 10^{2}-10^{3}$) during recorded real-world experiments was not sufficient to accurately model the absolute emission activity of the source
+and the output of the \ac{MLEM} method can serve only as information about the relative emission activity of the sources present in the area.
+Another problem is that the \ac{MLEM} method does not provide any bounds on the quality of the estimate, meaning that it is impossible to decide whether the current estimate is correct or not.
+Therefore the method can be used for fast and inaccurate detection of possible hot spots in unknown areas (and the estimated source location needs to be further verified by other types of sensors that can accurately estimate the activity of the detected source).
+
+
+Unlike the solution described in \cite{baca2021gamma} for single-source localization using \ac{LKF}, the proposed method can't localize the moving source of ionizing radiation.
+The solution proposed in \cite{baca2021gamma} based on \ac{LKF} is better suited for scenarios with single source and very low number of measurements ($\approx 10$).
+The maximum likelihood method generally requires more data to produce accurate estimates of the underlying probability distribution, which is partially compensated by the active search strategy.
 
 \section{Future work}
 The experiments with recorded real-world data showed that the real measurements acquired by the \ac{pix} sensor contain many outliers and noise in the measurements that significantly affected the quality of \ac{MLEM} reconstruction.
 Experiments in simulation (with simulated noise) showed that the proposed active search strategy is able to overcome the noise in measurements by controlling the drones to get more data.
-However, the combination of the proposed search strategy and the \ac{MLEM} estimation method could not be tested with real sources of ionizing radiation (due to organization reasons).
-Future testing with real Caesium-137 sources is therefore needed for accurate evaluation.
+However, the combination of the proposed search strategy and the \ac{MLEM} estimation method could not be tested with real sources of ionizing radiation (due to organizational reasons).
+Future testing with real Cesium-137 sources is therefore needed for accurate evaluation.
 
 The proposed localization method was developed for 2D radiation mapping in an outdoor open area.
 A possible future extension is to fuse the Compton measurements with a 3D map of the environment (computed by some \ac{SLAM} method based on \ac{LiDAR} data).
-The set of obstacles generated by the \ac{SLAM} method can be used as a set of possible sources locations in the \ac{MLEM} algorithm.
-This would open a possibility to monitor radiation even in areas with obstacles or in the indoor environment.
+The set of obstacles generated by the \ac{SLAM} method can be used as a set of possible source locations in the \ac{MLEM} algorithm.
+This would open the possibility of monitoring radiation even in areas with obstacles or in the indoor environment.
+
+Another possible improvement of the proposed method is optimal planning and task allocation during the search strategy.
+More advanced state-of-the-art methods can be applied, such as solving multi-robot orienteering problem when planning the future movement of the drones, better task allocation methods or coverage path planning for the exploration.
+In general, the search strategy can be optimized by applying some global planning methods.
+
+
+
+
+
+
+
+
 
 
 

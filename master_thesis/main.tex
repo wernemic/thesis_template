@@ -12,8 +12,8 @@
 \newcommand{\Programme}{Open Informatics}
 \newcommand{\Field}{Artificial Intelligence}
 \newcommand{\Title}{Localization of sources of ionizing radiation using a group of unmanned aerial vehicles}
-\newcommand{\Keywords}{radioactivity, ionizing radiation, sensor fusion, Compton camera, Unmanned Aerial Vehicles  }
-\newcommand{\KlicovaSlova}{radiaktivita,ionizující záření, sensorická fůze, Comptonova kamera, bezpilotní prostředky  }
+\newcommand{\Keywords}{Mobile Robotics, Unmanned Aerial Vehicles, Ionizing Radiation, Sensor Fusion, Compton Camera, Maximum Likelihood Estimation, Timepix}
+\newcommand{\KlicovaSlova}{mobilní robotika, bezpilotní prostředky, ionizující záření, sensorická fůze, Comptonova kamera, odhad maximální věrohodnosti, Timepix}
 \newcommand{\Year}{2023}
 \newcommand{\Month}{May}
 \newcommand{\Date}{\Month~\Year}
@@ -47,17 +47,23 @@
 
 \input{src/acknowledgments.tex}
 
+
 %% --------------------------------------------------------------
 %% |                         Assignment                         |
 %% --------------------------------------------------------------
 
 \conditionalClearPage
 
-\includepdf{src/assignment.pdf}
-
+\includepdf[pages=-]{src/assignment.pdf}
 %% --------------------------------------------------------------
 %% |                          Abstracts                         |
 %% --------------------------------------------------------------
+
+%%%%%%%%%%%%%%declaration
+
+\conditionalClearPage
+
+\input{src/declaration.tex}
 
 \conditionalClearPage
 
@@ -142,6 +148,11 @@
 \renewcommand{\thechapter}{A}
 \renewcommand\chaptername{Appendix A}
 
-\chapter{Appendix A}
-
+%\chapter{Appendix A}
+\chapter{List of attachments}
+\begin{itemize}
+  \item TODO
+  \item TODO
+  \item TODO
+\end{itemize}
 \end{document}
