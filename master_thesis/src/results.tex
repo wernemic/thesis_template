@@ -304,7 +304,7 @@ Improving the simulator in order to process interactions caused by different sou
 The ability to map multiple sources of ionizing radiation is demonstrated on the following simulated scenario:
 the size of the area, number of drones, simulated noise and other parameters remain the same as in the previous experiment.
 Only the activity of sources is set to the same value for convenience.
-The source is considered as detected if the estimated emission activity ($\bm{\lambda}$ rescaled to $0-1$ range over all map) at the ground-truth source position exceeds detection threshold $0.5$ (in the vicinity of $\SI{2}{\meter}$ around the ground-truth position) and remains above threshold $0.3$ during the rest of the experiment.
+The source is considered as detected if the estimated emission activity ($\bm{\lambda}$ rescaled to $0-1$ range) at the ground-truth source position exceeds detection threshold $0.5$ (in the vicinity of $\SI{2}{\meter}$ around the ground-truth position) and remains above threshold $0.3$ during the rest of the experiment.
 Since the radiation emission is a stochastic process, the same instance was repeated multiple times.
 Results are presented in \autoref{fig:eval}. % shows the detection times for multiple simulated sources if the same activity. 
 \begin{figure}[!htb]
@@ -323,10 +323,10 @@ Results are presented in \autoref{fig:eval}. % shows the detection times for mul
     \label{fig:eval3}
   }
   \subfloat [Ground truth positions]{
-    \includegraphics[width=0.4\textwidth,,trim={0cm 0 1.5cm 1.2cm}, clip ]{./fig/photos/auto_eval_gt.eps}
+    \includegraphics[width=0.45\textwidth,,trim={0cm 0 1.5cm 1.2cm}, clip ]{./fig/photos/auto_eval_gt.eps}
     \label{fig:eval4}
   }
-  \caption{The number of correctly detected sources with the same emission activity (located at positions \protect\subref{fig:eval4}). Dashed lines represent the individual experiments (each scenario was repeated $5$ times), the black line is the average. }
+  \caption{The number of correctly detected sources with the same emission activity (located at positions \protect\subref{fig:eval4}). Dashed lines represent the individual experiments (each scenario was repeated $5$ times), the black line is the average. The detection was evaluated every $5$ seconds.}
   \label{fig:eval}
 \end{figure}
 \subsubsection{Results}
