@@ -190,8 +190,8 @@ The results were compared with the back-projection method, that served as a base
   The drones follow the trajectories (red arrows) to visit waypoints (depicted as transparent spheres). Two drones are designated for exploitation (red and green waypoints) and one for exploration (blue waypoints).}
   \label{fig:simu_search}
 \end{figure}
-
-\subsection{Experiment setup}
+\subsection{Simulated experiment 1}
+%\subsubsection{Experiment setup}
 The distribution and activity of the radioactive sources were the same as in the real-world experiments described in the previous section.
 Three drones flying $\SI{3}{\meter}$ above the ground were used during the experiment.  
 The simulation process (visualized in \textit{RViz}) is shown in \autoref{fig:simu_search}.
@@ -202,7 +202,7 @@ Extra noise was added to the measurements to model the real-world conditions.
 The inaccuracy in the drone position (resulting in the shifted origin of the Compton cone) was modelled with the Normal distribution $\mathcal{N}(\mu_{pos}, \sigma_{pos})$ with zero means $\mu_{pos} = 0$ and standard deviation $\sigma_{pos} = \SI{1.5}{\meter}$. 
 The noise in energy measurements of the simulated \ac{pix} sensor was modeled the Normal distribution $\mathcal{N}(\mu_{energy}, \sigma_{energy})$ with zero mean $\mu_{energy} = 0$ and standard deviation $\sigma_{energy} = \SI{7}{\kilo\electronvolt}$.
 
-\subsection{Results}
+\subsubsection{Results}
 The results of the \ac{MLEM} reconstruction are presented in \autoref{fig:e2}.
 The progress of radiation mapping is illustrated in \autoref{e2:lam1} (time $t = \SI{25}{\second}$) and \autoref{e2:lam2} ($t = \SI{100}{\second}$), corresponding sensitivity of detection is presented in \autoref{e2:sen1}, \autoref{e2:sen2}.
 The active search strategy controlled the drones in order to acquire more measurements, which significantly improved the initial inaccurate estimate (based on a smaller number of Compton cones).
@@ -210,7 +210,7 @@ We may notice that after $\SI{100}{\second}$ of flight the \ac{UAV}s correctly l
 The $\SI{50}{\mega\becquerel}$ source was not recognized due to its low emission activity or because it was filtered out during the later iterations of the \ac{MLEM} algorithm.
 The \ac{MLEM} method significantly improved the solution compared to the back-projection illustrated in \autoref{e2:bp}.
 
-\subsection{Summary}
+\subsubsection{Summary}
 Three sources with the highest emission activity were correctly localized in less than $\SI{100}{\second}$.
 The proposed \ac{MLEM} estimation method, together with the autonomous search strategy, worked as intended.
 Although the \ac{MLEM} method does not estimate the positions of sources perfectly for a small number of measurements, the active search strategy guides the \ac{UAV}s in order to acquire more measurements, which further improves the estimate's quality.
@@ -299,20 +299,47 @@ Improving the simulator in order to process interactions caused by different sou
   \label{fig:e2}
 \end{figure}% %%}
 
-\subsection{Simulated experiment 2}
-The ability to map multiple sources of ionizing radiation is demonstrated on the follwing simulated scenario:
-the size of the area, number of drones and other parameters remain the same as in the previous experiment.
-Only 
-Since the radiation emission is a stochastic process, the same instance was repeated multiple times.
-
-
 }
+\subsection{Simulated experiment 2}
+The ability to map multiple sources of ionizing radiation is demonstrated on the following simulated scenario:
+the size of the area, number of drones, simulated noise and other parameters remain the same as in the previous experiment.
+Only the activity of sources is set to the same value for convenience.
+The source is considered as detected if the estimated emission activity ($\bm{\lambda}$ rescaled to $0-1$ range over all map) at the ground-truth source position exceeds detection threshold $0.5$ (in the vicinity of $\SI{2}{\meter}$ around the ground-truth position) and remains above threshold $0.3$ during the rest of the experiment.
+Since the radiation emission is a stochastic process, the same instance was repeated multiple times.
+Results are presented in \autoref{fig:eval}. % shows the detection times for multiple simulated sources if the same activity. 
+\begin{figure}[!htb]
+  \centering
+  \subfloat[Four sources with activity $\SI{100}{\mega\becquerel}$] {
+    \includegraphics[width=0.4\textwidth,trim={1cm 0 1.5cm 1.2cm},clip]{./fig/photos/auto_eval1.eps}
+    \label{fig:eval1}
+  }
+  \subfloat [Four sources with activity $\SI{500}{\mega\becquerel}$]{
+    \includegraphics[width=0.4\textwidth,trim={1cm 0 1.5cm 1.2cm},clip]{./fig/photos/auto_eval2.eps}
+    \label{fig:eval2}
+  }
+  \newline\noindent
+  \subfloat [Four sources with activity $\SI{2000}{\mega\becquerel}$]{
+    \includegraphics[width=0.4\textwidth,trim={1cm 0 1.5cm 1.2cm},clip]{./fig/photos/auto_eval3.eps}
+    \label{fig:eval3}
+  }
+  \subfloat [Ground truth positions]{
+    \includegraphics[width=0.4\textwidth,,trim={0cm 0 1.5cm 1.2cm}, clip ]{./fig/photos/auto_eval_gt.eps}
+    \label{fig:eval4}
+  }
+  \caption{The number of correctly detected sources with the same emission activity (located at positions \protect\subref{fig:eval4}). Dashed lines represent the individual experiments (each scenario was repeated $5$ times), the black line is the average. }
+  \label{fig:eval}
+\end{figure}
+\subsubsection{Results}
+We can see that the low emission activity of the sources prolongs the detection time (\ref{fig:eval1}), however, the method was still able to localize positions of the $3$ sources (on average) in less than $\SI{250}{\second}$.
+The method was able to correctly localize four $\SI{2000}{\mega\becquerel}$ sources is less than  $\SI{170}{\second}$ in all scenarios.
+We may notice that the number of detected sources also sometimes decreased during the time (see the purple line in \ref{fig:eval3}). 
+This shows that the method do not perfectly estimate the relative emission activity of the sources, which is caused by the stochastic nature of radioactive decay and limited number of measurements.
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\newpage
 
 
 \section{Real-world experiment with simulated radiation\label{chap:exp3}}
@@ -330,7 +357,7 @@ The main purpose of the experiment was to test the search strategy with real har
     \label{fig:d2}
   }
   \caption{Field experiments with real hardware. The drones \protect\subref{fig:d1} were mapping the simulated radioactive sources located somewhere in the open field \protect\subref{fig:d2}.}
-  \label{fig:}
+  \label{fig:field}
 \end{figure}
 \subsection{Experiment setup}
 The size of the explored area was $100 \times 100\ \si{\meter}$, the resolution of each map cell was set to $\SI{0.5}{\meter}$.
