@@ -137,7 +137,7 @@ The sensitivity can be expressed using conditional probability as
   s_{j} =  P(\textrm{detected by the sensor}\ | \textrm{emitted from } j).
 \end{equation}
 A series of random occurrences should happen for a photon to be detected by the Compton camera.
-First of all, the photon must be emitted from position $j$ towards the sensor surface (emitted under the solid angle subtended by the visible camera surface at the position of the source), not being absorbed by the air along the way.
+First of all, the photon must be emitted from position $j$ towards the sensor surface (emitted in the solid angle subtended by the visible camera surface at the position of the source), not being absorbed by the air along the way.
 Then the photon should interact with the matter of the sensor in form of Compton scattering.
 %The angle under which it scatters can be described by the Klein-Nishina \cite{Klein-Nishina cross-section.
 The scattered photon then must be absorbed by the camera in the form of a photoelectric effect.
@@ -166,7 +166,7 @@ The series of random occurrences for a photon emitted at position $j$ leading to
   s_{jv} =  (p_{solid\ angle})(1-p_{air})(p_{compton})(p_{absorption}),
   \label{eq:sen_prob}
 \end{equation}
-where $p_{solid\ angle}$ is the probability that the photon is emitted under the solid angle subtended by the visible camera surface (at position $j$), 
+where $p_{solid\ angle}$ is the probability that the photon is emitted in the solid angle subtended by the visible camera surface (at position $j$), 
 $p_{air}$ is the probability that a photon is absorbed by the air along the way from emission towards the sensor, 
 $p_{compton}$ is the probability that Compton scattering occurs, and $p_{absorption}$ denotes that scattered photon is absorbed by the detector and measured.
 
@@ -294,7 +294,7 @@ For arbitrary query ($\theta, \phi$), the lookup table finds the closest key pai
 \end{algorithmic}
       \caption{The Monte Carlo simulation pseudocode. For each $\theta, \sigma$ pair, the Monte Carlo method first computes the number of particles emitted towards the visible surface of the detector from the current position ($A$) out of all simulated particles ($N$). 
     Then a point for each of $A$ photons is randomly sampled somewhere on the visible sensor's surface, which determines the trajectory of incident photon inside the \ac{CdTe} sensor's block. 
-    The Monte Carlo method counts the number of photons ($C$) that fulfilled all the following conditions: a) were emitted under the solid angle of the visible sensor's surface, 
+    The Monte Carlo method counts the number of photons ($C$) that fulfilled all the following conditions: a) were emitted in the solid angle of the visible sensor's surface, 
     b) undergone the Compton scattering, 
     c) the scattered photon was absorbed, 
     d) the recorded interactions passed the outlier detection filter.
@@ -379,9 +379,9 @@ where:
 A series of random occurrences should happen for a photon emitted at position $j$ with initial energy $E_{0}$ to be detected by the Compton camera as measurement $i$.
 The term $t_{ij}$ can be described with probabilities as:
 \begin{itemize}
-  \item $p_{solid\ angle}(j, \mathbf{v}_{i}) $: the probability that the photon is emitted at position $j$ under the right solid angle towards the visible surface of the detector at position $\mathbf{v}_{i}$,
+  \item $p_{solid\ angle}(j, \mathbf{v}_{i}) $: the probability that the photon is emitted at position $j$ in the right solid angle towards the visible surface of the detector at position $\mathbf{v}_{i}$,
   \item $(1-p_{air}(d_{jv_{i}}))$: the probability that the photon reaches the detector surface (not being absorbed along the way, where $d_{jv_{i}}$ is the distance from $j$ to detector pose $\mathbf{v}_{i}$),
-  \item $\bar{p}_{compton}(j, X_{1}, E_{0}, \beta_{i})$: the probability that it interacts with the matter of the detector at position $X_{1}$ and undergo Compton scattering under angle $\beta_{i}$ while losing energy $E_{1}$ to the electron that is immediately measured by the detector,
+  \item $\bar{p}_{compton}(j, X_{1}, E_{0}, \beta_{i})$: the probability that it interacts with the matter of the detector at position $X_{1}$ and undergo Compton scattering at angle $\beta_{i}$ while losing energy $E_{1}$ to the electron that is immediately measured by the detector,
   \item $\bar{p}_{absorption}(X_{1}, X_{2}, E_{0}, E_{1})$: the probability that the scattered photon interacts with the matter of the detector at position $X_{2}$, is absorbed and energy $E_{2}$ is measured by the detector during the absorption.
 \end{itemize}
 Same as in the sensitivity section, the presented model is simplified, and several assumptions are made. 
@@ -423,7 +423,8 @@ The elements $t_{ij}$ of system matrix $\mathbf{T}$ are computed as:
 where:
 \begin{itemize}
  \item $d_{jv_{i}}$ is the Euclidean distance between the map position $j$ and sensor position $\mathbf{v}_{i}$, 
- \item $\mu \approx \SI{0.01}{\meter^{-1}} $ is the linear attenuation coefficient for $\SI{622}{\kilo\electronvolt}$ photons in air\item $K(\beta_{i}, E_{0})$ is the Klein-Nishina formula Compton scattering differential cross-section) representing the probability of Compton scattering under estimated angle $\beta_{i}$ for an incoming particle with energy $E_{0}$ \cite{yuemeng_feng},
+ \item $\mu \approx \SI{0.01}{\meter^{-1}} $ is the linear attenuation coefficient for $\SI{622}{\kilo\electronvolt}$ photons in air
+ \item $K(\beta_{i}, E_{0})$ is the Klein-Nishina formula (differential cross-section of Compton scattering) representing the probability of Compton scattering at estimated angle $\beta_{i}$ for an incoming particle with energy $E_{0}$ \cite{yuemeng_feng},
 \item $h(\delta_{ij}|\sigma_{j})$ is a Gaussian function (the ``blurring factor'') representing the uncertainty in angle measurement,
 \item $\delta_{ij}$ is angle difference $|\beta_{i}-\beta_{j}|$, where $\beta_{j}$ is the angle between cone axis vector $\mathbf{a}_{i}$ and vector $|j-\mathbf{v}_{i}|$, 
 \item $\sigma$ is standard deviation and $\alpha$ is the minimal angle difference due to discretization noise,
